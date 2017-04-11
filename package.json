@@ -1,0 +1,20 @@
+{
+  "name": "gamble",
+  "version": "1.0.0",
+  "description": "a gambling game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gamble"
+  ],
+  "author": "Oliver Hsu",
+  "license": "ISC",
+  "dependencies": {
+    "xenon": "^5.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
