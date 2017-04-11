@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>骰骰乐</title>
   <style>
     * {
@@ -10,18 +10,12 @@
       padding: 0;
     }
 
-    html {
-      width: 100%;
-      height: 100%;
-    }
-
     body {
-      width: 100%;
-      height: 100%;
       background-image: url("/static/images/bg.png");
     }
 
     #login-form {
+      margin: 0 auto;
       width: 300px;
       height: 320px;
       background-image: url("/static/images/box.png");
@@ -32,8 +26,9 @@
   <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
   <script>
     $(document).ready(function() {
+      var body = $("body");
       var loginForm = $("#login-form");
-      loginForm.css("margin", (window.innerHeight / 2 - loginForm.outerHeight() / 2) + "px auto");
+      body.css("padding", (window.innerHeight / 2 - loginForm.outerHeight() / 2) + "px " + (window.innerWidth / 2 - loginForm.outerWidth() / 2) + "px");
     });
   </script>
 </head>
