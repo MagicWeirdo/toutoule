@@ -81,12 +81,29 @@
       background-image: url("/static/images/change.png");
       background-repeat: no-repeat;
       background-size: contain;
+      cursor: pointer;
     }
   </style>
   <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
   <script>
     $(document).ready(function() {
-
+      $("#login-button").click(function() {
+        $.post(
+          "/user/login",
+          JSON.stringify({
+            username: $("#username").val(),
+            password: $("#password").val()
+          }),
+          function(data) {
+            if(data.isError) {
+              alert(data.errorMessage);
+            }else {
+              alert("登录成功");
+            }
+          },
+          "json"
+        );
+      });
     });
   </script>
 </head>
