@@ -19,10 +19,13 @@
     body {
       width: 100%;
       height: 100%;
+    }
+
+    .background {
       background-image: url("/static/images/bg.png");
     }
 
-    #login-form {
+    #login-form, #forget-form {
       position: relative;
       top: 50%;
       margin-left: auto;
@@ -63,7 +66,40 @@
       font-size: 24px;
     }
 
-    #login-button {
+    #user {
+      display: block;
+      margin: 0 auto 20px;
+      border-radius: 10px;
+      border: 1px solid #BC9057;
+      padding: 0 10px;
+      width: 228px;
+      height: 32px;
+      font-size: 16px;
+    }
+
+    #oldPassword {
+      display: block;
+      margin: 20px auto 20px;
+      border-radius: 10px;
+      border: 1px solid #BC9057;
+      padding: 0 10px;
+      width: 228px;
+      height: 32px;
+      font-size: 16px;
+    }
+
+    #newPassword {
+      display: block;
+      margin: 20px auto 0;
+      border-radius: 10px;
+      border: 1px solid #BC9057;
+      padding: 0 10px;
+      width: 228px;
+      height: 32px;
+      font-size: 16px;
+    }
+
+    #login-button, #change-button {
       margin: 10px auto;
       width: 230px;
       height: 48px;
@@ -83,10 +119,62 @@
       background-size: contain;
       cursor: pointer;
     }
+
+    .dialog {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border: 1px solid #D8D8D8;
+      border-radius: 10px;
+      background: #FAFAFA;
+    }
+
+    .dialog-header {
+      padding: 6px;
+    }
+
+    .close-button {
+      float: right;
+      width: 24px;
+      height: 24px;
+      background-image: url("/static/images/close.png");
+      background-repeat: no-repeat;
+      background-size: contain;
+      cursor: pointer;
+    }
+
+    .dialog-body {
+      clear: both;
+      border-top: 1px solid #D8D8D8;
+      padding: 24px;
+    }
   </style>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/static/js/phaser.min.js"></script>
   <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/static/bower_components/js-cookie/src/js.cookie.js"></script>
   <script>
     $(document).ready(function() {
+      makeLoginForm();
+    });
+
+    // 生成登录框
+    function makeLoginForm() {
+      // 移除所有界面元素
+      $("body").empty();
+
+      $("body").addClass("background");
+      $("body").append(
+        "<div id=\"login-form\">" +
+        "<div id=\"wrapper\">" +
+        "<input type=\"text\" id=\"username\" placeholder=\"请输入用户名\">" +
+        "<input type=\"password\" id=\"password\" placeholder=\"请输入密码\">" +
+        "<div id=\"login-button\"></div>" +
+        "<div id=\"forget-button\"></div>" +
+        "</div>"
+      );
+
+      // 注册登录按钮点击事件
       $("#login-button").click(function() {
         $.post(
           "/user/login",
@@ -96,25 +184,129 @@
           }),
           function(data) {
             if(data.isError) {
-              alert(data.errorMessage);
+              makeDialog(data.errorMessage);
             }else {
-              alert("登录成功");
+              Cookies.set("username", $("#username").val());
+              Cookies.set("token", data.result.token);
+
+              bootstrap();
             }
           },
           "json"
         );
       });
-    });
+
+      $("#forget-button").click(function() {
+        makeForgetForm();
+      });
+    }
+
+    // 生成修改密码框
+    function makeForgetForm() {
+      $("body").empty();
+
+      $("body").addClass("background");
+      $("body").append(
+        "<div id=\"forget-form\">" +
+        "<div id=\"wrapper\">" +
+        "<input type=\"user\" id=\"user\" placeholder=\"请输入用户名\">" +
+        "<input type=\"password\" id=\"oldPassword\" placeholder=\"请输入旧密码\">" +
+        "<input type=\"password\" id=\"newPassword\" placeholder=\"请输入新密码\">" +
+        "<div id=\"change-button\"></div>" +
+        "</div>"
+      );
+
+      $("#change-button").click(function() {
+        $.post(
+          "/user/modifyPassword",
+          JSON.stringify({
+            username: $("#user").val(),
+            oldPassword: $("#oldPassword").val(),
+            newPassword: $("#newPassword").val()
+          }),
+          function(data) {
+            if(data.isError) {
+              makeDialog(data.errorMessage);
+            }else {
+              makeLoginForm();
+            }
+          },
+          "json"
+        );
+      });
+    }
+
+    // 制作对话框
+    function makeDialog(msg) {
+      $("body").append(
+        "<div class=\"dialog\">" +
+        "<div class=\"dialog\-header\">" +
+        "<div class=\"close\-button\"></div>" +
+        "</div>" +
+        "<div class=\"dialog\-body\">" +
+        "<p>" + msg + "</p>" +
+        "</div>"
+      );
+
+      $(".dialog").css("margin-top", 0 - $(".dialog").outerHeight() / 2);
+      $(".dialog").css("margin-left", 0 - $(".dialog").outerWidth() / 2);
+      $(".close-button").click(function() {
+        $(".dialog").detach();
+      });
+    }
+
+    // 启动游戏
+    function bootstrap() {
+      // 清除对话框
+      $("#login-form").detach();
+
+      // 清除背景
+      $("body").removeClass("background");
+
+      // canvas container
+      $("body").append("<div id=\"canvas\"></div>");
+
+      // open WebSocket
+      var socket = io();
+
+      // emitting register message
+      // socket.emit("register", JSON.stringify({
+      //   username: Cookies.get("username"),
+      //   token: Cookies.get("token")
+      // }));
+
+      // create a game object
+      var game = new Phaser.Game(
+        window.innerWidth,
+        window.innerHeight,
+        Phaser.AUTO,
+        "canvas",
+        {
+          preload: preload,
+          create: create,
+          update: update,
+          render: render
+        }
+      );
+
+      function preload() {
+
+      }
+
+      function create() {
+
+      }
+
+      function update() {
+
+      }
+
+      function render() {
+
+      }
+    }
   </script>
 </head>
 <body>
-  <div id="login-form">
-    <div id="wrapper">
-      <input type="text" id="username">
-      <input type="password" id="password">
-      <div id="login-button"></div>
-      <div id="forget-button"></div>
-    </div>
-  </div>
 </body>
 </html>

@@ -65,18 +65,23 @@ module.exports = {
               throw err;
             }
 
-            // check old password
-            if(oldPassword !== user.password) {
-              callback("旧密码不正确");
+            // check if the user exists
+            if(user === null) {
+              callback("用户不存在");
             }else {
-              user.password = newPassword;
-              user.save(function(err) {
-                if(err) {
-                  callback(err.msg);
-                }else {
-                  callback();
-                }
-              });
+              // check old password
+              if(oldPassword !== user.password) {
+                callback("旧密码不正确");
+              }else {
+                user.password = newPassword;
+                user.save(function(err) {
+                  if(err) {
+                    callback(err.msg);
+                  }else {
+                    callback();
+                  }
+                });
+              }
             }
           });
         });
