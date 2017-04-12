@@ -76,3 +76,32 @@ gulp.task("generateUser", function() {
     console.log(response);
   });
 });
+
+// **** remote ****
+// 管理员登录
+gulp.task("adminLoginRemote", function() {
+  $http.post({
+    hostname: "119.23.142.44",
+    port: 8080,
+    path: "/admin/login"
+  }, {
+    username: "admin",
+    password: "wamysys5054362"
+  }).then(function(response) {
+    console.log(response);
+  });
+});
+
+// 生成新用户
+gulp.task("generateUserRemote", function() {
+  $http.get({
+    hostname: "119.23.142.44",
+    port: 8080,
+    path: "/user/generate",
+    headers: {
+      "Authorization": "a7849c298c12751aa67a103f618b5a65cee7d4bb3747d8954f87db08aa1017f9"
+    }
+  }).then(function(response) {
+    console.log(response);
+  });
+});
