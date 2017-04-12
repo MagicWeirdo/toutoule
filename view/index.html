@@ -27,7 +27,7 @@
 
     #login-form, #forget-form {
       position: relative;
-      top: 50%;
+      top: 40%;
       margin-left: auto;
       margin-top: -150px;
       margin-right: auto;
@@ -130,6 +130,16 @@
       cursor: pointer;
     }
 
+    #ground {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 36px;
+      background-image: url("/static/images/bottom.png");
+      background-repeat: repeat-x;
+      background-size: contain;
+    }
+
     .dialog {
       position: absolute;
       top: 50%;
@@ -181,7 +191,9 @@
         "<input type=\"password\" id=\"password\" placeholder=\"请输入密码\">" +
         "<div id=\"login-button\"></div>" +
         "<div id=\"forget-button\"></div>" +
-        "</div>"
+        "</div>" +
+        "</div>" +
+        "<div id=\"ground\"></div>"
       );
 
       // 注册登录按钮点击事件
@@ -223,7 +235,9 @@
         "<input type=\"password\" id=\"oldPassword\" placeholder=\"请输入旧密码\">" +
         "<input type=\"password\" id=\"newPassword\" placeholder=\"请输入新密码\">" +
         "<div id=\"change-button\"></div>" +
-        "</div>"
+        "</div>" +
+        "</div>" +
+        "<div id=\"ground\"></div>"
       );
 
       $("#change-button").click(function() {
