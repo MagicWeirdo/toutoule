@@ -120,6 +120,17 @@
       cursor: pointer;
     }
 
+    #return-button {
+      float: right;;
+      margin-top: 20px;
+      width: 150px;
+      height: 40px;
+      background-image: url("/static/images/back_button.png");
+      background-repeat: no-repeat;
+      background-size: contain;
+      cursor: pointer;
+    }
+
     #change-button {
       margin: 10px auto;
       width: 230px;
@@ -235,6 +246,7 @@
         "<input type=\"password\" id=\"oldPassword\" placeholder=\"请输入旧密码\">" +
         "<input type=\"password\" id=\"newPassword\" placeholder=\"请输入新密码\">" +
         "<div id=\"change-button\"></div>" +
+        "<div id=\"return-button\"></div>" +
         "</div>" +
         "</div>" +
         "<div id=\"ground\"></div>"
@@ -257,6 +269,10 @@
           },
           "json"
         );
+      });
+
+      $("#return-button").click(function() {
+        makeLoginForm()
       });
     }
 
