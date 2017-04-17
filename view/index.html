@@ -186,7 +186,8 @@
   <script src="/static/bower_components/js-cookie/src/js.cookie.js"></script>
   <script>
     $(document).ready(function() {
-      makeLoginForm();
+      bootstrap();
+      // makeLoginForm();
     });
 
     // 生成登录框
@@ -298,7 +299,7 @@
     // 启动游戏
     function bootstrap() {
       // 清除对话框
-      $("#login-form").detach();
+      $("body").empty();
 
       // 清除背景
       $("body").removeClass("background");
@@ -330,11 +331,93 @@
       );
 
       function preload() {
-
+        game.load.image("background", "/static/assets/main/background.png");
+        game.load.image("usernameBar", "/static/assets/main/username.png");
+        game.load.image("coinBar", "/static/assets/main/coin.png");
+        game.load.image("timeBar", "/static/assets/main/time.png");
+        game.load.image("bulletinBar", "/static/assets/main/bulletin.png");
+        game.load.image("buttonGroupBackground", "/static/assets/main/btn_bg.png");
+        game.load.image("readyButton", "/static/assets/main/ready.png");
+        game.load.image("cancelButton", "/static/assets/main/cancel.png");
       }
 
       function create() {
+        var displayWidth = window.innerWidth;
+        var displayHeight = window.innerHeight;
 
+        // main scene
+        var mainScene = game.add.group();
+        mainScene.x = 0;
+        mainScene.y = 0;
+        mainScene.z = 0;
+
+        var totalHeight = 0;
+
+        // background
+        var backgroundImage = game.add.image(0, 0, "background");
+        backgroundImage.width = displayWidth;
+        backgroundImage.height = displayHeight;
+        mainScene.add(backgroundImage);
+
+        // header group
+        var headerGroup = game.add.group(mainScene);
+        headerGroup.x = 0;
+        headerGroup.y = 0;
+        headerGroup.z = 0;
+
+        // username bar
+        var usernameBar = game.add.image(12, 12, "usernameBar");
+        usernameBar.width = displayWidth * 0.3;
+        usernameBar.height = usernameBar.width / (228 / 65);
+        headerGroup.add(usernameBar);
+
+        // coin bar
+        var coinBar = game.add.image(displayWidth * 0.7 - 12, 12, "coinBar");
+        coinBar.width = displayWidth * 0.3;
+        coinBar.height = coinBar.width / (250 / 68);
+        headerGroup.add(coinBar);
+
+        totalHeight += coinBar.height + 12;
+
+        // time bar
+        var timeBar = game.add.image((displayWidth * 0.5) / 2, totalHeight + 12, "timeBar");
+        timeBar.width = displayWidth * 0.5;
+        timeBar.height = timeBar.width / (445 / 113);
+        mainScene.add(timeBar);
+
+        totalHeight += timeBar.height + 12;
+
+        // bulletin bar
+        var bulletinBar = game.add.image((displayWidth * 0.4) / 2, totalHeight + 12, "bulletinBar");
+        bulletinBar.width = displayWidth * 0.6;
+        bulletinBar.height = bulletinBar.width / (525 / 750);
+        mainScene.add(bulletinBar);
+
+        totalHeight += bulletinBar.height + 12;
+
+        // button group
+        var buttonGroup = game.add.group(mainScene);
+        buttonGroup.x = 0;
+        buttonGroup.y = totalHeight;
+        buttonGroup.z = 0;
+
+        // button background
+        var buttonGroupBackground = game.add.image((displayWidth * 0.6) / 2, 0 - (((displayWidth * 0.4) / (420 / 109)) / 2), "buttonGroupBackground");
+        buttonGroupBackground.width = displayWidth * 0.4;
+        buttonGroupBackground.height = buttonGroupBackground.width / (420 / 109);
+        buttonGroup.add(buttonGroupBackground);
+
+        // ready button
+        var readyButton = game.add.button((displayWidth * 0.6) / 2 + 2, 0 - (((displayWidth * 0.2) / (207 / 100)) / 2), "readyButton");
+        readyButton.width = displayWidth * 0.2;
+        readyButton.height = readyButton.width / (207 / 100);
+        buttonGroup.add(readyButton);
+
+        // cancel button
+        var cancelButton = game.add.button((displayWidth * 0.6) / 2 + readyButton.width - 2, 0 - (((displayWidth * 0.2) / (207 / 100)) / 2), "cancelButton");
+        cancelButton.width = displayWidth * 0.2;
+        cancelButton.height = cancelButton.width / (207 / 100);
+        buttonGroup.add(cancelButton);
       }
 
       function update() {

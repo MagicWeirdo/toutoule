@@ -19,13 +19,13 @@ module.exports = {
       // do validation
       $validator.validate(data, function(err) {
         if(err) {
-          res.sendAsJson(400, {
+          res.sendAsJson(200, {
             isError: true,
             errorMessage: err.msg,
             result: ""
           });
         }else {
-          $adminService.login(data, function(err, apiToken) {
+          $adminService.login(data, function(err, token) {
             if(err) {
               res.sendAsJson(200, {
                 isError: true,
@@ -36,7 +36,9 @@ module.exports = {
               res.sendAsJson(200, {
                 isError: false,
                 errorMessage: "",
-                result: apiToken
+                result: {
+                  token: token
+                }
               });
             }
           });
@@ -65,7 +67,7 @@ module.exports = {
         // do validation
         $validator.validate(data, function(err) {
           if(err) {
-            res.sendAsJson(400, {
+            res.sendAsJson(200, {
               isError: true,
               errorMessage: err.msg,
               result: ""
@@ -92,6 +94,48 @@ module.exports = {
             });
           }
         });
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
+   * @param {$bulletinService} $bulletinService
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * list bulletins
+  **/
+  listBulletins: function($validator, $bulletinService, req, res) {
+    req.doAuth("admin", function(username) {
+      var data = {
+        start: Number.parseInt(req.queryParams.start),
+        end: Number.parseInt(req.queryParams.end)
+      };
+
+      // register validations
+      $validator.required("start", "start不能为空");
+      $validator.required("end", "end不能为空");
+
+      // do validation
+      $validator.validate(data, function(err) {
+        if(err) {
+          res.sendAsJson(200, {
+            isError: true,
+            errorMessage: err.msg,
+            result: ""
+          });
+        }else {
+          $bulletinService.listBulletins(data, function(bulletins) {
+            res.sendAsJson(200, {
+              isError: false,
+              errorMessage: "",
+              result: {
+                list: bulletins
+              }
+            });
+          });
+        }
       });
     });
   }

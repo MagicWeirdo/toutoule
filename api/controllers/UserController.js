@@ -25,7 +25,7 @@ module.exports = {
             result: ""
           });
         }else {
-          $userService.login(data, function(err, apiToken) {
+          $userService.login(data, function(err, token) {
             if(err) {
               res.sendAsJson(200, {
                 isError: true,
@@ -36,7 +36,9 @@ module.exports = {
               res.sendAsJson(200, {
                 isError: false,
                 errorMessage: "",
-                result: apiToken
+                result: {
+                  token: token
+                }
               });
             }
           });
@@ -90,46 +92,6 @@ module.exports = {
         }
       });
     });
-    // req.doAuth("normal", function(username) {
-    //   req.readAsJson(function(data) {
-    //     // register validations
-    //     $validator.required("oldPassword", "旧密码不能为空");
-    //     $validator.notEmptyString("oldPassword", "旧密码不能为空");
-    //     $validator.required("newPassword", "新密码不能为空");
-    //     $validator.notEmptyString("newPassword", "新密码不能为空");
-    //
-    //     // do validation
-    //     $validator.validate(data, function(err) {
-    //       if(err) {
-    //         res.sendAsJson(400, {
-    //           isError: true,
-    //           errorMessage: err.msg,
-    //           result: ""
-    //         });
-    //       }else {
-    //         $userService.modifyPassword({
-    //           username: username,
-    //           oldPassword: data.oldPassword,
-    //           newPassword: data.newPassword
-    //         }, function(err) {
-    //           if(err) {
-    //             res.sendAsJson(200, {
-    //               isError: true,
-    //               errorMessage: err,
-    //               result: ""
-    //             });
-    //           }else {
-    //             res.sendAsJson(200, {
-    //               isError: false,
-    //               errorMessage: "",
-    //               result: ""
-    //             });
-    //           }
-    //         });
-    //       }
-    //     });
-    //   });
-    // });
   },
   /**
    * @public
@@ -146,6 +108,114 @@ module.exports = {
           isError: false,
           errorMessage: "",
           result: userInfo
+        });
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$userService} $userService
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * get the count of users
+  **/
+  getUserCount: function($userService, req, res) {
+    req.doAuth("admin", function(username) {
+      $userService.getUserCount(function(userCount) {
+        res.sendAsJson(200, {
+          isError: false,
+          errorMessage: "",
+          result: {
+            count: userCount
+          }
+        });
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
+   * @param {$userService} $userService
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * list users
+  **/
+  listUsers: function($validator, $userService, req, res) {
+    req.doAuth("admin", function(username) {
+      var data = {
+        start: Number.parseInt(req.queryParams.start),
+        end: Number.parseInt(req.queryParams.end)
+      };
+
+      // register validations
+      $validator.required("start", "start不能为空");
+      $validator.required("end", "end不能为空");
+
+      // do validation
+      $validator.validate(data, function(err) {
+        if(err) {
+          res.sendAsJson(200, {
+            isError: true,
+            errorMessage: err.msg,
+            result: ""
+          });
+        }else {
+          $userService.listUsers(data, function(users) {
+            res.sendAsJson(200, {
+              isError: false,
+              errorMessage: "",
+              result: {
+                list: users
+              }
+            });
+          });
+        }
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
+   * @param {$userService} $userService
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * save user extra
+  **/
+  saveUserExtra: function($validator, $userService, req, res) {
+    req.doAuth("admin", function(username) {
+      req.readAsJson(function(data) {
+        // register validations
+        $validator.required("userId", "userId不能为空");
+        $validator.required("extra", "extra不能为空");
+
+        // do validation
+        $validator.validate(data, function(err) {
+          if(err) {
+            res.sendAsJson(200, {
+              isError: true,
+              errorMessage: err.msg,
+              result: ""
+            });
+          }else {
+            $userService.saveUserExtra(data, function(err) {
+              if(err) {
+                res.sendAsJson(200, {
+                  isError: true,
+                  errorMessage: err,
+                  result: ""
+                });
+              }else {
+                res.sendAsJson(200, {
+                  isError: false,
+                  errorMessage: "",
+                  result: ""
+                });
+              }
+            });
+          }
         });
       });
     });

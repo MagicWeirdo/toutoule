@@ -5,12 +5,11 @@ module.exports = {
    * called before models are defined
   **/
   before: function(orm, db) {
-    db.define("User", {
+    db.define("Admin", {
       username: { type: "text", size: 12, required: true, unique: true },
       password: { type: "text", size: 16, required: true },
       date: { type: "integer", size: 8, required: true },
-      token: { type: "text", size: 64, unique: true },
-      extra: { type: "text", size: 150 }
+      token: { type: "text", size: 64, unique: true }
     }, {
       validations: {
         username: orm.enforce.required("用户名不能为空"),
@@ -22,8 +21,7 @@ module.exports = {
         password: orm.enforce.ranges.length(1, 16, "密码长度必须在1至16之间"),
         date: orm.enforce.required("注册日期不能为空"),
         token: orm.enforce.ranges.length(64, 64, "密匙长度必须为64位"),
-        token: orm.enforce.unique("密匙必须唯一"),
-        extra: orm.enforce.ranges.length(undefined, 150, "备注长度不能超过150字")
+        token: orm.enforce.unique("密匙必须唯一")
       }
     });
   },

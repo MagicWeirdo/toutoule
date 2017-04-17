@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>骰子</title>
+</head>
+<body>
+  <div id="canvas"></div>
+  <script src="/static/js/phaser.min.js"></script>
+  <script>
+    var game = new Phaser.Game(
+      window.innerWidth,
+      window.innerHeight,
+      Phaser.AUTO,
+      "canvas",
+      {
+        preload: preload,
+        create: create,
+        update: update,
+        render: render
+      }
+    );
+
+    var sprite;
+    var count = 0;
+
+    function preload() {
+      game.load.atlasJSONHash("dice", "/static/assets/dice-test.png", "/static/assets/dice-test.json");
+    }
+
+    function create() {
+      sprite = game.add.sprite(0, 0, "dice");
+      sprite.animations.add("rotate", [ "dice-1", "dice-7", "dice-2", "dice-7", "dice-3", "dice-7", "dice-4", "dice-7", "dice-5", "dice-7", "dice-6", "dice-7" ], 3, true);
+    }
+
+    function update() {
+      if(count === 0) {
+        sprite.play("rotate");
+        count++;
+      }
+    }
+
+    function render() {
+
+    }
+  </script>
+</body>
+</html>

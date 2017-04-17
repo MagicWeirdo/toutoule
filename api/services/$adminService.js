@@ -1,7 +1,7 @@
 module.exports = {
   scope: "singleton",
   name: "$adminService",
-  factory: function($orm2, $authService) {
+  factory: function($orm2, $date, $authService) {
     return {
       /**
        * @public
@@ -15,28 +15,58 @@ module.exports = {
         var password = option.password;
 
         $orm2.query(function(models) {
-          var User = models.User;
+          var Admin = models.Admin;
 
-          // find the admin
-          User.one({
-            username: username,
-            password: password,
-            type: "admin"
-          }, function(err, admin) {
-            if(err) {
-              throw err;
-            }
+          // do count
+          Admin.count(function(err, adminCount) {
+            if(adminCount === 0) {
+              // create an original admin account
+              Admin.create({
+                username: "admin",
+                password: "admin",
+                date: $date.now().getAsMilliseconds()
+              }, function(err, admin) {
+                if(err) {
+                  throw err;
+                }
 
-            // check if the admin exists or not
-            if(admin === null) {
-              callback("用户名或密码错误");
+                // do match
+                if(username !== admin.username || password !== admin.password) {
+                  callback("用户名或密码错误");
+                }else {
+                  // create a new token
+                  $authService.createToken({
+                    username: username,
+                    type: "admin"
+                  }, function(token) {
+                    // send info back
+                    callback(null, token);
+                  });
+                }
+              });
             }else {
-              // create a new token
-              $authService.createToken({
+              // find the admin
+              Admin.one({
                 username: username,
-                type: "admin"
-              }, function(apiToken) {
-                callback(null, apiToken);
+                password: password
+              }, function(err, admin) {
+                if(err) {
+                  throw err;
+                }
+
+                // check if the admin exists
+                if(admin === null) {
+                  callback("用户名或密码错误");
+                }else {
+                  // create a new token
+                  $authService.createToken({
+                    username: username,
+                    type: "admin"
+                  }, function(token) {
+                    // send info back
+                    callback(null, token);
+                  });
+                }
               });
             }
           });
@@ -55,33 +85,29 @@ module.exports = {
         var newPassword = option.newPassword;
 
         $orm2.query(function(models) {
-          var User = models.User;
+          var Admin = models.Admin;
 
-          // find the user
-          User.one({
+          // find the admin
+          Admin.one({
             username: username
-          }, function(err, user) {
+          }, function(err, admin) {
             if(err) {
               throw err;
             }
 
-            // check if the user exists
-            if(user === null) {
-              callback("用户不存在");
+            // check old password
+            if(oldPassword !== admin.password) {
+              callback("旧密码不正确");
             }else {
-              // check the old password
-              if(oldPassword !== user.password) {
-                callback("旧密码不正确");
-              }else {
-                user.password = newPassword;
-                user.save(function(err) {
-                  if(err) {
-                    callback(err.msg);
-                  }else {
-                    callback();
-                  }
-                });
-              }
+              // change password
+              admin.password = newPassword;
+              admin.save(function(err) {
+                if(err) {
+                  callback(err.msg);
+                }else {
+                  callback();
+                }
+              });
             }
           });
         });

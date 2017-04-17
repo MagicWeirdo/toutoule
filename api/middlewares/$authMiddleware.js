@@ -26,7 +26,7 @@ module.exports = function($validator, $authService, req, res) {
           result: ""
         });
       }else {
-        $authService.verify(data, function(err) {
+        $authService.verify(data, function(err, username) {
           if(err) {
             res.sendAsJson(401, {
               isError: true,
@@ -34,10 +34,8 @@ module.exports = function($validator, $authService, req, res) {
               result: ""
             });
           }else {
-            // get the user
-            $authService.getUser(data.token, function(username) {
-              callback(username);
-            });
+            // send info back
+            callback(username);
           }
         });
       }

@@ -17,26 +17,38 @@ module.exports = {
         $orm2.query(function(models) {
           var User = models.User;
 
-          // find the user
-          User.one({
-            username: username,
-            password: password,
-            type: "normal"
-          }, function(err, user) {
+          // check if the user exists
+          User.exists({
+            username: username
+          }, function(err, isUserExist) {
             if(err) {
               throw err;
             }
 
-            // check if the user exists
-            if(user === null) {
-              callback("用户名或密码错误");
+            if(isUserExist === false) {
+              callback("用户不存在");
             }else {
-              // create a new token
-              $authService.createToken({
+              // find the user
+              User.one({
                 username: username,
-                type: "normal"
-              }, function(apiToken) {
-                callback(null, apiToken);
+                password: password
+              }, function(err, user) {
+                if(err) {
+                  throw err;
+                }
+
+                // check if password matches the username
+                if(user === null) {
+                  callback("密码错误");
+                }else {
+                  // create a new token
+                  $authService.createToken({
+                    username: username,
+                    type: "normal"
+                  }, function(token) {
+                    callback(null, token);
+                  });
+                }
               });
             }
           });
@@ -116,7 +128,6 @@ module.exports = {
                 User.create({
                   username: year + "" + month + "" + day + "" + rows[0].count,
                   password: "123456789",
-                  type: "normal",
                   date: $date.now().getAsMilliseconds()
                 }, function(err, user) {
                   if(err) {
@@ -127,13 +138,98 @@ module.exports = {
                   callback({
                     username: user.username,
                     password: user.password,
-                    type: user.type,
                     date: user.date
                   });
                 });
               });
             }
           );
+        });
+      },
+      /**
+       * @public
+       * @param {Function} callback
+       * @desc
+       * get the count of user
+      **/
+      getUserCount: function(callback) {
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          User.count(function(err, userCount) {
+            if(err) {
+              throw err;
+            }
+
+            // send info back
+            callback(userCount);
+          });
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * list users
+      **/
+      listUsers: function(option, callback) {
+        var start = option.start;
+        var end = option.end;
+
+        $orm2.rawQuery(function(db) {
+          db.driver.execQuery(
+            "SELECT id, username, date, extra " +
+            "FROM user " +
+            "ORDER BY id DESC LIMIT ? OFFSET ?",
+            [ (end - start + 1), start ],
+            function(err, users) {
+              if(err) {
+                throw err;
+              }
+
+              // send info back
+              callback(users);
+            }
+          );
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * save user extra
+      **/
+      saveUserExtra: function(option, callback) {
+        var userId = option.userId;
+        var extra = option.extra;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // find the user
+          User.one({
+            id: userId
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // check if the user exists
+            if(user === null) {
+              callback("用户不存在");
+            }else {
+              user.extra = extra;
+              user.save(function(err) {
+                if(err) {
+                  callback(err.msg);
+                }else {
+                  callback();
+                }
+              });
+            }
+          });
         });
       }
     };

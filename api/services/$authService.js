@@ -15,26 +15,33 @@ module.exports = {
         var type = option.type;
 
         $orm2.query(function(models) {
-          // generate date & expiration
-          var date = $date.now();
-          var expiration = $date.now();
-          expiration.setMonth(date.getMonth() + 1);
-
           // generate token
-          var token = $tokenGenerator.random(username, date.getAsMilliseconds());
+          var token = $tokenGenerator.random(username, $date.now().getAsMilliseconds());
 
-          // insert a new row
-          var ApiToken = models.ApiToken;
-          ApiToken.create({
-            token: token,
-            type: type,
-            date: date.getAsMilliseconds(),
-            expiration: expiration.getAsMilliseconds()
-          }, function(err, apiToken) {
-            if(err) {
-              throw err;
-            }
+          // check type
+          if(type === "admin") {
+            var Admin = models.Admin;
 
+            // find the admin
+            Admin.one({
+              username: username
+            }, function(err, admin) {
+              if(err) {
+                throw err;
+              }
+
+              // save the token
+              admin.token = token;
+              admin.save(function(err) {
+                if(err) {
+                  throw err;
+                }
+
+                // send info back
+                callback(token);
+              });
+            });
+          }else if(type === "normal") {
             var User = models.User;
 
             // find the user
@@ -45,21 +52,18 @@ module.exports = {
                 throw err;
               }
 
-              // set user
-              apiToken.setUser(user, function(err) {
+              // save the token
+              user.token = token;
+              user.save(function(err) {
                 if(err) {
                   throw err;
                 }
 
                 // send info back
-                callback({
-                  token: apiToken.token,
-                  type: apiToken.type,
-                  expiration: apiToken.expiration
-                });
+                callback(token);
               });
             });
-          });
+          }
         });
       },
       /**
@@ -74,63 +78,46 @@ module.exports = {
         var type = option.type;
 
         $orm2.query(function(models) {
-          var ApiToken = models.ApiToken;
+          // check the type
+          if(type === "admin") {
+            var Admin = models.Admin;
 
-          // find the apiToken
-          ApiToken.one({
-            token: token,
-            type: type
-          }, function(err, apiToken) {
-            if(err) {
-              throw err;
-            }
-
-            // check if the apiToken exists
-            if(apiToken === null) {
-              callback("密匙不存在");
-            }else {
-              // get expiration
-              var expiration = $date.millisecondsToDate(apiToken.expiration);
-
-              // compare to now
-              if($date.compare($date.now(), expiration) !== -1) {
-                callback("密匙已过期");
-              }else {
-                callback();
-              }
-            }
-          });
-        });
-      },
-      /**
-       * @public
-       * @param {String} token
-       * @param {Function} callback
-       * @desc
-       * get the user of the token
-      **/
-      getUser: function(token, callback) {
-        $orm2.query(function(models) {
-          var ApiToken = models.ApiToken;
-
-          // find the token
-          ApiToken.one({
-            token: token
-          }, function(err, apiToken) {
-            if(err) {
-              throw err;
-            }
-
-            // get the user
-            apiToken.getUser(function(err, user) {
+            // find the token
+            Admin.one({
+              token: token
+            }, function(err, admin) {
               if(err) {
                 throw err;
               }
 
-              // send info back
-              callback(user.username);
+              // check if the admin is found
+              if(admin === null) {
+                callback("密匙不存在");
+              }else {
+                // send info back
+                callback(null, admin.username);
+              }
             });
-          });
+          }else if(type === "normal") {
+            var User = models.User;
+
+            // find the token
+            User.one({
+              token: token
+            }, function(err, user) {
+              if(err) {
+                throw err;
+              }
+
+              // check if user is found
+              if(user === null) {
+                callback("密匙不存在");
+              }else {
+                // send info back
+                callback(null, user.username);
+              }
+            });
+          }
         });
       }
     };
