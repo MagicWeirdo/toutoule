@@ -330,23 +330,56 @@
         }
       );
 
+      var mainScene;
+      var gameScene;
+
       function preload() {
-        game.load.image("background", "/static/assets/main/background.png");
-        game.load.image("usernameBar", "/static/assets/main/username.png");
-        game.load.image("coinBar", "/static/assets/main/coin.png");
-        game.load.image("timeBar", "/static/assets/main/time.png");
-        game.load.image("bulletinBar", "/static/assets/main/bulletin.png");
-        game.load.image("buttonGroupBackground", "/static/assets/main/btn_bg.png");
-        game.load.image("readyButton", "/static/assets/main/ready.png");
-        game.load.image("cancelButton", "/static/assets/main/cancel.png");
+        game.load.image("background", "/static/assets/background.png");
+        game.load.image("usernameBar", "/static/assets/username.png");
+        game.load.image("coinBar", "/static/assets/coin.png");
+        game.load.image("timeBar", "/static/assets/time.png");
+        game.load.image("bulletinBar", "/static/assets/bulletin.png");
+        game.load.image("buttonGroupBackground", "/static/assets/btn_bg.png");
+        game.load.image("readyButton", "/static/assets/ready.png");
+        game.load.image("cancelButton", "/static/assets/cancel.png");
+        game.load.image("playArea", "/static/assets/play_area.png");
+        game.load.image("stackArea", "/static/assets/stack_area.png");
+        game.load.image("baozi", "/static/assets/baozi.png");
+        game.load.image("dan", "/static/assets/dan.png");
+        game.load.image("shuang", "/static/assets/shuang.png");
+        game.load.image("money5", "/static/assets/5.png");
+        game.load.image("money10", "/static/assets/10.png");
+        game.load.image("money20", "/static/assets/20.png");
+        game.load.image("money50", "/static/assets/50.png");
+        game.load.image("input", "/static/assets/input.png");
+        game.load.image("yes", "/static/assets/queding.png");
+        game.load.image("back", "/static/assets/back.png");
+        game.load.image("message", "/static/assets/message.png");
       }
 
       function create() {
+        createMainScene();
+      }
+
+      function update() {
+
+      }
+
+      function render() {
+
+      }
+
+      // create main scene
+      function createMainScene() {
+        if(gameScene) {
+          gameScene.destroy();
+        }
+
         var displayWidth = window.innerWidth;
         var displayHeight = window.innerHeight;
 
         // main scene
-        var mainScene = game.add.group();
+        mainScene = game.add.group();
         mainScene.x = 0;
         mainScene.y = 0;
         mainScene.z = 0;
@@ -365,33 +398,78 @@
         headerGroup.y = 0;
         headerGroup.z = 0;
 
+        // username group
+        var usernameGroup = game.add.group(headerGroup);
+        usernameGroup.x = 12;
+        usernameGroup.y = 12;
+        usernameGroup.z = 0;
+
         // username bar
-        var usernameBar = game.add.image(12, 12, "usernameBar");
+        var usernameBar = game.add.image(0, 0, "usernameBar");
         usernameBar.width = displayWidth * 0.3;
         usernameBar.height = usernameBar.width / (228 / 65);
-        headerGroup.add(usernameBar);
+        usernameGroup.add(usernameBar);
+
+        // username text
+        var usernameText = game.add.text(usernameBar.width * 0.35, usernameBar.height * 0.3, "20170414", {
+          fill: "#FFFFFF",
+          fontSize: usernameBar.height * 0.4 + "px"
+        });
+        usernameGroup.add(usernameText);
+
+        // coin group
+        var coinGroup = game.add.group(headerGroup);
+        coinGroup.x = displayWidth * 0.7 - 12;
+        coinGroup.y = 12;
+        coinGroup.z = 0;
 
         // coin bar
-        var coinBar = game.add.image(displayWidth * 0.7 - 12, 12, "coinBar");
+        var coinBar = game.add.image(0, 0, "coinBar");
         coinBar.width = displayWidth * 0.3;
         coinBar.height = coinBar.width / (250 / 68);
-        headerGroup.add(coinBar);
+        coinGroup.add(coinBar);
+
+        // coin text
+        var coinText = game.add.text(coinBar.width * 0.35, coinBar.height * 0.3, "10000", {
+          fill: "#FFFFFF",
+          fontSize: coinBar.height * 0.4 + "px"
+        });
+        coinGroup.add(coinText);
 
         totalHeight += coinBar.height + 12;
 
+        // time group
+        var timeGroup = game.add.group(mainScene);
+        timeGroup.x = (displayWidth * 0.5) / 2;
+        timeGroup.y = totalHeight + 12;
+        timeGroup.z = 0;
+
         // time bar
-        var timeBar = game.add.image((displayWidth * 0.5) / 2, totalHeight + 12, "timeBar");
+        var timeBar = game.add.image(0, 0, "timeBar");
         timeBar.width = displayWidth * 0.5;
         timeBar.height = timeBar.width / (445 / 113);
-        mainScene.add(timeBar);
+        timeGroup.add(timeBar);
+
+        // time text
+        var timeText = game.add.text((timeBar.width * 0.2) / 2, (timeBar.height * 0.75) / 2, "距离下一轮游戏开始还有5:00", {
+          fill: "#FFFFFF",
+          fontSize: timeBar.height * 0.25 + "px"
+        });
+        timeGroup.add(timeText);
 
         totalHeight += timeBar.height + 12;
 
+        // bulletin group
+        var bulletinGroup = game.add.group(mainScene);
+        bulletinGroup.x = (displayWidth * 0.4) / 2;
+        bulletinGroup.y = totalHeight + 12;
+        bulletinGroup.z = 0;
+
         // bulletin bar
-        var bulletinBar = game.add.image((displayWidth * 0.4) / 2, totalHeight + 12, "bulletinBar");
+        var bulletinBar = game.add.image(0, 0, "bulletinBar");
         bulletinBar.width = displayWidth * 0.6;
         bulletinBar.height = bulletinBar.width / (525 / 750);
-        mainScene.add(bulletinBar);
+        bulletinGroup.add(bulletinBar);
 
         totalHeight += bulletinBar.height + 12;
 
@@ -420,12 +498,140 @@
         buttonGroup.add(cancelButton);
       }
 
-      function update() {
+      // create game scene
+      function createGameScene() {
+        if(mainScene) {
+          mainScene.destroy();
+        }
 
-      }
+        var displayWidth = window.innerWidth;
+        var displayHeight = window.innerHeight;
 
-      function render() {
+        // game scene
+        gameScene = game.add.group();
+        gameScene.x = 0;
+        gameScene.y = 0;
+        gameScene.z = 0;
 
+        var totalHeight = 0;
+
+        // background
+        var backgroundImage = game.add.image(0, 0, "background");
+        backgroundImage.width = displayWidth;
+        backgroundImage.height = displayHeight;
+        gameScene.add(backgroundImage);
+
+        // header group
+        var headerGroup = game.add.group(gameScene);
+        headerGroup.x = 0;
+        headerGroup.y = 0;
+        headerGroup.z = 0;
+
+        // username bar
+        var usernameBar = game.add.image(12, 12, "usernameBar");
+        usernameBar.width = displayWidth * 0.3;
+        usernameBar.height = usernameBar.width / (228 / 65);
+        headerGroup.add(usernameBar);
+
+        // coin bar
+        var coinBar = game.add.image(displayWidth * 0.7 - 12, 12, "coinBar");
+        coinBar.width = displayWidth * 0.3;
+        coinBar.height = coinBar.width / (250 / 68);
+        headerGroup.add(coinBar);
+
+        totalHeight += coinBar.height + 12;
+
+        // play area
+        var playArea = game.add.image((displayWidth * 0.4) / 2, totalHeight + displayHeight * 0.1, "playArea");
+        playArea.width = displayWidth * 0.6;
+        playArea.height = playArea.width / (583 / 410);
+        gameScene.add(playArea);
+
+        totalHeight += playArea.height + displayHeight * 0.1;
+
+        // stack group
+        var stackGroup = game.add.group(gameScene);
+        stackGroup.x = 0;
+        stackGroup.y = totalHeight + 12;
+        stackGroup.z = 0;
+
+        // stack area
+        var stackArea = game.add.image((displayWidth * 0.1) / 2, 0, "stackArea");
+        stackArea.width = displayWidth * 0.9;
+        stackArea.height = stackArea.width / (677 / 291);
+        stackGroup.add(stackArea);
+
+        // choice group
+        var choiceGroup = game.add.group(stackGroup);
+        choiceGroup.x = displayWidth * 0.05;
+        choiceGroup.y = stackArea.height * (93 / 291);
+        choiceGroup.z = 0;
+
+        // baozi button
+        var baoziButton = game.add.button(displayWidth * 0.05, 0, "baozi");
+        baoziButton.width = displayWidth * 0.25;
+        baoziButton.height = baoziButton.width / (188 / 70);
+        choiceGroup.add(baoziButton);
+
+        // dan button
+        var danButton = game.add.button(baoziButton.width + displayWidth * 0.075, 0, "dan");
+        danButton.width = displayWidth * 0.25;
+        danButton.height = danButton.width / (188 / 70);
+        choiceGroup.add(danButton);
+
+        // shuang button
+        var shuangButton = game.add.button(baoziButton.width + danButton.width + displayWidth * 0.1, 0, "shuang");
+        shuangButton.width = displayWidth * 0.25;
+        shuangButton.height = shuangButton.width / (188 / 70);
+        choiceGroup.add(shuangButton);
+
+        // money group
+        var moneyGroup = game.add.group(stackGroup);
+        moneyGroup.x = displayWidth * 0.05;
+        moneyGroup.y = stackArea.height * (93 / 291) + shuangButton.height + 5;
+        moneyGroup.z = 0;
+
+        // money 5
+        var money5Button = game.add.button(displayWidth * 0.05, 0, "money5");
+        money5Button.width = displayWidth * 0.1;
+        money5Button.height = money5Button.width / (59 / 62);
+        moneyGroup.add(money5Button);
+
+        // money 10
+        var money10Button = game.add.button(money5Button.width + displayWidth * 0.05, 0, "money10");
+        money10Button.width = displayWidth * 0.1;
+        money10Button.height = money10Button.width / (59 / 62);
+        moneyGroup.add(money10Button);
+
+        // money 20
+        var money20Button = game.add.button(money5Button.width + money10Button.width + displayWidth * 0.05, 0, "money20");
+        money20Button.width = displayWidth * 0.1;
+        money20Button.height = money20Button.width / (59 / 63);
+        moneyGroup.add(money20Button);
+
+        // money 50
+        var money50Button = game.add.button(money5Button.width + money10Button.width + money20Button.width + displayWidth * 0.05, 0, "money50");
+        money50Button.width = displayWidth * 0.1;
+        money50Button.height = money50Button.width / (58 / 61);
+        moneyGroup.add(money50Button);
+
+        // input bar
+        var inputBar = game.add.image(displayWidth * 0.9 - (money5Button.width + money10Button.width + money20Button.width + displayWidth * 0.1), 0, "input");
+        inputBar.width = displayWidth * 0.35;
+        inputBar.height = inputBar.width / (239 / 71);
+        moneyGroup.add(inputBar);
+
+        totalHeight += stackArea.height + 12;
+
+        // yes button
+        var yesButton = game.add.button(displayWidth * 0.35, totalHeight - displayWidth * 0.05, "yes");
+        yesButton.width = displayWidth * 0.3;
+        yesButton.height = yesButton.width / (200 / 61);
+
+        // back button
+        var backButton = game.add.button(displayWidth * 0.1, displayHeight * 0.9, "back");
+        backButton.width = displayWidth * 0.1;
+        backButton.height = backButton.width / (79 / 81);
       }
     }
   </script>
