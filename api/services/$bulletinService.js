@@ -48,7 +48,7 @@ module.exports = {
         $orm2.rawQuery(function(db) {
           // extra tops first
           db.driver.execQuery(
-            "SELECT id, content, priority, date " +
+            "SELECT id, content,  date " +
             "FROM bulletin " +
             "ORDER BY id DESC LIMIT ? OFFSET ?",
             [ (end - start + 1), start ],

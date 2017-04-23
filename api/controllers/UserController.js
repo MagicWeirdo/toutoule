@@ -178,6 +178,51 @@ module.exports = {
   /**
    * @public
    * @param {$validator} $validator
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * get user
+  **/
+  getUserInfo: function($validator, $userService, req, res) {
+    req.doAuth("admin", function(username) {
+      var data = {
+        username: req.queryParams.username
+      };
+
+      // register validations
+      $validator.required("username", "username不能为空");
+      $validator.notEmptyString("username", "username不能为空");
+
+      // do validation
+      $validator.validate(data, function(err) {
+        if(err) {
+          res.sendAsJson(200, {
+            isError: true,
+            errorMessage: err.msg,
+            result: ""
+          });
+        }else {
+          $userService.getUserInfo(data, function(err, userInfo) {
+            if(err) {
+              res.sendAsJson(200, {
+                isError: true,
+                errorMessage: err,
+                result: ""
+              });
+            }else {
+              res.sendAsJson(200, {
+                isError: false,
+                errorMessage: "",
+                result: userInfo
+              });
+            }
+          });
+        }
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
    * @param {$userService} $userService
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
@@ -217,6 +262,83 @@ module.exports = {
             });
           }
         });
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
+   * @param {$userService} $userService
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * top up coin
+  **/
+  topUpCoin: function($validator, $userService, req, res) {
+    req.doAuth("admin", function(username) {
+      req.readAsJson(function(data) {
+        // register validations
+        $validator.required("username", "用户名不能为空");
+        $validator.notEmptyString("username", "用户名不能为空");
+        $validator.required("amount", "金额不能为空");
+
+        // do validation
+        $validator.validate(data, function(err) {
+          if(err) {
+            res.sendAsJson(200, {
+              isError: true,
+              errorMessage: err.msg,
+              result: ""
+            });
+          }else {
+            $userService.topUpCoin(data, function(err) {
+              if(err) {
+                res.sendAsJson(200, {
+                  isError: true,
+                  errorMessage: err,
+                  result: ""
+                });
+              }else {
+                res.sendAsJson(200, {
+                  isError: false,
+                  errorMessage: "",
+                  result: ""
+                });
+              }
+            });
+          }
+        });
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$userService} $userService
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * get user coin amount
+  **/
+  getUserCoinAmount: function($userService, req, res) {
+    req.doAuth("normal", function(username) {
+      $userService.getUserCoinAmount({
+        username: username
+      }, function(err, coin) {
+        if(err) {
+          res.sendAsJson(200, {
+            isError: true,
+            errorMessage: err,
+            result: ""
+          });
+        }else {
+          res.sendAsJson(200, {
+            isError: false,
+            errorMessage: "",
+            result: {
+              coin: coin
+            }
+          });
+        }
       });
     });
   }

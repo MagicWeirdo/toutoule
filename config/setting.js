@@ -21,6 +21,7 @@ module.exports = {
 
     // business logic
     { method: "GET", url: "/", action: "GameController.game" },
+    { method: "GET", url: "/manager", action: "AdminController.getPage" },
     { method: "POST", url: "/admin/login", action: "AdminController.login" },
     { method: "POST", url: "/admin/modifyPassword", action: "AdminController.modifyPassword" },
     { method: "GET", url: "/admin/bulletin/list", action: "AdminController.listBulletins" },
@@ -29,17 +30,24 @@ module.exports = {
     { method: "GET", url: "/user/generate", action: "UserController.generateUser" },
     { method: "GET", url: "/user/count", action: "UserController.getUserCount" },
     { method: "GET", url: "/user/list", action: "UserController.listUsers" },
-    { method: "POST", url: "/user/extra", action: "UserController.saveUserExtra" }
+    { method: "GET", url: "/user/info", action: "UserController.getUserInfo" },
+    { method: "POST", url: "/user/extra", action: "UserController.saveUserExtra" },
+    { method: "POST", url: "/user/coin/topup", action: "UserController.topUpCoin" },
+    { method: "GET", url: "/user/coin/amount", action: "UserController.getUserCoinAmount" }
   ],
   models: [
     "Admin",
     "Bulletin",
+    "GameRecord",
+    "GameRound",
     "User"
   ],
   services: [
     "$adminService",
     "$authService",
     "$bulletinService",
+    "$gameService",
+    "$stateMachine",
     "$userService"
   ],
   files: [

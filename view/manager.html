@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>管理员</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // 登录
+      $("#login-button").click(function() {
+        $.post(
+          "/admin/login",
+          JSON.stringify({
+            username: $("#username").val(),
+            password: $("#password").val()
+          }),
+          function(data) {
+            console.log(data);
+          },
+          "json"
+        );
+      });
+
+      // 开启游戏
+      var socket = io();
+
+      // 注册websocket
+      socket.emit("newPlayer", {
+        token: "673b5260e731580c6dab6bc90c29b994e375e61e99093c189797823e0fb7c052",
+        type: "admin"
+      });
+
+      // 上线游戏
+      $("#turnOn").click(function() {
+        socket.emit("turnOn");
+      });
+
+      // 下线游戏
+      $("#turnOff").click(function() {
+        socket.emit("turnOff");
+      });
+
+      // 切换为自动模式
+      $("#turnOnAutoMode").click(function() {
+        socket.emit("turnOnAutoMode");
+      });
+
+      // 切换为手动模式
+      $("#turnOnManualMode").click(function() {
+        socket.emit("turnOnManualMode");
+      });
+
+      // 手动开启游戏
+      $("#start").click(function() {
+        socket.emit("startGame");
+      });
+
+      // 生成用户
+      $("#generateUser").click(function() {
+        $.ajax(
+          "/user/generate",
+          {
+            method: "GET",
+            headers: {
+              "Authorization": "673b5260e731580c6dab6bc90c29b994e375e61e99093c189797823e0fb7c052"
+            }
+          }
+        ).done(function(data) {
+          console.log(data);
+        });
+      });
+
+      // 单数
+      $("#dan").click(function() {
+
+      });
+
+      // 双数
+      $("#shuang").click(function() {
+
+      });
+
+      // 豹子 1
+      $("#baozi1").click(function() {
+
+      });
+
+      // 豹子 2
+      $("#baozi2").click(function() {
+
+      });
+
+      // 豹子 3
+      $("#baozi3").click(function() {
+
+      });
+
+      // 豹子 4
+      $("#baozi4").click(function() {
+
+      });
+
+      // 豹子 5
+      $("#baozi5").click(function() {
+
+      });
+
+      // 豹子 6
+      $("#baozi6").click(function() {
+        
+      });
+    });
+  </script>
+</head>
+<body>
+  <div>
+    <label>用户名</label>
+    <input type="text" id="username"><br>
+    <label>密码</label>
+    <input type="text" id="password"><br>
+    <button id="login-button">登录</button>
+  </div>
+  <div>
+    <button id="turnOn">上线游戏</button>
+    <button id="turnOff">下线游戏</button>
+    <button id="turnOnAutoMode">开启自动模式</button>
+    <button id="turnOnManualMode">开启手动模式</button>
+    <button id="start">开启游戏</button>
+  </div>
+  <div>
+    <button id="generateUser">生成用户</button>
+  </div>
+  <div>
+    <button id="dan">单数</button>
+    <button id="shuang">双数</button>
+    <button id="baozi1">豹子1</button>
+    <button id="baozi2">豹子2</button>
+    <button id="baozi3">豹子3</button>
+    <button id="baozi4">豹子4</button>
+    <button id="baozi5">豹子5</button>
+    <button id="baozi6">豹子6</button>
+  </div>
+</body>
+</html>

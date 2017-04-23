@@ -68,7 +68,7 @@ gulp.task("generateUser", function() {
     port: 8080,
     path: "/user/generate",
     headers: {
-      "Authorization": "1cec4f36b13ca31cd35301fcdede474b9b40d5aa94440a744edec98f5bbb509c"
+      "Authorization": "673b5260e731580c6dab6bc90c29b994e375e61e99093c189797823e0fb7c052"
     }
   }).then(function(response) {
     console.log(response);
@@ -115,6 +115,51 @@ gulp.task("saveUserExtra", function() {
   }, {
     userId: 2,
     extra: "haha"
+  }).then(function(response) {
+    console.log(response);
+  });
+});
+
+// 获取用户信息
+gulp.task("getUserInfo", function() {
+  $http.get({
+    hostname: "127.0.0.1",
+    port: 8080,
+    path: "/user/info?username=20174180",
+    headers: {
+      "Authorization": "1cec4f36b13ca31cd35301fcdede474b9b40d5aa94440a744edec98f5bbb509c"
+    }
+  }).then(function(response) {
+    console.log(response);
+  });
+});
+
+// 给用户充值
+gulp.task("topUpCoin", function() {
+  $http.post({
+    hostname: "127.0.0.1",
+    port: 8080,
+    path: "/user/coin/topup",
+    headers: {
+      "Authorization": "1cec4f36b13ca31cd35301fcdede474b9b40d5aa94440a744edec98f5bbb509c"
+    }
+  }, {
+    username: "20174180",
+    amount: 100
+  }).then(function(response) {
+    console.log(response);
+  });
+});
+
+// 获取用户金额数目
+gulp.task("getUserCoinAmount", function() {
+  $http.get({
+    hostname: "127.0.0.1",
+    port: 8080,
+    path: "/user/coin/amount",
+    headers: {
+      "Authorization": "d98593167ab8cad67de762a58e0189a4f05e6e1bccc79acfb45048fab62ee9f7"
+    }
   }).then(function(response) {
     console.log(response);
   });

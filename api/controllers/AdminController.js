@@ -1,6 +1,16 @@
 module.exports = {
   /**
    * @public
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * get manager page
+  **/
+  getPage: function(req, res) {
+    res.render("manager.html", {});
+  },
+  /**
+   * @public
    * @param {$validator} $validator
    * @param {$adminService} $adminService
    * @param {http.IncomingMessage} req

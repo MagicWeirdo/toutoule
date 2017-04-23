@@ -41,16 +41,62 @@ module.exports = {
                 if(user === null) {
                   callback("密码错误");
                 }else {
-                  // create a new token
-                  $authService.createToken({
-                    username: username,
-                    type: "normal"
-                  }, function(token) {
-                    callback(null, token);
-                  });
+                  // check user state
+                  if(user.isOnline === true) {
+                    callback("用户已经在线");
+                  }else {
+                    // change state to online
+                    user.isOnline = true;
+                    user.save(function(err) {
+                      if(err) {
+                        throw err;
+                      }
+
+                      // create a new token
+                      $authService.createToken({
+                        username: username,
+                        type: "normal"
+                      }, function(token) {
+                        callback(null, token);
+                      });
+                    });
+                  }
                 }
               });
             }
+          });
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * logout the account
+      **/
+      logout: function(option, callback) {
+        var username = option.username;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // find the user
+          User.one({
+            username: username
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // change the state to offline
+            user.isOnline = false;
+            user.save(function(err) {
+              if(err) {
+                throw err;
+              }
+
+              callback();
+            });
           });
         });
       },
@@ -128,7 +174,8 @@ module.exports = {
                 User.create({
                   username: year + "" + month + "" + day + "" + rows[0].count,
                   password: "123456789",
-                  date: $date.now().getAsMilliseconds()
+                  date: $date.now().getAsMilliseconds(),
+                  coin: 100
                 }, function(err, user) {
                   if(err) {
                     throw err;
@@ -199,6 +246,43 @@ module.exports = {
        * @param {Object} option
        * @param {Function} callback
        * @desc
+       * get user info
+      **/
+      getUserInfo: function(option, callback) {
+        var username = option.username;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // find the user
+          User.one({
+            username: username
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // check if the user exists
+            if(user === null) {
+              callback("用户不存在");
+            }else {
+              // send info back
+              callback(null, {
+                id: user.id,
+                username: user.username,
+                date: user.date,
+                extra: user.extra,
+                coin: user.coin
+              });
+            }
+          });
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
        * save user extra
       **/
       saveUserExtra: function(option, callback) {
@@ -231,6 +315,130 @@ module.exports = {
             }
           });
         });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * top up coin
+      **/
+      topUpCoin: function(option, callback) {
+        var username = option.username;
+        var amount = option.amount;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // find the user
+          User.one({
+            username: username
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // check if the user exists
+            if(user === null) {
+              callback("用户不存在");
+            }else {
+              if(amount <= 0) {
+                callback("金额不能为空或负值");
+              }else {
+                user.coin += amount;
+                user.save(function(err) {
+                  if(err) {
+                    throw err;
+                  }
+
+                  callback();
+                });
+              }
+            }
+          });
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * button down coin
+      **/
+      bottomDownCoin: function(option, callback) {
+        var username = option.username;
+        var amount = option.amount;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // find the user
+          User.one({
+            username: username
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // check if the user exists
+            if(user === null) {
+              callback("用户不存在");
+            }else {
+              if(amount <= 0) {
+                callback("金额不能为空或负值");
+              }else {
+                user.coin -= amount;
+                user.save(function(err) {
+                  if(err) {
+                    throw err;
+                  }
+
+                  callback();
+                });
+              }
+            }
+          });
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * get user coin amount
+      **/
+      getUserCoinAmount: function(option, callback) {
+        var username = option.username;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // check if the user is found
+          User.one({
+            username: username
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // check if the user exists
+            if(user === null) {
+              callback("用户不存在");
+            }else {
+              // send info back
+              callback(null, user.coin);
+            }
+          });
+        });
+      },
+      /**
+       * @public
+       * @param {Function} callback
+       * @desc
+       * 
+      **/
+      resetAllUsersState: function(callback) {
+
       }
     };
   }
