@@ -8,5 +8,57 @@ module.exports = {
   **/
   game: function(req, res) {
     res.render("index.html", {});
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * list game records of an user
+  **/
+  listUserGameRecords: function($validator, $gameService, req, res) {
+    req.doAuth("admin", function(username) {
+      var data = {
+        username: req.queryParams.username,
+        start: Number.parseInt(req.queryParams.start),
+        end: Number.parseInt(req.queryParams.end)
+      };
+
+      // register validations
+      $validator.required("username", "username不能为空");
+      $validator.notEmptyString("username", "username不能为空");
+      $validator.required("start", "start不能为空");
+      $validator.required("end", "end不能为空");
+
+      // do validation
+      $validator.validate(data, function(err) {
+        if(err) {
+          res.sendAsJson(400, {
+            isError: true,
+            errorMessage: err.msg,
+            result: ""
+          });
+        }else {
+          $gameService.listUserGameRecords(data, function(err, records) {
+            if(err) {
+              res.sendAsJson(200, {
+                isError: false,
+                errorMessage: err,
+                result: ""
+              });
+            }else {
+              res.sendAsJson(200, {
+                isError: true,
+                errorMessage: "",
+                result: {
+                  list: records
+                }
+              });
+            }
+          });
+        }
+      });
+    });
   }
 };

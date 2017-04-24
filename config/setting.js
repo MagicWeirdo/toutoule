@@ -32,6 +32,7 @@ module.exports = {
     { method: "POST", url: "/user/extra", action: "UserController.saveUserExtra" },
     { method: "POST", url: "/user/coin/topup", action: "UserController.topUpCoin" },
     { method: "GET", url: "/user/coin/amount", action: "UserController.getUserCoinAmount" },
+    { method: "GET", url: "/game/history/user/list", action: "GameController.listUserGameRecords" },
 
     // management
     { method: "GET", url: "/manager/login", action: "ManagerController.login" },
@@ -49,7 +50,7 @@ module.exports = {
     "$adminService",
     "$authService",
     "$bulletinService",
-    "$dateUtils",
+    "$utils",
     "$gameService",
     "$stateMachine",
     "$userService"

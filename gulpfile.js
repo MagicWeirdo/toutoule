@@ -165,6 +165,20 @@ gulp.task("getUserCoinAmount", function() {
   });
 });
 
+// 获取用户游戏记录
+gulp.task("listUserGameRecords", function() {
+  $http.get({
+    hostname: "127.0.0.1",
+    port: 8080,
+    path: "/game/history/user/list?username=20174220&start=0&end=5",
+    headers: {
+      "Authorization": "a9ddc29425209eef31f694c64be0fcc42d18d0e2e3f9dabcda274c5bf8281ad7"
+    }
+  }).then(function(response) {
+    console.log(response.data);
+  });
+});
+
 // **** remote ****
 // 管理员登录
 gulp.task("adminLoginRemote", function() {

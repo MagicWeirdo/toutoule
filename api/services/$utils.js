@@ -1,6 +1,6 @@
 module.exports = {
   scope: "singleton",
-  name: "$dateUtils",
+  name: "$utils",
   factory: function($date) {
     return {
       /**
@@ -20,6 +20,23 @@ module.exports = {
         day = day.length < 2 ? "0" + day : day;
 
         return year + "" + month + "" + day;
+      },
+      /**
+       * @public
+       * @param {Number} code
+       * @return {String}
+       * @desc
+       * transfer to suffix
+      **/
+      toSuffix: function(code) {
+        code = new String(code);
+        var num = 4 - code.length;
+
+        for(var i = 0;i < num;i++) {
+          code = "0" + code;
+        }
+
+        return code;
       }
     };
   }

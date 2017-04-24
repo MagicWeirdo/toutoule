@@ -582,7 +582,6 @@ module.exports = {
 
         // 保存游戏回合
         $gameService.saveGameRound({
-          mode: mode,
           result: result.type
         }, function(gameRound) {
           // 获取游戏室所所有的玩家
@@ -605,8 +604,7 @@ module.exports = {
                   stake: "none",
                   reward: -10,
                   gameRoundId: gameRound.id,
-                  username: socket.player.username,
-                  date: gameRound.date
+                  username: socket.player.username
                 }, function() {
                   // 踢出游戏室
                   socket.leave("game");
@@ -639,8 +637,7 @@ module.exports = {
                     stake: "d",
                     reward: stake.coin,
                     gameRoundId: gameRound.id,
-                    username: socket.player.username,
-                    date: gameRound.date
+                    username: socket.player.username
                   }, function() {
                     calculatedNum++;
 
@@ -660,8 +657,7 @@ module.exports = {
                     stake: "s",
                     reward: stake.coin * 0.95,
                     gameRoundId: gameRound.id,
-                    username: socket.player.username,
-                    date: gameRound.date
+                    username: socket.player.username
                   }, function() {
                     calculatedNum++;
 
@@ -681,8 +677,7 @@ module.exports = {
                     stake: stake.type,
                     reward: stake.coin * 50,
                     gameRoundId: gameRound.id,
-                    username: socket.player.username,
-                    date: gameRound.date
+                    username: socket.player.username
                   }, function() {
                     calculatedNum++;
 
@@ -701,8 +696,7 @@ module.exports = {
                     stake: stake.type,
                     reward: 0 - stake.coin,
                     gameRoundId: gameRound.id,
-                    username: socket.player.username,
-                    date: gameRound.date
+                    username: socket.player.username
                   }, function() {
                     calculatedNum++;
 

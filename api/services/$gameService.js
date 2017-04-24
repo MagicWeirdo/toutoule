@@ -1,7 +1,9 @@
+const async = require("async");
+
 module.exports = {
   scope: "singleton",
   name: "$gameService",
-  factory: function($orm2, $date, $dateUtils) {
+  factory: function($orm2, $utils) {
     return {
       /**
        * @public
@@ -42,33 +44,48 @@ module.exports = {
        * save a game record
       **/
       saveGameRound: function(option, callback) {
-        var mode = option.mode;
         var result = option.result;
 
-        $orm2.query(function(models) {
-          var GameRound = models.GameRound;
+        $orm2.rawQuery(function(db) {
+          // 获取前缀
+          var prefix = $utils.getTodayPrefix();
 
-          // // 获取今日前缀
-          // var prefix = $dateUtils.getTodayPrefix();
+          // 获取有当前前缀的条目数量
+          db.driver.execQuery(
+            "SELECT COUNT(*) AS count " +
+            "FROM gameround " +
+            "WHERE code LIKE ?",
+            [ prefix + "%" ],
+            function(err, rows) {
+              if(err) {
+                throw err;
+              }
 
-          // save the round
-          GameRound.create({
-            mode: mode,
-            result: result,
-            date: $date.now().getAsMilliseconds()
-          }, function(err, gameRound) {
-            if(err) {
-              throw err;
+              // 获取后缀
+              var suffix = $utils.toSuffix(rows[0].count);
+
+              $orm2.query(function(models) {
+                var GameRound = models.GameRound;
+
+                // 插入新游戏回合
+                GameRound.create({
+                  code: prefix + "" + suffix,
+                  result: result
+                }, function(err, gameRound) {
+                  if(err) {
+                    throw err;
+                  }
+
+                  // send info back
+                  callback({
+                    id: gameRound.id,
+                    code: gameRound.code,
+                    result: gameRound.result
+                  });
+                });
+              });
             }
-
-            // send info back
-            callback({
-              id: gameRound.id,
-              mode: gameRound.mode,
-              result: gameRound.result,
-              date: gameRound.date
-            });
-          });
+          );
         });
       },
       /**
@@ -83,7 +100,6 @@ module.exports = {
         var reward = option.reward;
         var gameRoundId = option.gameRoundId;
         var username = option.username;
-        var date = option.date;
 
         $orm2.query(function(models) {
           var GameRecord = models.GameRecord;
@@ -91,8 +107,7 @@ module.exports = {
           // save the game record
           GameRecord.create({
             stake: stake,
-            reward: reward,
-            date: date
+            reward: reward
           }, function(err, gameRecord) {
             if(err) {
               throw err;
@@ -133,6 +148,104 @@ module.exports = {
                 });
               });
             });
+          });
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * list user game records
+      **/
+      listUserGameRecords: function(option, callback) {
+        var username = option.username;
+        var start = option.start;
+        var end = option.end;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // find the user
+          User.one({
+            username: username
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // check if the user eixsts
+            if(user === null) {
+              callback("用户不存在");
+            }else {
+              $orm2.rawQuery(function(db) {
+                console.log(username);
+                console.log(start);
+                console.log(end);
+
+                // 获取原生数据
+                db.driver.execQuery(
+                  "SELECT gr.id AS gameRoundId, gr.code AS gameRoundCode, gr.result, gre.stake, gre.reward, u.username " +
+                  "FROM gameround AS gr, gamerecord AS gre, user AS u " +
+                  "WHERE gr.id = gre.gameround_id AND gre.user_id = u.id AND u.username = ? " +
+                  "ORDER BY gameRoundCode DESC LIMIT ? OFFSET ?",
+                  [ username, (end - start + 1), start ],
+                  function(err, rows) {
+                    if(err) {
+                      throw err;
+                    }
+
+                    // 存储转换结果
+                    var records = [];
+                    async.each(rows, function(row) {
+                      // 获取原生数据
+                      var gameRoundId = row.gameRoundId;
+                      var gameRoundCode = row.gameRoundCode;
+                      var result = row.result;
+                      var stake = row.stake;
+                      var reward = row.reward;
+                      var username = username;
+
+                      // 获取该游戏回合的人数
+                      var GameRecord = models.GameRecord;
+                      GameRecord.count({
+                        gameround_id: gameRoundId
+                      }, function(err, playerCount) {
+                        // 计算所押积分
+                        var coinStaked = 0;
+
+                        // 判断输赢
+                        if(reward < 0) {
+                          coinStaked = Math.abs(reward);
+                        }else {
+                          // 判断押注类型
+                          if(stake === "d") {
+                            coinStaked = reward;
+                          }else if(stake === "s") {
+                            coinStaked = reward / 0.95;
+                          }else {
+                            coinStaked = reward / 50;
+                          }
+                        }
+
+                        // 插入记录
+                        records.push({
+                          gameRoundCode: gameRoundCode,
+                          playerCount: playerCount,
+                          stake: stake,
+                          coinStaked: coinStaked,
+                          result: result,
+                          won: reward > 0 ? true : false,
+                          reward: reward
+                        });
+                      });
+                    }, function() {
+                      callback(null, records);
+                    });
+                  }
+                );
+              });
+            }
           });
         });
       }

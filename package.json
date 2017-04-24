@@ -12,6 +12,7 @@
   "author": "Oliver Hsu",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.3.0",
     "lodash": "^4.17.4",
     "xenon": "^5.0.0"
   },
