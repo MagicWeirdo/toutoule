@@ -10,7 +10,7 @@ module.exports = {
     port: 3306,
     user: "root",
     password: "wamysys5054362",
-    database: "gamble"
+    database: "gamble_test"
   },
   middlewares: [
     "$authMiddleware"

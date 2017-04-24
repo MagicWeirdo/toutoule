@@ -596,32 +596,27 @@ module.exports = {
             // 检查是否已押注
             if(socket.player.isStaked === false) {
               // 计算惩罚
-              $userService.bottomDownCoin({
+              // 保存游戏记录
+              $gameService.saveGameRecord({
+                stake: "none",
+                reward: 0,
+                gameRoundId: gameRound.id,
                 username: socket.player.username,
-                amount: 10
+                date: gameRound.date
               }, function() {
-                // 保存游戏记录
-                $gameService.saveGameRecord({
-                  stake: "none",
-                  reward: -10,
-                  gameRoundId: gameRound.id,
-                  username: socket.player.username,
-                  date: gameRound.date
-                }, function() {
-                  // 踢出游戏室
-                  socket.leave("game");
-                  socket.join("hall");
+                // 踢出游戏室
+                socket.leave("game");
+                socket.join("hall");
 
-                  // 重置玩家状态
-                  socket.player.isStaked = false;
+                // 重置玩家状态
+                socket.player.isStaked = false;
 
-                  calculatedNum++;
+                calculatedNum++;
 
-                  // 通知玩家已被踢出
-                  socket.emit("kick");
+                // 通知玩家已被踢出
+                socket.emit("kick");
 
-                  $logger.log("没有押注，被踢出");
-                });
+                $logger.log("没有押注，被踢出");
               });
             }else {
               // 计算奖惩
