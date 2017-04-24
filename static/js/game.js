@@ -69,6 +69,10 @@ function startGame() {
     game.load.onLoadStart.add(function() {
       var progressInterval = setInterval(function() {
         progressText.text = game.load.progress + "%";
+
+        if(game.load.progress === 100) {
+          clearInterval(progressInterval);
+        }
       }, 50);
     });
 
