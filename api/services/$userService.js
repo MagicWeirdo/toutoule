@@ -159,8 +159,8 @@ module.exports = {
 
         $orm2.rawQuery(function(db) {
           db.driver.execQuery(
-            "SELECT COUNT(*) AS count FROM gamble.user " +
-            "WHERE username  LIKE ?",
+            "SELECT COUNT(*) AS count FROM user " +
+            "WHERE username LIKE ?",
             [ year + "" + month + "" + day + "%" ],
             function(err, rows) {
               if(err) {
