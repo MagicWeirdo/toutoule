@@ -108,7 +108,7 @@ function startGame() {
       switch (data.state) {
         case "offline":
           // 修改状态
-          msStatusText.text = "游戏未上线";
+          msStatusText.text = "游戏系统关闭中";
 
           // 修改按钮
           msReadyButton.visible = true;
@@ -117,7 +117,7 @@ function startGame() {
           state = "offline";
           break;
         case "online":
-          msStatusText.text = "游戏上线";
+          msStatusText.text = "游戏系统开放中";
 
           state = "online"
           break;
@@ -422,8 +422,8 @@ function startGame() {
     statusGroup.add(statusBanner);
 
     // status text
-    msStatusText = game.add.text(statusBanner.width / 2, statusBanner.height / 2, "游戏未上线", {
-      fill: "#FFFFFF",
+    msStatusText = game.add.text(statusBanner.width / 2, statusBanner.height / 2, "游戏系统关闭中", {
+      fill: "#FCFCFC",
       fontSize: statusBanner.height * 0.25 + "px"
     });
     msStatusText.anchor.set(0.5);

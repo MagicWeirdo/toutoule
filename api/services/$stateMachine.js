@@ -281,6 +281,13 @@ module.exports = {
         });
 
         // TODO: 编写玩家断线的逻辑
+        socket.on("disconnect", function() {
+          $userService.logout({
+            username: socket.player.username
+          }, function() {
+            $logger.log("用户掉线");
+          });
+        });
       },
       /**
        * @public
