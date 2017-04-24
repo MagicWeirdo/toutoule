@@ -322,6 +322,12 @@ function startGame() {
           setTimeout(function() {
             // 告知服务器
             socket.emit("end");
+
+            // 再次获取积分
+            getUserInfo(function(data) {
+              gsUsernameText.text = data.username;
+              gsCoinText.text = data.coin;
+            });
           }, 1000);
         }
       }, 1000);
