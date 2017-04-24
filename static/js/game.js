@@ -2,6 +2,12 @@ function startGame() {
   // open WebSocket
   var socket = io();
 
+  // 告知服务器新玩家加入
+  socket.emit("newPlayer", {
+    token: Cookies.get("token"),
+    type: "normal"
+  });
+
   var game = new Phaser.Game(
     window.innerWidth,
     window.innerHeight,
@@ -137,12 +143,6 @@ function startGame() {
     // 显示主场景
     mainScene.visible = true;
     scene = "mainScene";
-
-    // 告知服务器新玩家加入
-    socket.emit("newPlayer", {
-      token: Cookies.get("token"),
-      type: "normal"
-    });
 
     // 获取和更新用户信息
     getUserInfo(function(data) {
