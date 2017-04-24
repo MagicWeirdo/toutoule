@@ -275,7 +275,7 @@ module.exports = {
           socket.join("hall");
 
           // 提示玩家被踢出
-          socket.emit("kick");
+          // socket.emit("kick");
 
           $logger.log("玩家结束");
         });
