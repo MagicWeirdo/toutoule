@@ -59,6 +59,52 @@ module.exports = {
   /**
    * @public
    * @param {$validator} $validator
+   * @param {$authService} $authService
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * verify token
+  **/
+  verify: function($validator, $authService, req, res) {
+    req.readAsJson(function(data) {
+      // register validations
+      $validator.required("token", "密匙不能为空");
+      $validator.notEmptyString("token", "密匙不能为空");
+
+      // do validation
+      $validator.validate(data, function(err) {
+        if(err) {
+          res.sendAsJson(400, {
+            isError: true,
+            errorMessage: err.msg,
+            result: ""
+          });
+        }else {
+          $authService.verify({
+            token: data.token,
+            type: "admin"
+          }, function(err, username) {
+            if(err) {
+              res.sendAsJson(200, {
+                isError: true,
+                errorMessage: err,
+                result: ""
+              });
+            }else {
+              res.sendAsJson(200, {
+                isError: false,
+                errorMessage: "",
+                result: ""
+              });
+            }
+          });
+        }
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
    * @param {$adminService} $adminService
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res

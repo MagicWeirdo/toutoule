@@ -27,7 +27,7 @@
 
       // 注册websocket
       socket.emit("newPlayer", {
-        token: "673b5260e731580c6dab6bc90c29b994e375e61e99093c189797823e0fb7c052",
+        token: "a9ddc29425209eef31f694c64be0fcc42d18d0e2e3f9dabcda274c5bf8281ad7",
         type: "admin"
       });
 
@@ -73,42 +73,58 @@
 
       // 单数
       $("#dan").click(function() {
+        socket.emit("giveResult", "d");
 
+        console.log("单数");
       });
 
       // 双数
       $("#shuang").click(function() {
+        socket.emit("giveResult", "s");
 
+        console.log("双数");
       });
 
       // 豹子 1
       $("#baozi1").click(function() {
+        socket.emit("giveResult", "b1");
 
+        console.log("豹子1");
       });
 
       // 豹子 2
       $("#baozi2").click(function() {
+        socket.emit("giveResult", "b2");
 
+        console.log("豹子2");
       });
 
       // 豹子 3
       $("#baozi3").click(function() {
+        socket.emit("giveResult", "b3");
 
+        console.log("豹子3");
       });
 
       // 豹子 4
       $("#baozi4").click(function() {
+        socket.emit("giveResult", "b4");
 
+        console.log("豹子4");
       });
 
       // 豹子 5
       $("#baozi5").click(function() {
+        socket.emit("giveResult", "b5");
 
+        console.log("豹子5");
       });
 
       // 豹子 6
       $("#baozi6").click(function() {
-        
+        socket.emit("giveResult", "b6");
+
+        console.log("豹子6");
       });
     });
   </script>

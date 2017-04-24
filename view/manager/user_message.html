@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>骰骰乐后台管理系统</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONTAWESOME STYLES-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+       <!--CUSTOM BASIC STYLES-->
+    <link href="assets/css/basic.css" rel="stylesheet" />
+    <!--CUSTOM MAIN STYLES-->
+    <link href="assets/css/custom.css" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">骰骰乐后台管理系统</a>
+            </div>
+        </nav>
+        <!-- /. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <div class="user-img-div">
+                            <img src="assets/img/user.png" class="img-thumbnail" />
+
+                            <div class="inner-text">
+                                Admin
+                          </div>
+                        </div>
+
+                    </li>
+
+                     <li>
+                        <a href="password.html"><i class="glyphicon glyphicon-lock"></i>修改密码</a>
+                    </li>
+                   
+                    <li>
+                        <a href="#"><i class="glyphicon glyphicon-cog "></i>系统控制<span class="fa arrow"></span></a>
+                         <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#"><i class="fa fa-toggle-on"></i>开启系统</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-toggle-off "></i>关闭系统</a>
+                            </li>
+                        </ul>
+                    </li>
+                     <li>
+                        <a href="#"><i class="glyphicon glyphicon-th-large "></i>模式设置 <span class="fa arrow"></span></a>
+                         <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-wrench"></i>自动模式</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-hand-right "></i>手动模式</a>
+                            </li>
+                        </ul>
+                    </li>
+                     <li>
+                        <a href="game_record.html"><i class="glyphicon glyphicon-list-alt "></i>查看游戏记录</a>
+                 
+                  </li>
+                      <li>
+                        <a href="index.html"><i class="fa fa-anchor "></i>设置游戏结果</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="glyphicon glyphicon-file"></i>公告管理<span class="fa arrow"></span></a>
+                         <ul class="nav nav-second-level">
+                            <li>
+                                <a href="bulletin_publish.html"><i class="glyphicon glyphicon-edit"></i>发布公告</a>
+                            </li>
+                            <li>
+                                <a href="bulletin_record.html"><i class="glyphicon glyphicon-th-list"></i>公告记录</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                     <li>
+                        <a href="score.html"><i class="glyphicon glyphicon-usd"></i>用户积分管理</a>
+                  </li>
+                    <li>
+                        <a href="create_user.html"><i class="fa fa-sign-in "></i>创建账户</a>
+                    </li>
+                    <li>
+                        <a href="user.html"><i class="glyphicon glyphicon-user "></i>账户管理</a>                    </li>
+                </ul>
+
+            </div>
+            
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-fonts">用户信息</h1>
+                  </div>
+                    <div class="col-md-12">
+                        <h1 class="page-head-line"></h1>
+                    </div>
+                </div>
+                <!--/.Row-->
+              <div class="row">
+                
+                <div class="col-md-12">
+                  <!--   Kitchen Sink -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">用户基本信息</div>
+                    <div class="panel-body">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                          <thead>
+                            <tr>
+                              <th>用户名</th>
+                              <th>剩余积分</th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>1704220001</td>
+                              <td>200</td>
+                              
+                            </tr>
+                           
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End  Kitchen Sink -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">用户游戏记录</div>
+                    <div class="panel-body">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                          <thead>
+                            <tr>
+                              <th>序号</th>
+                              <th>游戏编号</th>
+                              <th>游戏参与人数</th>
+                              <th>押注情况</th>
+                              <th>所押积分</th>
+                              <th>游戏结果</th>
+                              <th>游戏胜负</th>
+                              <th>获得积分</th>
+                              <th>剩余积分</th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>1704220001</td>
+                              <td>10</td>
+                              <td>单</td>
+                              <td>10</td>
+                              <td>双</td>
+                              <td>失败</td>
+                              <td>100</td>
+                              <td>200</td>
+                             
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>1704220002</td>
+                              <td>8</td>
+                              <td>双</td>
+                              <td>40</td>
+                              <td>双</td>
+                              <td>胜利</td>
+                              <td>30</td>
+                              <td>200</td>
+                             
+                            </tr>
+                            <tr>
+                              <td>3</td>
+                              <td>1704220003</td>
+                              <td>10</td>
+                              <td>单</td>
+                              <td>10</td>
+                              <td>双</td>
+                              <td>失败</td>
+                              <td>100</td>
+                              <td>200</td>
+                             
+                            </tr>
+                            <tr>
+                              <td>4</td>
+                              <td>1704220004</td>
+                              <td>8</td>
+                              <td>双</td>
+                              <td>40</td>
+                              <td>双</td>
+                              <td>胜利</td>
+                              <td>30</td>
+                              <td>200</td>
+                             
+                            </tr>
+                            <tr>
+                              <td>5</td>
+                              <td>1704220005</td>
+                              <td>10</td>
+                              <td>单</td>
+                              <td>10</td>
+                              <td>双</td>
+                              <td>失败</td>
+                              <td>100</td>
+                              <td>200</td>
+                             
+                            </tr>
+                            <tr>
+                              <td>6</td>
+                              <td>1704220006</td>
+                              <td>8</td>
+                              <td>双</td>
+                              <td>40</td>
+                              <td>双</td>
+                              <td>胜利</td>
+                              <td>30</td>
+                              <td>200</td>
+                             
+                            </tr>
+                            <tr>
+                              <td>7</td>
+                              <td>1704220007</td>
+                              <td>10</td>
+                              <td>单</td>
+                              <td>10</td>
+                              <td>双</td>
+                              <td>失败</td>
+                              <td>100</td>
+                              <td>200</td>
+                             
+                            </tr>
+                            <tr>
+                              <td>8</td>
+                              <td>1704220008</td>
+                              <td>8</td>
+                              <td>双</td>
+                              <td>40</td>
+                              <td>双</td>
+                              <td>胜利</td>
+                              <td>30</td>
+                              <td>200</td>
+                             
+                            </tr>
+                            <tr>
+                              <td>9</td>
+                              <td>1704220009</td>
+                              <td>10</td>
+                              <td>单</td>
+                              <td>10</td>
+                              <td>双</td>
+                              <td>失败</td>
+                              <td>100</td>
+                              <td>200</td>
+                             
+                            </tr>
+                            <tr>
+                              <td>10</td>
+                              <td>1704220010</td>
+                              <td>8</td>
+                              <td>双</td>
+                              <td>40</td>
+                              <td>双</td>
+                              <td>胜利</td>
+                              <td>30</td>
+                              <td>200</td>
+                             
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End  Kitchen Sink -->
+                </div>
+                
+                
+              </div>
+                <!--/.Row-->
+                
+              <!--/.ROW-->
+              <div class="row"></div>
+              <!--/.Row-->
+              <div class="row"></div>
+                <!--/.Row-->
+                  <ul class="pagination">
+                      <li><a href="#">&laquo;</a></li>
+                      <li><a href="#">1</a></li>
+                      <li><a href="#">2</a></li>
+                      <li><a href="#">3</a></li>
+                      <li><a href="#">4</a></li>
+                      <li><a href="#">5</a></li>
+                      <li><a href="#">6</a></li>
+                      <li><a href="#">7</a></li>
+                      <li><a href="#">8</a></li>
+                      <li><a href="#">9</a></li>
+                      <li><a href="#">10</a></li>
+                      <li><a href="#">&raquo;</a></li>
+                  </ul>           
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <!-- /. WRAPPER  -->
+
+    <div id="footer-sec">
+        &copy; 2017 骰骰乐后台管理系统
+    </div>
+    <!-- /. FOOTER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+    <script src="assets/js/jquery-1.10.2.js"></script>
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="assets/js/bootstrap.js"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+       <!-- CUSTOM SCRIPTS -->
+    <script src="assets/js/custom.js"></script>
+    
+
+
+</body>
+</html>

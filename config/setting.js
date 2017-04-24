@@ -16,13 +16,11 @@ module.exports = {
     "$authMiddleware"
   ],
   actions: [
-    // test
-    { method: "GET", url: "/test", action: "GameController.test" },
-
-    // business logic
+    // game side
     { method: "GET", url: "/", action: "GameController.game" },
     { method: "GET", url: "/manager", action: "AdminController.getPage" },
     { method: "POST", url: "/admin/login", action: "AdminController.login" },
+    { method: "POST", url: "/admin/verify", action: "AdminController.verify" },
     { method: "POST", url: "/admin/modifyPassword", action: "AdminController.modifyPassword" },
     { method: "GET", url: "/admin/bulletin/list", action: "AdminController.listBulletins" },
     { method: "POST", url: "/user/login", action: "UserController.login" },
@@ -33,7 +31,12 @@ module.exports = {
     { method: "GET", url: "/user/info", action: "UserController.getUserInfo" },
     { method: "POST", url: "/user/extra", action: "UserController.saveUserExtra" },
     { method: "POST", url: "/user/coin/topup", action: "UserController.topUpCoin" },
-    { method: "GET", url: "/user/coin/amount", action: "UserController.getUserCoinAmount" }
+    { method: "GET", url: "/user/coin/amount", action: "UserController.getUserCoinAmount" },
+
+    // management
+    { method: "GET", url: "/manager/login", action: "ManagerController.login" },
+    { method: "GET", url: "/manager/modifyPassword", action: "ManagerController.modifyPassword" },
+    { method: "GET", url: "/manager/main", action: "ManagerController.index" }
   ],
   models: [
     "Admin",
@@ -46,6 +49,7 @@ module.exports = {
     "$adminService",
     "$authService",
     "$bulletinService",
+    "$dateUtils",
     "$gameService",
     "$stateMachine",
     "$userService"

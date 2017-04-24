@@ -33,6 +33,8 @@ function startGame() {
   var gsDice2;
   var gsDice3;
   var gsInputText;
+  var gsYesButton;
+  var gsStakedButton;
 
   // 业务相关
   var scene;
@@ -155,6 +157,15 @@ function startGame() {
 
           state = "gamingCountDown";
           break;
+        case "onWait":
+          // 判断场景
+          if(scene === "mainScene") {
+            msStatusText.text = "等待结果";
+          }else {
+            gsBannerText.text = "等待结果";
+          }
+
+          break;
         case "calculateResult":
           // 判断场景
           if(scene === "mainScene") {
@@ -168,7 +179,7 @@ function startGame() {
         case "onResult":
           // 判断场景
           if(scene === "mainScene") {
-            msStatusText.text = "等待结果";
+            msStatusText.text = "等待中";
           }else {
             // 显示骰子
             gsDice1.visible = true;
@@ -240,13 +251,25 @@ function startGame() {
         gsDice3.currentAnim.stop(true);
       }
 
+      // 隐藏骰子
+      gsDice1.visible = false;
+      gsDice2.visible = false;
+      gsDice3.visible = false;
+
       gsInputText.text = "0";
+
+      // 修改按钮
+      gsYesButton.visible = true;
+      gsStakedButton.visible = false;
 
       // 显示主界面
       mainScene.visible = true;
 
       // 切换场景
       scene = "mainScene";
+
+      // 允许押注
+      allowStake = true;
 
       // 更新用户信息
       getUserInfo(function(data) {
@@ -879,7 +902,7 @@ function startGame() {
     inputGroup.add(addButton);
 
     // yes button
-    var yesButton = game.add.button(displayWidth * 0.35, totalHeight - displayWidth * 0.05, "yes", function() {
+    gsYesButton = game.add.button(displayWidth * 0.35, totalHeight - displayWidth * 0.05, "yes", function() {
       // 若允许押注
       if(allowStake) {
         // 告知服务器已押注
@@ -889,24 +912,25 @@ function startGame() {
         allowStake = false;
 
         // 隐藏与显示
-        yesButton.visible = false;
-        stakedButton.visible = true;
+        gsYesButton.visible = false;
+        gsStakedButton.visible = true;
       }
     });
-    yesButton.width = displayWidth * 0.3;
-    yesButton.height = yesButton.width / (200 / 61);
-    gameScene.add(yesButton);
+    gsYesButton.width = displayWidth * 0.3;
+    gsYesButton.height = gsYesButton.width / (200 / 61);
+    gameScene.add(gsYesButton);
 
     // staked button
-    var stakedButton = game.add.button(displayWidth * 0.35, totalHeight - displayWidth * 0.05, "staked");
-    stakedButton.width = displayWidth * 0.3;
-    stakedButton.height = stakedButton.width / (200 / 80);
-    stakedButton.visible = false;
-    gameScene.add(stakedButton);
+    gsStakedButton = game.add.button(displayWidth * 0.35, totalHeight - displayWidth * 0.05, "staked");
+    gsStakedButton.width = displayWidth * 0.3;
+    gsStakedButton.height = gsStakedButton.width / (200 / 80);
+    gsStakedButton.visible = false;
+    gameScene.add(gsStakedButton);
 
     // back button
     var backButton = game.add.button(displayWidth * 0.1, displayHeight * 0.9, "back", function() {
-
+      // 告知服务器玩家退出
+      socket.emit("quit");
     });
     backButton.width = displayWidth * 0.1;
     backButton.height = backButton.width / (79 / 81);

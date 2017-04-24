@@ -174,7 +174,7 @@ gulp.task("adminLoginRemote", function() {
     path: "/admin/login"
   }, {
     username: "admin",
-    password: "wamysys5054362"
+    password: "admin"
   }).then(function(response) {
     console.log(response);
   });

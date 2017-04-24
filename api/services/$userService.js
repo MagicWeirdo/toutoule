@@ -435,10 +435,44 @@ module.exports = {
        * @public
        * @param {Function} callback
        * @desc
-       * 
+       * reset all users' state
       **/
       resetAllUsersState: function(callback) {
+        $orm2.query(function(models) {
+          var User = models.User;
 
+          // find all users
+          User.all(function(err, users) {
+            if(err) {
+              throw err;
+            }
+
+            // 获取总数量
+            var totalNum = users.length;
+            var finishedNum = 0;
+
+            // 遍历
+            users.forEach(function(user) {
+              user.isOnline = false;
+              user.save(function(err) {
+                if(err) {
+                  throw err;
+                }
+
+                finishedNum++;
+              });
+            });
+
+            // 等待修改完成
+            var waitInterval = setInterval(function() {
+              if(finishedNum === totalNum) {
+                clearInterval(waitInterval);
+
+                callback();
+              }
+            }, 500);
+          });
+        });
       }
     };
   }

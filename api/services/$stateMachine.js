@@ -131,10 +131,60 @@ module.exports = {
 
         // 管理员手动开启游戏
         socket.on("startGame", function() {
-          // 只有当游戏为 online 状态且游戏模式为 manual 时才能开启游戏
-          if(self.getState() === "online" && self.getMode() === "manual") {
+          // 只有当游戏为 online 状态且游戏模式为 manual 且准备人数大于 0 时才能开启游戏
+          if(self.getState() === "online" && self.getMode() === "manual" && self.countReadiedPlayers() > 0) {
+            $logger.log("手动开启游戏");
+
             // 开始加载游戏
             self.startLoading();
+          }
+        });
+
+        // 管理员给定结果
+        socket.on("giveResult", function(data) {
+          $logger.log("管理员给定结果");
+
+          // 只有当游戏状态为 onWait 才能给定结果
+          if(self.getState() === "onWait") {
+            var result = null;
+
+            // TODO: 优化算法
+            // 如果为单
+            if(data === "d") {
+              // 循环直至生成单数
+              while(true) {
+                let temp = $gameService.random();
+                if(temp.type === "d") {
+                  result = temp;
+                  break;
+                }
+              }
+            }else if(data === "s") {
+              // 如果为双
+              while(true) {
+                let temp = $gameService.random();
+                if(temp.type === "s") {
+                  result = temp;
+                  break;
+                }
+              }
+            }else {
+              // 如果为豹子
+
+              // 获取数字
+              var num = Number.parseInt(data.substring(1));
+
+              // 生成结果
+              result = {
+                dice1: num,
+                dice2: num,
+                dice3: num,
+                type: data
+              };
+            }
+
+            // 开始计算结果
+            self.calculateResult(result);
           }
         });
       },
@@ -146,7 +196,7 @@ module.exports = {
        * hande player registry
       **/
       _handlePlayerRegistry: function(socket, callback) {
-        console.log("玩家注册长连接成功");
+        $logger.log("玩家注册长连接成功");
 
         var self = this;
 
@@ -202,6 +252,22 @@ module.exports = {
           $logger.log("玩家押注成功");
         });
 
+        // 玩家退出游戏
+        socket.on("quit", function() {
+          // 重置玩家状态
+          socket.player.isStaked = false;
+          socket.player.stake = null;
+
+          // 将玩家踢出游戏室，加入大厅
+          socket.leave("game");
+          socket.join("hall");
+
+          // 告知玩家被踢出
+          socket.emit("kick");
+
+          $logger.log("玩家退出游戏");
+        });
+
         // 玩家结束游戏
         socket.on("end", function() {
           // 将玩家踢出游戏室，并加入大厅
@@ -211,36 +277,10 @@ module.exports = {
           // 提示玩家被踢出
           socket.emit("kick");
 
-          // console.log("玩家结束");
           $logger.log("玩家结束");
         });
 
         // TODO: 编写玩家断线的逻辑
-
-        // // 玩家断线
-        // socket.on("disconnect", function() {
-        //   // 玩家已准备游戏 & 游戏状态为上线 | 游戏状态为开始倒计时
-        //   if(socket.player.isReady === true && (self.getState() === "online" || self.getState() === "preparingCountDown")) {
-        //     self.numOfReadyPlayers--;
-        //
-        //     console.log("玩家在游戏未开始前掉线");
-        //   }else if(socket.player.isReady === true && socket.player.isLoaded === false && self.getState() === "loading") {
-        //     // 玩家已准备游戏 & 玩家没有加载完成 & 游戏状态为加载
-        //     self.numOfReadyPlayers--;
-        //
-        //     console.log("玩家在加载完成之前掉线");
-        //   }else if(socket.player.isReady === true && socket.player.isLoaded === true && self.getState() === "gaming") {
-        //     // 玩家已准备游戏 & 玩家加载完成 & 游戏状态为游戏中
-        //     self.numOfGamingPlayers--;
-        //
-        //     console.log("玩家游戏中掉线");
-        //   }
-        //
-        //   // change state of player to offline
-        //   $userService.logout({ username: socket.player.username }, function() {
-        //     console.log("玩家掉线");
-        //   });
-        // });
       },
       /**
        * @public
@@ -325,7 +365,6 @@ module.exports = {
        * begin preparing count down [preparingCountDown]
       **/
       beginPreparingCountdown: function() {
-        // console.log("开始倒计时");
         $logger.log("开始倒计时");
 
         var self = this;
@@ -386,7 +425,6 @@ module.exports = {
           if(tick === 0) {
             clearInterval(preparingInterval);
 
-            // console.log("计时结束");
             $logger.log("开始倒计时结束");
 
             // start loading
@@ -400,7 +438,6 @@ module.exports = {
        * start loading [loading]
       **/
       startLoading: function() {
-        // console.log("开始加载");
         $logger.log("开始加载游戏");
 
         var self = this;
@@ -440,7 +477,6 @@ module.exports = {
        * start game [game]
       **/
       startGame: function() {
-        // console.log("开始游戏");
         $logger.log("游戏开始");
 
         var self = this;
@@ -459,7 +495,6 @@ module.exports = {
        * begin game count down [gameCountDown]
       **/
       beginGameCountDown: function() {
-        // console.log("开始游戏倒计时");
         $logger.log("开始游戏倒计时");
 
         var self = this;
@@ -471,7 +506,6 @@ module.exports = {
         var gamingInterval = setInterval(function() {
           tick--;
 
-          // console.log(tick);
           $logger.log("距离押注时间结束还有" + tick + "秒");
 
           // 向大厅和游戏中的玩家广播游戏倒计时
@@ -482,7 +516,6 @@ module.exports = {
           if(self.countInGamePlayers() === 0) {
             clearInterval(gamingInterval);
 
-            // console.log("进行游戏的玩家人数为0，返回");
             $logger.log("进行游戏的玩家人数为零，返回");
 
             self.turnOn();
@@ -495,12 +528,32 @@ module.exports = {
 
             $logger.log("游戏倒计时结束");
 
-            // 如果是自动模式则计算结果
-            if(self.getMode() === "auto") {
-              self.calculateResult(null);
-            }
+            // 等待结果
+            self.waitResult();
           }
         }, 1000);
+      },
+      /**
+       * @public
+       * @desc
+       * wait for result
+      **/
+      waitResult: function() {
+        $logger.log("等待游戏结果");
+
+        var self = this;
+
+        // 修改游戏状态
+        self.setState("onWait");
+
+        // 向大厅和游戏室的玩家发送广播
+        self.io.to("hall").emit("updateStatus", { state: "onWait" });
+        self.io.to("game").emit("updateStatus", { state: "onWait" });
+
+        // 如果游戏模式为自动则直接开始计算结果
+        if(self.getMode() === "auto") {
+          self.calculateResult(null);
+        }
       },
       /**
        * @public
@@ -509,7 +562,6 @@ module.exports = {
        * calculate result [result]
       **/
       calculateResult: function(result) {
-        // console.log("开始计算结果");
         $logger.log("开始计算结果");
 
         var self = this;
@@ -689,7 +741,6 @@ module.exports = {
        * send result to players in game room [onResult]
       **/
       sendResult: function(result) {
-        // console.log("发送结果");
         $logger.log("发送游戏结果");
 
         var self = this;
@@ -716,7 +767,6 @@ module.exports = {
        * wait till the animations of all players are finished [waitting]
       **/
       wait: function() {
-        // console.log("等待玩家结束");
         $logger.log("等待玩家结束");
 
         var self = this;

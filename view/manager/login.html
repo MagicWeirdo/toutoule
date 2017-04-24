@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>骰骰乐后台管理系统-管理员登录</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="/static/toutoule/assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONTAWESOME STYLES-->
+    <link href="/static/toutoule/assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+    <!-- jQuery -->
+    <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Cookies -->
+    <script src="/static/bower_components/js-cookie/src/js.cookie.js"></script>
+
+    <!-- 控制脚本 -->
+    <script>
+      $(document).ready(function() {
+        // 如果密匙存在，则验证密匙
+        if(Cookies.get("adminToken")) {
+          $.post(
+            "/admin/verify",
+            JSON.stringify({
+              token: Cookies.get("adminToken")
+            }),
+            function(data) {
+              if(data.isError === false) {
+                // 重定向至主界面
+                window.location.replace("/manager/main");
+              }
+            }
+          );
+        }else {
+          $("#btnLogin").click(function() {
+            $.post(
+              "/admin/login",
+              JSON.stringify({
+                username: $("#username").val(),
+                password: $("#password").val()
+              }),
+              function(data) {
+                if(data.isError) {
+                  alert(data.errorMessage);
+                }else {
+                  // 保存密匙
+                  Cookies.set("adminToken", data.result.token);
+
+                  // 重定向至主界面
+                  window.location.replace("/manager/main");
+                }
+              }
+            );
+          });
+        }
+      });
+    </script>
+
+</head>
+<body style="background-color: #E2E2E2;">
+    <div class="container">
+        <div class="row text-center " style="padding-top:100px;">
+            <div class="col-md-12">
+                <img src="/static/toutoule/assets/img/logo-invoice.png" />
+            </div>
+        </div>
+         <div class="row ">
+
+                <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+
+                            <div class="panel-body">
+                                <form role="form">
+                                    <hr />
+                                     <div class="form-group input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"  ></i></span>
+                                            <input id="username" type="text" class="form-control-login" placeholder="请输入用户名" required="用户名不能为空"/>
+                                        </div>
+                                                                              <div class="form-group input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"  ></i></span>
+                                            <input id="password" type="password" class="form-control-login"  placeholder="请输入登录密码" required="密码不能为空"/>
+                                        </div>
+
+                                     <a><button id="btnLogin" type="button" class="btn btn-block btn-info">登录</button></a>
+                                </form>
+                            </div>
+
+                        </div>
+
+
+        </div>
+    </div>
+
+</body>
+</html>

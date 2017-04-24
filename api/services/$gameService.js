@@ -1,7 +1,7 @@
 module.exports = {
   scope: "singleton",
   name: "$gameService",
-  factory: function($orm2, $date) {
+  factory: function($orm2, $date, $dateUtils) {
     return {
       /**
        * @public
@@ -47,6 +47,9 @@ module.exports = {
 
         $orm2.query(function(models) {
           var GameRound = models.GameRound;
+
+          // // 获取今日前缀
+          // var prefix = $dateUtils.getTodayPrefix();
 
           // save the round
           GameRound.create({
