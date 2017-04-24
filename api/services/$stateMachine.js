@@ -91,6 +91,8 @@ module.exports = {
 
         // 管理员上线游戏
         socket.on("turnOn", function() {
+          console.log("当前游戏状态: " + self.getState());
+
           // 只有当游戏处于下线状态时才能上线
           if(self.getState() === "offline") {
             self.turnOn();
@@ -204,7 +206,7 @@ module.exports = {
         socket.join("hall");
 
         // 只有当状态为 online/gamingCountDown 且 mode 为 manual 的情况下才有必要推送
-        if((self.getState() === "online" || self.getState() === "gamingCountDown") && self.getMode() === "manual") {
+        if(self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
           socket.emit("updateStatus", { state: self.getState() });
         }
 
@@ -258,8 +260,9 @@ module.exports = {
           socket.player.isStaked = false;
           socket.player.stake = null;
 
-          // 将玩家踢出游戏室，加入大厅
+          // 将玩家踢出游戏室或等待室，加入大厅
           socket.leave("game");
+          socket.leave("wait");
           socket.join("hall");
 
           // 告知玩家被踢出
@@ -270,9 +273,10 @@ module.exports = {
 
         // 玩家结束游戏
         socket.on("end", function() {
-          // 将玩家踢出游戏室，并加入大厅
+          // 将玩家踢出游戏室，并加入等待室
           socket.leave("game");
-          socket.join("hall");
+          // socket.join("hall");
+          socket.join("wait");
 
           // 提示玩家被踢出
           // socket.emit("kick");
