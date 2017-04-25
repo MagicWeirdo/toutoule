@@ -41,26 +41,34 @@ module.exports = {
                 if(user === null) {
                   callback("密码错误");
                 }else {
-                  // check user state
-                  if(user.isOnline === true) {
-                    callback("用户已经在线");
-                  }else {
-                    // change state to online
-                    user.isOnline = true;
-                    user.save(function(err) {
-                      if(err) {
-                        throw err;
-                      }
-
-                      // create a new token
-                      $authService.createToken({
-                        username: username,
-                        type: "normal"
-                      }, function(token) {
-                        callback(null, token);
-                      });
-                    });
-                  }
+                  // create a new token
+                  $authService.createToken({
+                    username: username,
+                    type: "normal"
+                  }, function(token) {
+                    callback(null, token);
+                  });
+                  
+                  // // check user state
+                  // if(user.isOnline === true) {
+                  //   callback("用户已经在线");
+                  // }else {
+                  //   // change state to online
+                  //   user.isOnline = true;
+                  //   user.save(function(err) {
+                  //     if(err) {
+                  //       throw err;
+                  //     }
+                  //
+                  //     // create a new token
+                  //     $authService.createToken({
+                  //       username: username,
+                  //       type: "normal"
+                  //     }, function(token) {
+                  //       callback(null, token);
+                  //     });
+                  //   });
+                  // }
                 }
               });
             }

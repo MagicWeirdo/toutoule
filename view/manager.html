@@ -5,6 +5,7 @@
   <title>管理员</title>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/static/bower_components/js-cookie/src/js.cookie.js"></script>
   <script>
     $(document).ready(function() {
       // 登录
@@ -17,6 +18,7 @@
           }),
           function(data) {
             console.log(data);
+            Cookies.set("testToken", data.result.token);
           },
           "json"
         );
@@ -27,7 +29,7 @@
 
       // 注册websocket
       socket.emit("newPlayer", {
-        token: "a9ddc29425209eef31f694c64be0fcc42d18d0e2e3f9dabcda274c5bf8281ad7",
+        token: Cookies.get("testToken"),
         type: "admin"
       });
 
@@ -63,7 +65,7 @@
           {
             method: "GET",
             headers: {
-              "Authorization": "a9ddc29425209eef31f694c64be0fcc42d18d0e2e3f9dabcda274c5bf8281ad7"
+              "Authorization": Cookies.get("testToken")
             }
           }
         ).done(function(data) {
