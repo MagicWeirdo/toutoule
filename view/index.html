@@ -204,7 +204,9 @@
 
       // 加载 js 文件
       loadJS("/static/js/phaser.min.js", function() {
-        loadJS("/static/js/game.js");
+        loadJS("/static/js/game.js", function() {
+          makeDialog("脚本加载完成")
+        });
       });
     });
 
