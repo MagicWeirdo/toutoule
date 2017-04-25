@@ -1,6 +1,4 @@
 function startGame() {
-  alert("被调用");
-
   // open WebSocket
   var socket = io();
 

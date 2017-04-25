@@ -186,6 +186,26 @@
   <script>
     $(document).ready(function() {
       makeLoginForm();
+
+      // 顺序加载 js
+      function loadJS(url, success) {
+        var domScript = document.createElement("script");
+        domScript.src = url;
+        success = success || function() {};
+        domScript.onload = domScript.onreadystatechange = function() {
+          if(!this.readyState || 'loaded' === this.readyState || 'complete' === this.readyState) {
+            success();
+            this.onload = this.onreadystatechange = null;
+            this.parentNode.removeChild(this);
+          }
+        }
+        document.getElementsByTagName('head')[0].appendChild(domScript);
+      }
+
+      // 加载 js 文件
+      loadJS("/static/js/phaser.min.js", function() {
+        loadJS("/static/js/game.js");
+      });
     });
 
     // 生成登录框
@@ -309,7 +329,5 @@
   </script>
 </head>
 <body>
-  <script src="/static/js/phaser.min.js"></script>
-  <script src="/static/js/game.js"></script>
 </body>
 </html>
