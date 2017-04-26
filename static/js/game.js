@@ -2,12 +2,6 @@ function startGame() {
   // open WebSocket
   var socket = io();
 
-  // 告知服务器新玩家加入
-  socket.emit("newPlayer", {
-    token: Cookies.get("token"),
-    type: "normal"
-  });
-
   var game = new Phaser.Game(
     window.innerWidth,
     window.innerHeight,
@@ -64,23 +58,23 @@ function startGame() {
   };
 
   function preload() {
-    // // 进度条文字
-    // var progressText = game.add.text(game.world.centerX, game.world.centerY, "0%", {
-    //   fill: "#FFFFFF",
-    //   fontSize: "36px"
-    // });
-    // progressText.anchor.set(0.5);
-    //
-    // // 监听进度
-    // game.load.onLoadStart.add(function() {
-    //   var progressInterval = setInterval(function() {
-    //     progressText.text = game.load.progress + "%";
-    //
-    //     if(game.load.progress === 100) {
-    //       clearInterval(progressInterval);
-    //     }
-    //   }, 50);
-    // });
+    // 进度条文字
+    var progressText = game.add.text(game.world.centerX, game.world.centerY, "0%", {
+      fill: "#FFFFFF",
+      fontSize: "36px"
+    });
+    progressText.anchor.set(0.5);
+
+    // 监听进度
+    game.load.onLoadStart.add(function() {
+      var progressInterval = setInterval(function() {
+        progressText.text = game.load.progress + "%";
+
+        if(game.load.progress === 100) {
+          clearInterval(progressInterval);
+        }
+      }, 50);
+    });
 
     game.load.image("background", "/static/assets/background.png");
     game.load.image("usernameBanner", "/static/assets/username.png");
@@ -148,6 +142,12 @@ function startGame() {
     getUserInfo(function(data) {
       msUsernameText.text = data.username;
       msCoinText.text = data.coin;
+    });
+
+    // 告知服务器新玩家加入
+    socket.emit("newPlayer", {
+      token: Cookies.get("token"),
+      type: "normal"
     });
 
     // 接收游戏状态改变
