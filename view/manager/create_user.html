@@ -110,7 +110,7 @@
                         <h1 class="page-head-fonts">创建账户</h1>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" class="btn-create btn-lg btn-primary">创建账户</button>
+                        <button id="btnGenerateUser" type="button" class="btn-create btn-lg btn-primary">创建账户</button>
                     </div>
                     <div class="col-md-12">
                         <h1 class="page-head-line"></h1>
@@ -134,7 +134,7 @@
                                         <th>管理</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="userTable">
                                     <tr>
                                         <td>1</td>
                                         <td>2017年4月17号</td>
@@ -330,6 +330,107 @@
                 $("#turnOnManualMode").click(function() {
                   socket.emit("turnOnManualMode");
                 });
+
+                // 生成新用户
+                $("#btnGenerateUser").click(function() {
+                  $.ajax(
+                    "/user/generate",
+                    {
+                      method: "GET",
+                      headers: {
+                        "Authorization": Cookies.get("adminToken")
+                      },
+                      dataType: "json",
+                      success: function(data) {
+                        if(data.isError) {
+                          alert(data.errorMessage);
+                        }else {
+                          renderUserTable();
+                        }
+                      }
+                    }
+                  );
+                });
+
+                // 标识用户页面
+                var currentPage = 1;
+
+                renderUserTable();
+
+                // 渲染用户列表
+                function renderUserTable() {
+                  // 清空表格
+                  $("#userTable").empty();
+
+                  // 获取用户数据
+                  $.ajax(
+                    "/user/list",
+                    {
+                      method: "GET",
+                      headers: {
+                        "Authorization": Cookies.get("adminToken")
+                      },
+                      data: {
+                        start: (currentPage - 1) * 15,
+                        end: (currentPage - 1) + 14
+                      },
+                      dataType: "json",
+                      success: function(data) {
+                        // 检查错误
+                        if(data.isError === false) {
+                          var users = data.result.list;
+
+                          var i = 1;
+
+                          // 遍历
+                          users.forEach(function(user) {
+                            // 添加行
+                            $("#userTable").append(
+                              "<tr>" +
+                              "<td>" + i + "</td>" +
+                              "<td>" + user.day + "</td>" +
+                              "<td>" + user.time + "</td>" +
+                              "<td>" + user.username + "</td>" +
+                              "<td><button id=\"btn" + i + "\" type=\"button\" class=\"btn btn-xs btn-danger\">注销</button></td>" +
+                              "</tr>"
+                            );
+
+                            // 绑定事件
+                            $("#btn" + i).click(function() {
+                              // 发送注销请求
+                              $.ajax(
+                                "/user/state/deactivate",
+                                {
+                                  method: "POST",
+                                  headers: {
+                                    "Authorization": Cookies.get("adminToken")
+                                  },
+                                  data: JSON.stringify({
+                                    username: user.username
+                                  }),
+                                  dataType: "json",
+                                  success: function(data) {
+                                    if(data.isError) {
+                                      alert(data.errorMessage);
+                                    }else {
+                                      // alert("注销用户成功");
+
+                                      // 重新渲染表格
+                                      renderUserTable();
+                                    }
+                                  }
+                                }
+                              );
+                            });
+
+                            // 自增
+                            i++;
+                          });
+                        }
+                      }
+                    }
+                  );
+                }
               }
             }
           );

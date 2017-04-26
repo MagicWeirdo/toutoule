@@ -33,6 +33,8 @@ module.exports = {
     { method: "POST", url: "/user/coin/topup", action: "UserController.topUpCoin" },
     { method: "POST", url: "/user/coin/bottomdown", action: "UserController.bottomDown" },
     { method: "GET", url: "/user/coin/amount", action: "UserController.getUserCoinAmount" },
+    { method: "POST", url: "/user/state/activate", action: "UserController.activateUser" },
+    { method: "POST", url: "/user/state/deactivate", action: "UserController.deactivateUser" },
     { method: "GET", url: "/game/history/user/list", action: "GameController.listUserGameRecords" },
     { method: "GET", url: "/game/history/list", action: "GameController.listGameRecords" },
     { method: "GET", url: "/coin/history/list", action: "GameController.listCoinRecords" },

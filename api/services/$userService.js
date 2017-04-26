@@ -234,20 +234,58 @@ module.exports = {
 
         $orm2.rawQuery(function(db) {
           db.driver.execQuery(
-            "SELECT id, username, date, extra " +
-            "FROM user " +
-            "ORDER BY id DESC LIMIT ? OFFSET ?",
-            [ (end - start + 1), start ],
-            function(err, users) {
+            "SELECT * FROM user " +
+            "WHERE state = ? " +
+            "GROUP BY id DESC LIMIT ? OFFSET ?",
+            [ "active", (end - start +1), start ],
+            function(err, rows) {
               if(err) {
                 throw err;
               }
+
+              // 用户信息列表
+              var users = [];
+
+              // 遍历
+              rows.forEach(function(row) {
+                // 获取原生数据
+                var username = row.username;
+                var date = $date.millisecondsToDate(row.date);
+
+                // 转换日期
+                var day = date.getYear() + "年" + date.getMonth() + "月" + date.getDay() + "日";
+                var time = date.getHour() + ":" + date.getMinute() + ":" + date.getSecond();
+
+                // 存储信息
+                users.push({
+                  day: day,
+                  time: time,
+                  username: username
+                });
+              });
 
               // send info back
               callback(users);
             }
           );
         });
+
+        // $orm2.rawQuery(function(db) {
+        //   db.driver.execQuery(
+        //     "SELECT id, username, date, extra " +
+        //     "FROM user " +
+        //     "ORDER BY id DESC LIMIT ? OFFSET ?",
+        //     [ (end - start + 1), start ],
+        //     function(err, users) {
+        //       if(err) {
+        //         throw err;
+        //       }
+        //
+        //       // send info back
+        //       callback(users);
+        //     }
+        //   );
+        // });
       },
       /**
        * @public
@@ -503,6 +541,82 @@ module.exports = {
                 callback();
               }
             }, 500);
+          });
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * ativate user
+      **/
+      activateUser: function(option, callback) {
+        var username = option.username;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // find the user
+          User.one({
+            username: username
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // check if the user exists
+            if(user === null) {
+              callback("用户不存在");
+            }else {
+              // 修改用户状态 & 保存
+              user.state = "active";
+              user.save(function(err) {
+                if(err) {
+                  throw err;
+                }
+
+                callback();
+              });
+            }
+          });
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Funtion} callback
+       * @desc
+       * deativate user
+      **/
+      deactivateUser: function(option, callback) {
+        var username = option.username;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // find the user
+          User.one({
+            username: username
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // check if the user existss
+            if(user === null) {
+              callback("用户不存在");
+            }else {
+              // 修改用户状态 & 保存
+              user.state = "inactive";
+              user.save(function(err) {
+                if(err) {
+                  throw err;
+                }
+
+                callback();
+              });
+            }
           });
         });
       }

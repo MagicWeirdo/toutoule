@@ -11,7 +11,8 @@ module.exports = {
       date: { type: "integer", size: 8, required: true },
       token: { type: "text", size: 64, unique: true },
       extra: { type: "text", size: 150 },
-      coin: { type: "integer", size: 8, defaultValue: 0 }
+      coin: { type: "integer", size: 8, defaultValue: 0 },
+      state: { type: "enum", values: [ "active", "inactive" ], defaultValue: "active" }
     }, {
       validations: {
         username: orm.enforce.required("用户名不能为空"),
@@ -25,7 +26,8 @@ module.exports = {
         token: orm.enforce.ranges.length(64, 64, "密匙长度必须为64位"),
         token: orm.enforce.unique("密匙必须唯一"),
         extra: orm.enforce.ranges.length(undefined, 150, "备注长度不能超过150字"),
-        coin: orm.enforce.ranges.number(0, undefined, "金额不能为负值")
+        coin: orm.enforce.ranges.number(0, undefined, "金额不能为负值"),
+        state: orm.enforce.lists.inside([ "active", "inactive" ], "非法状态类型")
       }
     });
   },
