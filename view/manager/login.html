@@ -35,28 +35,29 @@
               }
             }
           );
-        }else {
-          $("#btnLogin").click(function() {
-            $.post(
-              "/admin/login",
-              JSON.stringify({
-                username: $("#username").val(),
-                password: $("#password").val()
-              }),
-              function(data) {
-                if(data.isError) {
-                  alert(data.errorMessage);
-                }else {
-                  // 保存密匙
-                  Cookies.set("adminToken", data.result.token);
-
-                  // 重定向至主界面
-                  window.location.replace("/manager/main");
-                }
-              }
-            );
-          });
         }
+
+        // 监听登录按钮点击事件
+        $("#btnLogin").click(function() {
+          $.post(
+            "/admin/login",
+            JSON.stringify({
+              username: $("#username").val(),
+              password: $("#password").val()
+            }),
+            function(data) {
+              if(data.isError) {
+                alert(data.errorMessage);
+              }else {
+                // 保存密匙
+                Cookies.set("adminToken", data.result.token);
+
+                // 重定向至主界面
+                window.location.replace("/manager/main");
+              }
+            }
+          );
+        });
       });
     </script>
 

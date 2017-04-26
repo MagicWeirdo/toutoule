@@ -9,10 +9,12 @@ module.exports = {
       stake: { type: "enum", values: [ "b1", "b2", "b3", "b4", "b5", "b6", "d", "s", "none" ], required: true },
       reward: { type: "integer", required: true },
     }, {
-      stake: orm.enforce.required("押注不能为空"),
-      stake: orm.enforce.notEmptyString("押注不能为空"),
-      stake: orm.enforce.lists.inside([ "b1", "b2", "b3", "b4", "b5", "b6", "d", "s", "none" ], "非法押注类型"),
-      reward: orm.enforce.required("奖惩不能为空")
+      validations: {
+        stake: orm.enforce.required("押注不能为空"),
+        stake: orm.enforce.notEmptyString("押注不能为空"),
+        stake: orm.enforce.lists.inside([ "b1", "b2", "b3", "b4", "b5", "b6", "d", "s", "none" ], "非法押注类型"),
+        reward: orm.enforce.required("奖惩不能为空")
+      }
     });
   },
   /**

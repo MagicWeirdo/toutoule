@@ -45,17 +45,17 @@
                     </li>
 
                      <li>
-                        <a href="password.html"><i class="glyphicon glyphicon-lock"></i>修改密码</a>
+                        <a href="/manager/modifyPassword"><i class="glyphicon glyphicon-lock"></i>修改密码</a>
                     </li>
 
                     <li>
                         <a href="#"><i class="glyphicon glyphicon-cog "></i>系统控制<span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
                             <li>
-                                <a href="#"><i class="fa fa-toggle-on"></i>开启系统</a>
+                                <a id="turnOn" href="#"><i class="fa fa-toggle-on"></i>开启系统</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-toggle-off "></i>关闭系统</a>
+                                <a id="turnOff" href="#"><i class="fa fa-toggle-off "></i>关闭系统</a>
                             </li>
                         </ul>
                     </li>
@@ -63,40 +63,40 @@
                         <a href="#"><i class="glyphicon glyphicon-th-large "></i>模式设置 <span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-wrench"></i>自动模式</a>
+                                <a id="turnOnAutoMode" href="#"><i class="glyphicon glyphicon-wrench"></i>自动模式</a>
                             </li>
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-hand-right "></i>手动模式</a>
+                                <a id="turnOnManualMode" href="#"><i class="glyphicon glyphicon-hand-right "></i>手动模式</a>
                             </li>
                         </ul>
                     </li>
                      <li>
-                        <a href="game_record.html"><i class="glyphicon glyphicon-list-alt "></i>查看游戏记录</a>
+                        <a href="/manager/history"><i class="glyphicon glyphicon-list-alt "></i>查看游戏记录</a>
 
                   </li>
                       <li>
-                        <a href="index.html"><i class="fa fa-anchor "></i>设置游戏结果</a>
+                        <a href="/manager/main"><i class="fa fa-anchor "></i>设置游戏结果</a>
                     </li>
                     <li>
                         <a href="#"><i class="glyphicon glyphicon-file"></i>公告管理<span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
                             <li>
-                                <a href="bulletin_publish.html"><i class="glyphicon glyphicon-edit"></i>发布公告</a>
+                                <a href="/manager/bulletin/publish"><i class="glyphicon glyphicon-edit"></i>发布公告</a>
                             </li>
                             <li>
-                                <a href="bulletin_record.html"><i class="glyphicon glyphicon-th-list"></i>公告记录</a>
+                                <a href="/manager/bulletin/record"><i class="glyphicon glyphicon-th-list"></i>公告记录</a>
                             </li>
                         </ul>
                     </li>
 
                      <li>
-                        <a href="score.html"><i class="glyphicon glyphicon-usd"></i>用户积分管理</a>
+                        <a href="/manager/score"><i class="glyphicon glyphicon-usd"></i>用户积分管理</a>
                   </li>
                     <li>
-                        <a href="create_user.html"><i class="fa fa-sign-in "></i>创建账户</a>
+                        <a href="/manager/user/create"><i class="fa fa-sign-in "></i>创建账户</a>
                     </li>
                     <li>
-                        <a href="user.html"><i class="glyphicon glyphicon-user "></i>账户管理</a>                    </li>
+                        <a href="/manager/user/list"><i class="glyphicon glyphicon-user "></i>账户管理</a>                    </li>
                 </ul>
 
             </div>
@@ -121,7 +121,7 @@
 
                 <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">当前系统状态：系统开放中，当前为自动模式</div></div>
+                    <div id="statusText" class="panel-heading">当前系统状态：系统下线中，当前为手动模式</div></div>
                   <!--   Kitchen Sink -->
                   <div class="panel panel-default">
                     <div class="panel-heading">当前游戏押注结果</div>
@@ -145,27 +145,27 @@
                           <tbody>
                             <tr>
                               <td>玩家数</td>
-                              <td>2</td>
-                              <td>3</td>
-                              <td>6</td>
-                              <td>4</td>
-                              <td>2</td>
-                              <td>3</td>
-                              <td>1</td>
-                              <td>3</td>
-                              <td>24</td>
+                              <td id="danPlayerNum">0</td>
+                              <td id="shuangPlayerNum">0</td>
+                              <td id="baozi1PlayerNum">0</td>
+                              <td id="baozi2PlayerNum">0</td>
+                              <td id="baozi3PlayerNum">0</td>
+                              <td id="baozi4PlayerNum">0</td>
+                              <td id="baozi5PlayerNum">0</td>
+                              <td id="baozi6PlayerNum">0</td>
+                              <td id="totalPlayerNum">0</td>
                             </tr>
                             <tr>
                               <td>押注总积分</td>
-                              <td>20</td>
-                              <td>30</td>
-                              <td>30</td>
-                              <td>40</td>
-                              <td>30</td>
-                              <td>60</td>
-                              <td>30</td>
-                              <td>20</td>
-                              <td>260</td>
+                              <td id="danCoin">0</td>
+                              <td id="shuangCoin">0</td>
+                              <td id="baozi1Coin">0</td>
+                              <td id="baozi2Coin">0</td>
+                              <td id="baozi3Coin">0</td>
+                              <td id="baozi4Coin">0</td>
+                              <td id="baozi5Coin">0</td>
+                              <td id="baozi6Coin">0</td>
+                              <td id="totalCoin">0</td>
                             </tr>
                           </tbody>
                         </table>
@@ -182,31 +182,31 @@
               <!--/.ROW-->
               <div class="row">
                 <div class="col-md-1">
-                  <button type="button" class="btn-index btn-sm btn-primary">单数</button>
+                  <button id="btnDan" type="button" class="btn-index btn-sm btn-primary">单数</button>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" class="btn-index btn-sm btn-primary">双数</button>
+                  <button id="btnShuang" type="button" class="btn-index btn-sm btn-primary">双数</button>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" class="btn-index btn-sm btn-primary">豹子1</button>
+                  <button id="btnBaozi1" type="button" class="btn-index btn-sm btn-primary">豹子1</button>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" class="btn-index btn-sm btn-primary">豹子2</button>
+                  <button id="btnBaozi2" type="button" class="btn-index btn-sm btn-primary">豹子2</button>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" class="btn-index btn-sm btn-primary">豹子3</button>
+                  <button id="btnBaozi3" type="button" class="btn-index btn-sm btn-primary">豹子3</button>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" class="btn-index btn-sm btn-primary">豹子4</button>
+                  <button id="btnBaozi4" type="button" class="btn-index btn-sm btn-primary">豹子4</button>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" class="btn-index btn-sm btn-primary">豹子5</button>
+                  <button id="btnBaozi5" type="button" class="btn-index btn-sm btn-primary">豹子5</button>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" class="btn-index btn-sm btn-primary">豹子6</button>
+                  <button id="btnBaozi6" type="button" class="btn-index btn-sm btn-primary">豹子6</button>
                 </div>
                 <div class="col-md-2">
-                  <button type="button" class="btn-index btn-sm btn-danger">确定</button>
+                  <button id="btnYes" type="button" class="btn-index btn-sm btn-danger">确定</button>
                 </div>
               </div>
               <!--/.Row-->
@@ -215,7 +215,7 @@
                 <div class="col-md-12">
                   <!--   Kitchen Sink -->
                   <div class="panel panel-default">
-                    <div class="panel-heading">当前游戏状态：游戏进行中/距离下一局游戏开始还有30秒</div>
+                    <div id="statusBanner" class="panel-heading">当前游戏状态：游戏进行中/距离下一局游戏开始还有30秒</div>
                     <div class="panel-body">
                       <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover">
@@ -228,111 +228,7 @@
                               <th>所押积分</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>1704220001</td>
-                              <td>已押注</td>
-                              <td>单</td>
-                              <td>20</td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>1704220002</td>
-                              <td>未押注</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>1704220003</td>
-                              <td>未押注</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td>4</td>
-                              <td>1704220004</td>
-                              <td>已押注</td>
-                              <td>双</td>
-                              <td>30</td>
-                            </tr>
-                            <tr>
-                              <td>5</td>
-                              <td>1704220005</td>
-                              <td>已押注</td>
-                              <td>豹子1</td>
-                              <td>20</td>
-                            </tr>
-                            <tr>
-                              <td>6</td>
-                              <td>1704220006</td>
-                              <td>已押注</td>
-                              <td>豹子2</td>
-                              <td>10</td>
-                            </tr>
-                            <tr>
-                              <td>7</td>
-                              <td>1704220007</td>
-                              <td>未押注</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td>8</td>
-                              <td>1704220008</td>
-                              <td>已押注</td>
-                              <td>豹子3</td>
-                              <td>50</td>
-                            </tr>
-                            <tr>
-                              <td>9</td>
-                              <td>1704220009</td>
-                              <td>未押注</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td>10</td>
-                              <td>1704220010</td>
-                              <td>已押注</td>
-                              <td>豹子4</td>
-                              <td>60</td>
-                            </tr><tr>
-                              <td>11</td>
-                              <td>1704220011</td>
-                              <td>未押注</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td>12</td>
-                              <td>1704220012</td>
-                              <td>已押注</td>
-                              <td>豹子5</td>
-                              <td>20</td>
-                            </tr>
-                            <tr>
-                              <td>13</td>
-                              <td>1704220013</td>
-                              <td>已押注</td>
-                              <td>豹子6</td>
-                              <td>20</td>
-                            </tr>
-                            <tr>
-                              <td>14</td>
-                              <td>1704220014</td>
-                              <td>未押注</td>
-                              <td>&nbsp;</td>
-                              <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td>15</td>
-                              <td>1704220015</td>
-                              <td>已押注</td>
-                              <td>豹子5</td>
-                              <td>20</td>
-                            </tr>
+                          <tbody id="playerTable">
                           </tbody>
                         </table>
                       </div>
@@ -344,19 +240,7 @@
 
               </div>
                 <!--/.Row-->
-                  <ul class="pagination">
-                      <li><a href="#">&laquo;</a></li>
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#">6</a></li>
-                      <li><a href="#">7</a></li>
-                      <li><a href="#">8</a></li>
-                      <li><a href="#">9</a></li>
-                      <li><a href="#">10</a></li>
-                      <li><a href="#">&raquo;</a></li>
+                  <ul id="pageBtnGroup" class="pagination">
                   </ul>
             </div>
             <!-- /. PAGE INNER  -->
@@ -368,6 +252,9 @@
     <div id="footer-sec">
         &copy; 2017 骰骰乐后台管理系统
     </div>
+
+    <!-- <script src="/static/bower_components/jquery/dist/jquery.min.js"></script> -->
+
     <!-- /. FOOTER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->
@@ -389,7 +276,429 @@
     <!-- <script src="/static/toutoule/js/main.js"></script> -->
     <script>
       $(document).ready(function() {
-        
+        // 若密匙存在，则验证
+        if(Cookies.get("adminToken")) {
+          $.post(
+            "/admin/verify",
+            JSON.stringify({
+              token: Cookies.get("adminToken")
+            }),
+            function(data) {
+              // 如果验证不通过，则跳转至登录界面
+              if(data.isError) {
+                window.location.replace("/manager/login");
+              }else {
+                // 建立 WebSocket 连接
+                var socket = io();
+
+                // 游戏状态 & 游戏模式
+                var state = "offline";
+                var mode = "manual";
+
+                // 告知服务器管理员加入
+                socket.emit("newPlayer", {
+                  token: Cookies.get("adminToken"),
+                  type: "admin"
+                });
+
+                // 点击可开始游戏
+                $("#btnStartGame").click(function() {
+                  socket.emit("startGame");
+                });
+
+                // 监听状态改变
+                socket.on("updateStatus", function(data) {
+                  switch (data.state) {
+                    case "offline":
+                      // 修改游戏状态 & 并更新
+                      state = "offline";
+
+                      // 更新状态栏
+                      $("#statusText").html("当前游戏状态：系统下线中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+
+                      // 更新状态吧
+                      $("#statusBanner").html("当前游戏状态：游戏未上线");
+
+                      break;
+                    case "online":
+                      // 修改游戏状态 & 并更新
+                      state = "online";
+
+                      // 重置统计栏
+                      resetStatics();
+
+                      // 重置玩家列表
+                      resetPlayerList()
+
+                      // 更新状态栏
+                      $("#statusText").html("当前游戏状态：系统开放中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+
+                      // 更新状态吧
+                      $("#statusBanner").html("当前游戏状态：游戏上线");
+
+                      break;
+                    case "preparingCountDown":
+                      // 修改游戏状态 & 并更新
+                      state = "preparingCountDown";
+
+                      // 更新状态栏
+                      $("#statusText").html("当前游戏状态：系统开放中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+
+                      // 更新状态吧
+                      $("#statusBanner").html("当前游戏状态：倒计时/距离游戏开始还有" + data.tick + "秒");
+
+                      break;
+                    case "loading":
+                      // 修改游戏状态 & 并更新
+                      state = "loading";
+
+                      // 更新状态栏
+                      $("#statusText").html("当前游戏状态：系统开放中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+
+                      // 更新状态吧
+                      $("#statusBanner").html("当前游戏状态：游戏加载中");
+
+                      break;
+                    case "gaming":
+                      // 修改游戏状态 & 并更新
+                      state = "gaming";
+
+                      // 更新状态栏
+                      $("#statusText").html("当前游戏状态：系统开放中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+
+                      // 更新状态吧
+                      $("#statusBanner").html("当前游戏状态：游戏进行中");
+
+                      break;
+                    case "gamingCountDown":
+                      // 修改游戏状态 & 并更新
+                      state = "gamingCountDown";
+
+                      // 更新状态栏
+                      $("#statusText").html("当前游戏状态：系统开放中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+
+                      // 更新状态吧
+                      $("#statusBanner").html("当前游戏状态：倒计时/距离押注时间结束还有" + data.tick + "秒");
+
+                      break;
+                    case "onWait":
+                      // 修改游戏状态 & 并更新
+                      state = "onWait";
+
+                      // 更新状态栏
+                      $("#statusText").html("当前游戏状态：系统开放中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+
+                      // 更新状态吧
+                      $("#statusBanner").html("当前游戏状态：等待游戏结果");
+
+                      break;
+                    case "calculateResult":
+                      // 修改游戏状态 & 并更新
+                      state = "calculateResult";
+
+                      // 更新状态栏
+                      $("#statusText").html("当前游戏状态：系统开放中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+
+                      // 更新状态吧
+                      $("#statusBanner").html("当前游戏状态：正在计算游戏结果");
+
+                      break;
+                    case "onResult":
+                      // 修改游戏状态 & 并更新
+                      state = "onResult";
+
+                      // 更新状态栏
+                      $("#statusText").html("当前游戏状态：系统开放中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+
+                      // 更新状态吧
+                      $("#statusBanner").html("当前游戏状态：正在计算游戏结果");
+
+                      break;
+                    case "watting":
+                      // 修改游戏状态 & 并更新
+                      state = "watting";
+
+                      // 更新状态栏
+                      $("#statusText").html("当前游戏状态：系统开放中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+
+                      // 更新状态吧
+                      $("#statusBanner").html("当前游戏状态：等待用户结束");
+
+                      break;
+                  }
+                });
+
+                // 开启自动模式按钮
+                $("#turnOnAutoMode").click(function() {
+                  socket.emit("turnOnAutoMode");
+                });
+
+                // 开启手动模式按钮
+                $("#turnOnManualMode").click(function() {
+                  socket.emit("turnOnManualMode");
+                });
+
+                // 监听游戏状态的改变
+                socket.on("updateMode", function(data) {
+                  // 修改游戏模式
+                  mode = data.mode;
+
+                  // 判断游戏状态
+                  if(state === "offline") {
+                    $("#statusText").html("当前游戏状态：系统下线中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+                  }else {
+                    $("#statusText").html("当前游戏状态：系统开放中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+                  }
+                });
+
+                // 开启游戏
+                $("#turnOn").click(function() {
+                  socket.emit("turnOn");
+                });
+
+                // 关闭游戏
+                $("#turnOff").click(function() {
+                  socket.emit("turnOff");
+                });
+
+                // 监听玩家押注统计
+                socket.on("stakeStatics", function(data) {
+                  // 显示玩家数
+                  $("#danPlayerNum").html(data.playerNum.danPlayerNum);
+                  $("#shuangPlayerNum").html(data.playerNum.shuangPlayerNum);
+                  $("#baozi1PlayerNum").html(data.playerNum.baozi1PlayerNum);
+                  $("#baozi2PlayerNum").html(data.playerNum.baozi2PlayerNum);
+                  $("#baozi3PlayerNum").html(data.playerNum.baozi3PlayerNum);
+                  $("#baozi4PlayerNum").html(data.playerNum.baozi4PlayerNum);
+                  $("#baozi5PlayerNum").html(data.playerNum.baozi5PlayerNum);
+                  $("#baozi6PlayerNum").html(data.playerNum.baozi6PlayerNum);
+                  $("#totalPlayerNum").html(data.playerNum.totalPlayerNum);
+
+                  // 显示押注数
+                  $("#danCoin").html(data.coinNum.danCoin);
+                  $("#shuangCoin").html(data.coinNum.shuangCoin);
+                  $("#baozi1Coin").html(data.coinNum.baozi1Coin);
+                  $("#baozi2Coin").html(data.coinNum.baozi2Coin);
+                  $("#baozi3Coin").html(data.coinNum.baozi3Coin);
+                  $("#baozi4Coin").html(data.coinNum.baozi4Coin);
+                  $("#baozi5Coin").html(data.coinNum.baozi5Coin);
+                  $("#baozi6Coin").html(data.coinNum.baozi6Coin);
+                  $("#totalCoin").html(data.coinNum.totalCoin);
+
+                  console.log("获得玩家押注统计");
+                });
+
+                // 重置统计栏
+                function resetStatics() {
+                  // 重置玩家数
+                  $("#danPlayerNum").html(0);
+                  $("#shuangPlayerNum").html(0);
+                  $("#baozi1PlayerNum").html(0);
+                  $("#baozi2PlayerNum").html(0);
+                  $("#baozi3PlayerNum").html(0);
+                  $("#baozi4PlayerNum").html(0);
+                  $("#baozi5PlayerNum").html(0);
+                  $("#baozi6PlayerNum").html(0);
+                  $("#totalPlayerNum").html(0);
+
+                  // 重置押注数
+                  $("#danCoin").html(0);
+                  $("#shuangCoin").html(0);
+                  $("#baozi1Coin").html(0);
+                  $("#baozi2Coin").html(0);
+                  $("#baozi3Coin").html(0);
+                  $("#baozi4Coin").html(0);
+                  $("#baozi5Coin").html(0);
+                  $("#baozi6Coin").html(0);
+                  $("#totalCoin").html(0);
+                }
+
+                // 管理员控制游戏结果
+                var result = "";
+
+                // 结果为单
+                $("#btnDan").click(function() {
+                  result = "d";
+                });
+
+                // 结果为双
+                $("#btnShuang").click(function() {
+                  result = "s";
+                });
+
+                // 结果为豹子 1
+                $("#btnBaozi1").click(function() {
+                  result = "b1";
+                });
+
+                // 结果为豹子 2
+                $("#btnBaozi2").click(function() {
+                  result = "b2";
+                });
+
+                // 结果为豹子 3
+                $("#btnBaozi3").click(function() {
+                  result = "b3";
+                });
+
+                // 结果为豹子 4
+                $("#btnBaozi4").click(function() {
+                  result = "b4";
+                });
+
+                // 结果为豹子 5
+                $("#btnBaozi5").click(function() {
+                  result = "b5";
+                });
+
+                // 结果为豹子 6
+                $("#btnBaozi6").click(function() {
+                  result = "b6"
+                });
+
+                // 结果为豹子 7
+                $("#btnYes").click(function() {
+                  if(result !== "") {
+                    // 告知服务器游戏结果
+                    socket.emit("giveResult", result);
+
+                    // 重置 result
+                    result = "";
+                  }
+                });
+
+                // 重置玩家列表
+                function resetPlayerList() {
+                  // 清空表格
+                  $("#playerTable").empty();
+
+                  // 清空 page button group
+                  $("#pageBtnGroup").empty();
+                }
+
+                // **** 监听服务器发来的玩家列表 ****
+                socket.on("playerList", function(data) {
+                  // 转换用户数据函数
+                  function transfer(info) {
+                    var player = {
+                      username: info.username,
+                      isStaked: info.isStaked === true ? "已押注" : "未押注",
+                      stakeCoin: info.stakeCoin
+                    };
+
+                    // 转换押注类型
+                    switch (info.stakeType) {
+                      case "d":
+                        player.stakeType = "单";
+                        break;
+                      case "s":
+                        player.stakeType = "双";
+                        break;
+                      case "b1":
+                        player.stakeType = "豹子1";
+                        break;
+                      case "b2":
+                        player.stakeType = "豹子2";
+                        break;
+                      case "b3":
+                        player.stakeType = "豹子3";
+                        break;
+                      case "b4":
+                        player.stakeType = "豹子4";
+                        break;
+                      case "b5":
+                        player.stakeType = "豹子5";
+                        break;
+                      case "b6":
+                        player.stakeType = "豹子6";
+                        break;
+                      default:
+                        player.stakeType = "无";
+                    }
+
+                    return player;
+                  }
+
+                  // 渲染页面
+                  function renderPage(start, end) {
+                    // 清空表格
+                    $("#playerTable").empty();
+
+                    for(let i = start;i < end;i++) {
+                      var info = transfer(data[i]);
+
+                      $("#playerTable").append(
+                        "<tr>" +
+                        "<td>" + (i + 1 - start) + "</td>" +
+                        "<td>" + info.username + "</td>" +
+                        "<td>" + info.isStaked + "</td>" +
+                        "<td>" + info.stakeType + "</td>" +
+                        "<td>" + info.stakeCoin + "</td>" +
+                        "</tr>"
+                      );
+                    }
+                  }
+
+                  // 判断数据长度，并渲染第一页数据
+                  if(data.length < 15) {
+                    renderPage(0, data.length);
+                  }else {
+                    renderPage(0, 14);
+                  }
+
+                  // BUG: 按钮不显示
+                  // 清空 page button group
+                  $("#pageBtnGroup").empty();
+
+                  // 计算页数
+                  var pageNum = Math.ceil(data.length / 15);
+
+                  // 添加前一页按钮
+                  $("#pageBtnGroup").append(
+                    "<li><a id=\"previousBtn\" href=\"#\">&laquo;</a></li>"
+                  );
+
+                  // 添加若干页按钮
+                  for(let i = 0;i < pageNum;i++) {
+                    $("#pageBtnGroup").append(
+                      "<li><a href=\"#\">" + i + 1 + "</a></li>"
+                    );
+                  }
+
+                  // 添加后一页按钮
+                  $("#pageBtnGroup").append(
+                    "<li><a id=\"nextBtn\" href=\"#\">&raquo;</a></li>"
+                  );
+
+                  // 记录当前页面
+                  var currentPage = 1;
+
+                  // 绑定事件
+                  $("#previousBtn").click(function() {
+                    if(currentPage > 1) {
+                      currentPage--;
+
+                      // 渲染该页
+                      renderPage((currentPage - 1) * 15, (currentPage - 1) * 15 + 14);
+                    }
+                  });
+
+                  $("#nextBtn").click(function() {
+                    if(currentPage < pageNum - 1) {
+                      currentPage++;
+
+                      // 渲染该页
+                      renderPage((currentPage - 1) * 15, (currentPage - 1) * 15 + 14);
+                    }
+                  });
+                });
+              }
+            }
+          );
+        }else {
+          // 如果不存在，则重定向至登录界面
+          window.location.replace("/manager/login");
+        }
       });
     </script>
 

@@ -15,6 +15,50 @@ module.exports = {
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
    * @desc
+   * list game records
+  **/
+  listGameRecords: function($validator, $gameService, req, res) {
+    req.doAuth("admin", function(username) {
+      var data = {
+        start: Number.parseInt(req.queryParams.start),
+        end: Number.parseInt(req.queryParams.end)
+      };
+
+      console.log(data);
+
+      // register validations
+      $validator.required("start", "start不能为空");
+      $validator.required("end", "end不能为空");
+
+      // do validation
+      $validator.validate(data, function(err) {
+        if(err) {
+          res.sendAsJson(400, {
+            isError: true,
+            errorMessage: err.msg,
+            result: ""
+          });
+        }else {
+          $gameService.listGameRecords(data, function(records) {
+            res.sendAsJson(200, {
+              isError: false,
+              errorMessage: "",
+              result: {
+                list: records
+              }
+            });
+          });
+        }
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
+   * @param {$gameService} $gameService
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
    * list game records of an user
   **/
   listUserGameRecords: function($validator, $gameService, req, res) {
@@ -40,22 +84,56 @@ module.exports = {
             result: ""
           });
         }else {
-          $gameService.listUserGameRecords(data, function(err, records) {
-            if(err) {
-              res.sendAsJson(200, {
-                isError: false,
-                errorMessage: err,
-                result: ""
-              });
-            }else {
-              res.sendAsJson(200, {
-                isError: true,
-                errorMessage: "",
-                result: {
-                  list: records
-                }
-              });
-            }
+          $gameService.listUserGameRecords(data, function(records) {
+            res.sendAsJson(200, {
+              isError: false,
+              errorMessage: "",
+              result: {
+                list: records
+              }
+            });
+          });
+        }
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
+   * @param {$coinService} $coinService
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * list game records of an user
+  **/
+  listCoinRecords: function($validator, $coinService, req, res) {
+    req.doAuth("admin", function(username) {
+      var data = {
+        start: Number.parseInt(req.queryParams.start),
+        end: Number.parseInt(req.queryParams.end)
+      };
+
+      // register validations
+      $validator.required("start", "start不能为空");
+      $validator.required("end", "end不能为空");
+
+      // do validation
+      $validator.validate(data, function(err) {
+        if(err) {
+          res.sendAsJson(400, {
+            isError: true,
+            errorMessage: err.msg,
+            result: ""
+          });
+        }else {
+          $coinService.listCoinRecords(data, function(records) {
+            res.sendAsJson(200, {
+              isError: false,
+              errorMessage: "",
+              result: {
+                list: records
+              }
+            });
           });
         }
       });

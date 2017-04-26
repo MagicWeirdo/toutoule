@@ -170,12 +170,26 @@ gulp.task("listUserGameRecords", function() {
   $http.get({
     hostname: "127.0.0.1",
     port: 8080,
-    path: "/game/history/user/list?username=20174220&start=0&end=5",
+    path: "/game/history/user/list?username=20174250&start=0&end=5",
     headers: {
-      "Authorization": "a9ddc29425209eef31f694c64be0fcc42d18d0e2e3f9dabcda274c5bf8281ad7"
+      "Authorization": "13180857f96808aae4480ea59320ee691a72aba36a1a564673b7c227c73d59ad"
     }
   }).then(function(response) {
-    console.log(response.data);
+    console.log(response.data.result.list);
+  });
+});
+
+// 获取游戏记录
+gulp.task("listGameRecords", function() {
+  $http.get({
+    hostname: "127.0.0.1",
+    port: 8080,
+    path: "/game/history/list?start=0&end=5",
+    headers: {
+      "Authorization": "13180857f96808aae4480ea59320ee691a72aba36a1a564673b7c227c73d59ad"
+    }
+  }).then(function(response) {
+    console.log(response.data.result.list);
   });
 });
 

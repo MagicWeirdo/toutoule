@@ -29,7 +29,7 @@
 
       // 注册websocket
       socket.emit("newPlayer", {
-        token: Cookies.get("testToken"),
+        token: "13180857f96808aae4480ea59320ee691a72aba36a1a564673b7c227c73d59ad",
         type: "admin"
       });
 
@@ -65,7 +65,7 @@
           {
             method: "GET",
             headers: {
-              "Authorization": Cookies.get("testToken")
+              "Authorization": "13180857f96808aae4480ea59320ee691a72aba36a1a564673b7c227c73d59ad"
             }
           }
         ).done(function(data) {

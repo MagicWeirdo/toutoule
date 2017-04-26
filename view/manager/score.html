@@ -6,13 +6,13 @@
     <title>骰骰乐后台管理系统</title>
 
     <!-- BOOTSTRAP STYLES-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="/static/toutoule/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONTAWESOME STYLES-->
-    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="/static/toutoule/assets/css/font-awesome.css" rel="stylesheet" />
        <!--CUSTOM BASIC STYLES-->
-    <link href="assets/css/basic.css" rel="stylesheet" />
+    <link href="/static/toutoule/assets/css/basic.css" rel="stylesheet" />
     <!--CUSTOM MAIN STYLES-->
-    <link href="assets/css/custom.css" rel="stylesheet" />
+    <link href="/static/toutoule/assets/css/custom.css" rel="stylesheet" />
     <!-- GOOGLE FONTS-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>
@@ -35,7 +35,7 @@
                 <ul class="nav" id="main-menu">
                     <li>
                         <div class="user-img-div">
-                            <img src="assets/img/user.png" class="img-thumbnail" />
+                            <img src="/static/toutoule/assets/img/user.png" class="img-thumbnail" />
 
                             <div class="inner-text">
                                 Admin
@@ -45,17 +45,17 @@
                     </li>
 
                      <li>
-                        <a href="password.html"><i class="glyphicon glyphicon-lock"></i>修改密码</a>
+                        <a href="/manager/modifyPassword"><i class="glyphicon glyphicon-lock"></i>修改密码</a>
                     </li>
-                   
+
                     <li>
                         <a href="#"><i class="glyphicon glyphicon-cog "></i>系统控制<span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
                             <li>
-                                <a href="panel-tabs.html"><i class="fa fa-toggle-on"></i>开启系统</a>
+                                <a id="turnOn" href="#"><i class="fa fa-toggle-on"></i>开启系统</a>
                             </li>
                             <li>
-                                <a href="notification.html"><i class="fa fa-toggle-off "></i>关闭系统</a>
+                                <a id="turnOff" href="#"><i class="fa fa-toggle-off "></i>关闭系统</a>
                             </li>
                         </ul>
                     </li>
@@ -63,54 +63,44 @@
                         <a href="#"><i class="glyphicon glyphicon-th-large "></i>模式设置 <span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
                             <li>
-                                <a href="invoice.html"><i class="glyphicon glyphicon-wrench"></i>自动模式</a>
+                                <a id="turnOnAutoMode" href="#"><i class="glyphicon glyphicon-wrench"></i>自动模式</a>
                             </li>
                             <li>
-                                <a href="pricing.html"><i class="glyphicon glyphicon-hand-right "></i>手动模式</a>
+                                <a id="turnOnManualMode" href="#"><i class="glyphicon glyphicon-hand-right "></i>手动模式</a>
                             </li>
                         </ul>
                     </li>
                      <li>
-                        <a href="#"><i class="glyphicon glyphicon-list-alt "></i>查看游戏记录<span class="fa arrow"></span></a>
-                         <ul class="nav nav-second-level">
-                           
-                             <li>
-                                <a href="time.html"><i class="glyphicon glyphicon-time "></i>按时间</a>
-                            </li>
-                             <li>
-                                <a href="user.html"><i class="glyphicon glyphicon-user "></i>按用户</a>
-                            </li>
-                             
-                           
-                       </ul>
+                        <a href="/manager/history"><i class="glyphicon glyphicon-list-alt "></i>查看游戏记录</a>
+
                   </li>
                       <li>
-                        <a href="index.html"><i class="fa fa-anchor "></i>设置游戏结果</a>
+                        <a href="/manager/main"><i class="fa fa-anchor "></i>设置游戏结果</a>
                     </li>
                     <li>
                         <a href="#"><i class="glyphicon glyphicon-file"></i>公告管理<span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
                             <li>
-                                <a href="bulletin_publish.html"><i class="glyphicon glyphicon-edit"></i>发布公告</a>
+                                <a href="/manager/bulletin/publish"><i class="glyphicon glyphicon-edit"></i>发布公告</a>
                             </li>
                             <li>
-                                <a href="bulletin_record.html"><i class="glyphicon glyphicon-th-list"></i>公告记录</a>
+                                <a href="/manager/bulletin/record"><i class="glyphicon glyphicon-th-list"></i>公告记录</a>
                             </li>
                         </ul>
                     </li>
 
                      <li>
-                        <a href="score.html"><i class="glyphicon glyphicon-usd"></i>用户积分管理</a>
+                        <a href="/manager/score"><i class="glyphicon glyphicon-usd"></i>用户积分管理</a>
                   </li>
                     <li>
-                        <a href="create_user.html"><i class="fa fa-sign-in "></i>创建账户</a>
+                        <a href="/manager/user/create"><i class="fa fa-sign-in "></i>创建账户</a>
                     </li>
                     <li>
-                        <a href="#"><i class="glyphicon glyphicon-user "></i>账户管理</a>                    </li>
+                        <a href="/manager/user/list"><i class="glyphicon glyphicon-user "></i>账户管理</a>                    </li>
                 </ul>
 
             </div>
-            
+
         </nav>
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper">
@@ -120,49 +110,46 @@
                         <h1 class="page-head-fonts">用户积分管理</h1>
                   </div>
                   <div class="col-md-2">
-                        <a href="score_record.html"><button type="button" class="btn-create btn-lg btn-primary">积分设置记录</button></a>
+                        <a href="/manager/score/record"><button type="button" class="btn-create btn-lg btn-primary">积分设置记录</button></a>
                     </div>
                     <div class="col-md-12">
                      <h1 class="page-head-line"></h1>
                     </div>
                 </div>
                 <!--/.Row-->
-                
+
                                 <div class="row">
                                   <div class="col-md-12">
                <div class="panel panel-info">
                         <div class="panel-heading">设置用户积分</div>
                         <div class="panel-body">
-                            <form role="form">
-                                        <div class="form-group">
-                                            <label>请输入用户姓名</label>
-                                            <input class="form-control" type="text">
-                                           
-                              </div>
-                                 <div class="form-group">
-                                            <label>请输入积分</label>
-                                            <input class="form-control" type="text">
-                                 </div>
-                                 
-                                 <div class="form-group">
-                                   <label>请选择增加或者减少</label>
-                                   <div class="radio">
-                                       <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">增加
-                                     </label>
-                                   </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">减少
-                                                </label>
-                                            </div>
-                            </div>
-                    
-                                  
-                                 
-                              <button type="submit" class="btn-index btn-info">确定 </button>
+                          <div class="form-group">
+                              <label>请输入用户姓名</label>
+                              <input id="username" class="form-control" type="text">
 
-                                    </form>
+                </div>
+                   <div class="form-group">
+                              <label>请输入积分</label>
+                              <input id="coin" class="form-control" type="number">
+                   </div>
+
+                   <div class="form-group">
+                     <label>请选择增加或者减少</label>
+                     <div class="radio">
+                         <label>
+                                      <input id="topUp" type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">增加
+                       </label>
+                     </div>
+                              <div class="radio">
+                                  <label>
+                                      <input id="bottomDown" type="radio" name="optionsRadios" id="optionsRadios2" value="option2">减少
+                                  </label>
+                              </div>
+              </div>
+
+
+
+                <button id="yesButton" class="btn-index btn-info">确定 </button>
                             </div>
                         </div>
                             </div>
@@ -180,15 +167,141 @@
     <!-- /. FOOTER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
+    <script src="/static/toutoule/assets/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS -->
-    <script src="assets/js/bootstrap.js"></script>
+    <script src="/static/toutoule/assets/js/bootstrap.js"></script>
     <!-- METISMENU SCRIPTS -->
-    <script src="assets/js/jquery.metisMenu.js"></script>
+    <script src="/static/toutoule/assets/js/jquery.metisMenu.js"></script>
        <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>
-    
+    <script src="/static/toutoule/assets/js/custom.js"></script>
 
+    <!-- Cookies -->
+    <script src="/static/bower_components/js-cookie/src/js.cookie.js"></script>
+
+    <!-- 加载 Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        // 若密匙存在，则验证
+        if(Cookies.get("adminToken")) {
+          $.post(
+            "/admin/verify",
+            JSON.stringify({
+              token: Cookies.get("adminToken")
+            }),
+            function(data) {
+              if(data.isError) {
+                window.location.replace("/manager/login");
+              }else {
+                // 建立 WebSocket 连接
+                var socket = io();
+
+                // 告知服务器管理员加入
+                socket.emit("newPlayer", {
+                  token: Cookies.get("adminToken"),
+                  type: "admin"
+                });
+
+                // 开启游戏
+                $("#turnOn").click(function() {
+                  socket.emit("turnOn");
+                });
+
+                // 关闭游戏
+                $("#turnOff").click(function() {
+                  socket.emit("turnOff");
+                });
+
+                // 开启自动模式按钮
+                $("#turnOnAutoMode").click(function() {
+                  socket.emit("turnOnAutoMode");
+                });
+
+                // 开启手动模式按钮
+                $("#turnOnManualMode").click(function() {
+                  socket.emit("turnOnManualMode");
+                });
+
+                // 默认类型
+                var type = "topUp";
+
+                // 监听 Radio Button
+                $("#topUp").click(function() {
+                  type = "topUp";
+
+                  console.log(type);
+                });
+
+                $("#bottomDown").click(function() {
+                  type = "bottomDown";
+
+                  console.log(type);
+                });
+
+                // 监听确定按钮点击
+                $("#yesButton").click(function() {
+                  if(type === "topUp") {
+                    // 增加
+                    $.ajax(
+                      "/user/coin/topup",
+                      {
+                        method: "POST",
+                        headers: {
+                          "Authorization": Cookies.get("adminToken")
+                        },
+                        data: JSON.stringify({
+                          username: $("#username").val(),
+                          amount: $("#coin").val()
+                        }),
+                        dataType: "json",
+                        success: function(data) {
+                          if(data.isError) {
+                            alert(data.errorMessage);
+                          }else {
+                            // 清空值
+                            $("#username").val("");
+                            $("#coin").val("");
+                          }
+                        }
+                      }
+                    );
+                  }else {
+                    // 减少
+                    $.ajax(
+                      "/user/coin/bottomdown",
+                      {
+                        method: "POST",
+                        headers: {
+                          "Authorization": Cookies.get("adminToken")
+                        },
+                        data: JSON.stringify({
+                          username: $("#username").val(),
+                          amount: $("#coin").val()
+                        }),
+                        dataType: "json",
+                        success: function(data) {
+                          if(data.isError) {
+                            alert(data.errorMessage);
+                          }else {
+                            // 清空值
+                            $("#username").val("");
+                            $("#coin").val("");
+                          }
+                        }
+                      }
+                    );
+                  }
+                });
+              }
+            }
+          );
+        }else {
+          // 如果不存在，则重定向至登录界面
+          window.location.replace("/manager/login");
+        }
+      });
+    </script>
 
 </body>
 </html>

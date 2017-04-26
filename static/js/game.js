@@ -152,6 +152,7 @@ function startGame() {
 
     // 接收游戏状态改变
     socket.on("updateStatus", function(data) {
+
       switch (data.state) {
         case "offline":
           // 修改状态
@@ -604,6 +605,9 @@ function startGame() {
 
     // ready button
     msReadyButton = game.add.button((displayWidth * 0.6) / 2 + 2, 0 - (((displayWidth * 0.2) / (207 / 100)) / 2), "readyButton", function() {
+      console.log("准备游戏");
+      console.log("游戏状态：" + state);
+
       // 只有当 online 和 preparingCountDown 状态时才能准备
       if(state === "online" || state === "preparingCountDown") {
         msReadyButton.visible = false;
@@ -611,6 +615,8 @@ function startGame() {
 
         // 告知服务器玩家已准备
         socket.emit("ready");
+
+        console.log("成功准备游戏");
       }
     });
     msReadyButton.width = displayWidth * 0.2;

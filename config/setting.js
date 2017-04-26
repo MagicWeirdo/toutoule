@@ -31,17 +31,29 @@ module.exports = {
     { method: "GET", url: "/user/info", action: "UserController.getUserInfo" },
     { method: "POST", url: "/user/extra", action: "UserController.saveUserExtra" },
     { method: "POST", url: "/user/coin/topup", action: "UserController.topUpCoin" },
+    { method: "POST", url: "/user/coin/bottomdown", action: "UserController.bottomDown" },
     { method: "GET", url: "/user/coin/amount", action: "UserController.getUserCoinAmount" },
     { method: "GET", url: "/game/history/user/list", action: "GameController.listUserGameRecords" },
+    { method: "GET", url: "/game/history/list", action: "GameController.listGameRecords" },
+    { method: "GET", url: "/coin/history/list", action: "GameController.listCoinRecords" },
 
     // management
     { method: "GET", url: "/manager/login", action: "ManagerController.login" },
     { method: "GET", url: "/manager/modifyPassword", action: "ManagerController.modifyPassword" },
-    { method: "GET", url: "/manager/main", action: "ManagerController.index" }
+    { method: "GET", url: "/manager/main", action: "ManagerController.index" },
+    { method: "GET", url: "/manager/history", action: "ManagerController.history" },
+    { method: "GET", url: "/manager/bulletin/publish", action: "ManagerController.bulletinPublish" },
+    { method: "GET", url: "/manager/bulletin/record", action: "ManagerController.bulletinRecord" },
+    { method: "GET", url: "/manager/score", action: "ManagerController.score" },
+    { method: "GET", url: "/manager/score/record", action: "ManagerController.scoreRecord" },
+    { method: "GET", url: "/manager/user/create", action: "ManagerController.createUser" },
+    { method: "GET", url: "/manager/user/list", action: "ManagerController.userList" },
+    { method: "GET", url: "/manager/user/info", action: "ManagerController.userInfo" }
   ],
   models: [
     "Admin",
     "Bulletin",
+    "CoinRecord",
     "GameRecord",
     "GameRound",
     "User"
@@ -50,10 +62,11 @@ module.exports = {
     "$adminService",
     "$authService",
     "$bulletinService",
-    "$utils",
+    "$coinService",
     "$gameService",
     "$stateMachine",
-    "$userService"
+    "$userService",
+    "$utils"
   ],
   files: [
 

@@ -1,7 +1,7 @@
 module.exports = {
   scope: "singleton",
   name: "$userService",
-  factory: function($date, $orm2, $authService) {
+  factory: function($date, $orm2, $authService, $coinService) {
     return {
       /**
        * @public
@@ -48,7 +48,7 @@ module.exports = {
                   }, function(token) {
                     callback(null, token);
                   });
-                  
+
                   // // check user state
                   // if(user.isOnline === true) {
                   //   callback("用户已经在线");
@@ -333,7 +333,7 @@ module.exports = {
       **/
       topUpCoin: function(option, callback) {
         var username = option.username;
-        var amount = option.amount;
+        var amount = Number.parseInt(option.amount);
 
         $orm2.query(function(models) {
           var User = models.User;
@@ -353,13 +353,25 @@ module.exports = {
               if(amount <= 0) {
                 callback("金额不能为空或负值");
               }else {
+                // 获取剩余积分
+                var remainCoin = user.coin + amount;
+
+                // 保存数据
                 user.coin += amount;
                 user.save(function(err) {
                   if(err) {
                     throw err;
                   }
 
-                  callback();
+                  // 保存积分设置记录
+                  $coinService.saveCoinRecord({
+                    username: username,
+                    coin: amount,
+                    remainCoin: remainCoin
+                  }, function(coinRecord) {
+                    // 回调
+                    callback();
+                  });
                 });
               }
             }
@@ -375,7 +387,7 @@ module.exports = {
       **/
       bottomDownCoin: function(option, callback) {
         var username = option.username;
-        var amount = option.amount;
+        var amount = Number.parseInt(option.amount);
 
         $orm2.query(function(models) {
           var User = models.User;
@@ -395,13 +407,25 @@ module.exports = {
               if(amount <= 0) {
                 callback("金额不能为空或负值");
               }else {
+                // 获取剩余积分
+                var remainCoin = user.coin - amount;
+
+                // 保存数据
                 user.coin -= amount;
                 user.save(function(err) {
                   if(err) {
                     throw err;
                   }
 
-                  callback();
+                  // 保存积分设置记录
+                  $coinService.saveCoinRecord({
+                    username: username,
+                    coin: amount,
+                    remainCoin: remainCoin
+                  }, function(coinRecord) {
+                    // 回调
+                    callback();
+                  });
                 });
               }
             }

@@ -89,6 +89,14 @@ module.exports = {
 
         var self = this;
 
+        // 加入管理员频道
+        socket.join("admin");
+
+        // 第一次连接，且状态为 online，或状态为 onWait 且模式为 manual，则广播状态
+        if(self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
+          socket.emit("updateStatus", { state: self.getState() });
+        }
+
         // 管理员上线游戏
         socket.on("turnOn", function() {
           console.log("当前游戏状态: " + self.getState());
@@ -116,6 +124,9 @@ module.exports = {
 
             self.setMode("auto");
 
+            // 向管理员广播游戏模式的改变
+            self.io.to("admin").emit("updateMode", { mode: "auto" });
+
             // 再次开启
             self.turnOn();
           }
@@ -126,6 +137,9 @@ module.exports = {
           // 只有当游戏状态为上线或为开始倒计时，且模式为自动时才能切换
           if((self.getState() === "online" || self.getState() === "preparingCountDown") && self.getMode() === "auto") {
             $logger.log("切换为手动模式");
+
+            // 向管理员广播游戏模式的改变
+            self.io.to("admin").emit("updateMode", { mode: "manual" });
 
             self.setMode("manual");
           }
@@ -202,12 +216,17 @@ module.exports = {
 
         var self = this;
 
+        // **** 玩家初始化 ****
+
         // 玩家加入大厅
         socket.join("hall");
 
         // 只有当状态为 online/gamingCountDown 且 mode 为 manual 的情况下才有必要推送
         if(self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
-          socket.emit("updateStatus", { state: self.getState() });
+          // 因为 bug 所以得延迟发送
+          setTimeout(function() {
+            socket.emit("updateStatus", { state: self.getState() });
+          }, 1000);
         }
 
         // 玩家准备游戏
@@ -251,6 +270,110 @@ module.exports = {
           // 保存押注数据
           socket.player.stake = data;
 
+          // 初始化数据
+          var stakeStatics = {
+            // 玩家数量
+            playerNum: {
+              danPlayerNum: 0,
+              shuangPlayerNum: 0,
+              baozi1PlayerNum: 0,
+              baozi2PlayerNum: 0,
+              baozi3PlayerNum: 0,
+              baozi4PlayerNum: 0,
+              baozi5PlayerNum: 0,
+              baozi6PlayerNum: 0,
+              totalPlayerNum: 0
+            },
+            // 积分数量
+            coinNum: {
+              danCoin: 0,
+              shuangCoin: 0,
+              baozi1Coin: 0,
+              baozi2Coin: 0,
+              baozi3Coin: 0,
+              baozi4Coin: 0,
+              baozi5Coin: 0,
+              baozi6Coin: 0,
+              totalCoin: 0
+            }
+          };
+
+          // 获取游戏室的所有玩家
+          var sockets = self.findSocketsByRoom("game");
+          sockets.forEach(function(socket) {
+            // 判断玩家是否已押注
+            if(socket.player.isStaked) {
+              // 获取押注数据
+              var stake = socket.player.stake;
+
+              // 判断押注类型
+              switch(stake.type) {
+                case "d":
+                  stakeStatics.playerNum.danPlayerNum++;
+                  stakeStatics.coinNum.danCoin += stake.coin;
+
+                  stakeStatics.playerNum.totalPlayerNum++;
+                  stakeStatics.coinNum.totalCoin += stake.coin;
+                  break;
+                case "s":
+                  stakeStatics.playerNum.shuangPlayerNum++;
+                  stakeStatics.coinNum.shuangCoin += stake.coin;
+
+                  stakeStatics.playerNum.totalPlayerNum++;
+                  stakeStatics.coinNum.totalCoin += stake.coin;
+                  break;
+                case "b1":
+                  stakeStatics.playerNum.baozi1PlayerNum++;
+                  stakeStatics.coinNum.baozi1Coin += stake.coin;
+
+                  stakeStatics.playerNum.totalPlayerNum++;
+                  stakeStatics.coinNum.totalCoin += stake.coin;
+                  break;
+                case "b2":
+                  stakeStatics.playerNum.baozi2PlayerNum++;
+                  stakeStatics.coinNum.baozi2Coin += stake.coin;
+
+                  stakeStatics.playerNum.totalPlayerNum++;
+                  stakeStatics.coinNum.totalCoin += stake.coin;
+                  break;
+                case "b3":
+                  stakeStatics.playerNum.baozi3PlayerNum++;
+                  stakeStatics.coinNum.baozi3Coin += stake.coin;
+
+                  stakeStatics.playerNum.totalPlayerNum++;
+                  stakeStatics.coinNum.totalCoin += stake.coin;
+                  break;
+                case "b4":
+                  stakeStatics.playerNum.baozi4PlayerNum++;
+                  stakeStatics.coinNum.baozi4Coin += stake.coin;
+
+                  stakeStatics.playerNum.totalPlayerNum++;
+                  stakeStatics.coinNum.totalCoin += stake.coin;
+                  break;
+                case "b5":
+                  stakeStatics.playerNum.baozi5PlayerNum++;
+                  stakeStatics.coinNum.baozi5Coin += stake.coin;
+
+                  stakeStatics.playerNum.totalPlayerNum++;
+                  stakeStatics.coinNum.totalCoin += stake.coin;
+                  break;
+                case "b6":
+                  stakeStatics.playerNum.baozi6PlayerNum++;
+                  stakeStatics.coinNum.baozi6Coin += stake.coin;
+
+                  stakeStatics.playerNum.totalPlayerNum++;
+                  stakeStatics.coinNum.totalCoin += stake.coin;
+                  break;
+              }
+            }
+          });
+
+          // 向管理员广播统计数据
+          self.io.to("admin").emit("stakeStatics", stakeStatics);
+
+          // 向管理员广播玩家列表
+          self.broadcastPlayerListToAdmin();
+
           $logger.log("玩家押注成功");
         });
 
@@ -267,6 +390,9 @@ module.exports = {
 
           // 告知玩家被踢出
           socket.emit("kick");
+
+          // 向大厅玩家广播当前游戏状态
+          self.io.to("hall").emit("updateStatus", { state: self.getState() })
 
           $logger.log("玩家退出游戏");
         });
@@ -308,6 +434,9 @@ module.exports = {
         // 向在大厅的玩家广播游戏上线
         self.io.to("hall").emit("updateStatus", { state: "online" });
 
+        // 向管理员广播游戏上线
+        self.io.to("admin").emit("updateStatus", { state: "online" });
+
         // 如果是自动模式
         if(self.getMode() === "auto") {
           var waitInterval = setInterval(function() {
@@ -323,6 +452,9 @@ module.exports = {
               });
 
               // 向大厅的玩家广播游戏状态
+              self.io.to("hall").emit("updateStatus", { state: "offline" });
+
+              // 向管理员广播游戏状态
               self.io.to("hall").emit("updateStatus", { state: "offline" });
 
               return;
@@ -368,6 +500,9 @@ module.exports = {
 
           // 向大厅的玩家广播游戏下线
           self.io.to("hall").emit("updateStatus", { state: "offline" });
+
+          // 向管理员广播游戏下线
+          self.io.to("admin").emit("updateStatus", { state: "offline" });
         }
       },
       /**
@@ -397,6 +532,9 @@ module.exports = {
 
             // 向大厅中的玩家广播游戏状态
             self.io.to("hall").emit("updateStatus", { state: "offline" });
+
+            // 向管理员广播游戏状态
+            self.io.to("admin").emit("updateStatus", { state: "offline" });
 
             return;
           }
@@ -432,6 +570,9 @@ module.exports = {
           self.io.to("hall").emit("updateStatus", { state: "preparingCountDown", tick: tick });
           self.io.to("wait").emit("updateStatus", { state: "preparingCountDown", tick: tick });
 
+          // 向管理员广播游戏开始倒计时
+          self.io.to("admin").emit("updateStatus", { state: "preparingCountDown", tick: tick });
+
           // 如果计时结束
           if(tick === 0) {
             clearInterval(preparingInterval);
@@ -460,6 +601,9 @@ module.exports = {
 
         // 向大厅中的玩家广播游戏加载
         self.io.to("hall").emit("updateStatus", { state: "loading" });
+
+        // 向管理员广播游戏加载
+        self.io.to("admin").emit("updateStatus", { state: "loading" });
 
         // 检测所有玩家是否加载完成
         var waitInterval = setInterval(function() {
@@ -497,6 +641,12 @@ module.exports = {
         // 向大厅的玩家广播游戏状态
         self.io.to("hall").emit("updateStatus", { state: "gaming" });
 
+        // 向管理员广播游戏状态
+        self.io.to("admin").emit("updateStatus", { state: "gaming" });
+
+        // 向管理员广播玩家列表
+        self.broadcastPlayerListToAdmin();
+
         // 开始押注倒计时
         self.beginGameCountDown();
       },
@@ -522,6 +672,9 @@ module.exports = {
           // 向大厅和游戏中的玩家广播游戏倒计时
           self.io.to("hall").emit("updateStatus", { state: "gamingCountDown", tick: tick });
           self.io.to("game").emit("updateStatus", { state: "gamingCountDown", tick: tick });
+
+          // 向管理员广播游戏倒计时
+          self.io.to("admin").emit("updateStatus", { state: "gamingCountDown", tick: tick });
 
           // 如果玩家人数为0，则返回
           if(self.countInGamePlayers() === 0) {
@@ -561,6 +714,9 @@ module.exports = {
         self.io.to("hall").emit("updateStatus", { state: "onWait" });
         self.io.to("game").emit("updateStatus", { state: "onWait" });
 
+        // 向管理员发送广播
+        self.io.to("admin").emit("updateStatus", { state: "onWait" });
+
         // 如果游戏模式为自动则直接开始计算结果
         if(self.getMode() === "auto") {
           self.calculateResult(null);
@@ -583,8 +739,11 @@ module.exports = {
         self.io.to("hall").emit("updateStatus", { state: "calculateResult" });
         self.io.to("game").emit("updateStatus", { state: "calculateResult" });
 
-        // 获取游戏模式
-        var mode = result === null ? "auto" : "manual";
+        // 向管理员广播游戏状态
+        self.io.to("admin").emit("updateStatus", { state: "calculateResult" });
+
+        // // 获取游戏模式
+        // var mode = result === null ? "auto" : "manual";
 
         if(result === null) {
           // 生成结果
@@ -753,6 +912,9 @@ module.exports = {
         self.io.to("hall").emit("updateStatus", { state: "onResult" });
         self.io.to("game").emit("updateStatus", { state: "onResult" });
 
+        // 向管理员广播状态
+        self.io.to("admin").emit("updateStatus", { state: "onResult" });
+
         // 延迟 5 秒推送
         setTimeout(function() {
           // 向游戏室玩家广播状态
@@ -777,6 +939,9 @@ module.exports = {
 
         // 向大厅的玩家广播状态
         self.io.to("hall").emit("updateStatus", { state: "waitting" });
+
+        // 向管理员广播游戏状态
+        self.io.to("admin").emit("updateStatus", { state: "waitting" });
 
         // 等待所有的用户完成
         var waitInterval = setInterval(function() {
@@ -871,6 +1036,33 @@ module.exports = {
       **/
       countInGamePlayers: function() {
         return this.findSocketsByRoom("game").length;
+      },
+      /**
+       * @public
+       * @desc
+       * broadcast a list of players info to admin [应当在状态发生改变时向管理发送]
+      **/
+      broadcastPlayerListToAdmin: function() {
+        // 把所有玩家数据广播至管理员，让他自己分页
+        var self = this;
+
+        // 玩家列表
+        var playerList = [];
+
+        // 获取游戏室的所有玩家
+        var sockets = self.findSocketsByRoom("game");
+        sockets.forEach(function(socket) {
+          // 推送玩家信息
+          playerList.push({
+            username: socket.player.username,
+            isStaked: socket.player.isStaked,
+            stakeType: socket.player.isStaked === true ? socket.player.stake.type : "",
+            stakeCoin: socket.player.isStaked === true ? socket.player.stake.coin : 0
+          });
+        });
+
+        // 将玩家列表广播至管理员
+        self.io.to("admin").emit("playerList", playerList);
       }
     };
   }

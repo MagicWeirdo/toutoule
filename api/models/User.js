@@ -11,7 +11,8 @@ module.exports = {
       date: { type: "integer", size: 8, required: true },
       token: { type: "text", size: 64, unique: true },
       extra: { type: "text", size: 150 },
-      coin: { type: "integer", size: 8, defaultValue: 0 }
+      coin: { type: "integer", size: 8, defaultValue: 0 },
+      state: { type: "enum",  }
     }, {
       validations: {
         username: orm.enforce.required("用户名不能为空"),
