@@ -64,23 +64,23 @@ function startGame() {
   };
 
   function preload() {
-    // 进度条文字
-    var progressText = game.add.text(game.world.centerX, game.world.centerY, "0%", {
-      fill: "#FFFFFF",
-      fontSize: "36px"
-    });
-    progressText.anchor.set(0.5);
-
-    // 监听进度
-    game.load.onLoadStart.add(function() {
-      var progressInterval = setInterval(function() {
-        progressText.text = game.load.progress + "%";
-
-        if(game.load.progress === 100) {
-          clearInterval(progressInterval);
-        }
-      }, 50);
-    });
+    // // 进度条文字
+    // var progressText = game.add.text(game.world.centerX, game.world.centerY, "0%", {
+    //   fill: "#FFFFFF",
+    //   fontSize: "36px"
+    // });
+    // progressText.anchor.set(0.5);
+    //
+    // // 监听进度
+    // game.load.onLoadStart.add(function() {
+    //   var progressInterval = setInterval(function() {
+    //     progressText.text = game.load.progress + "%";
+    //
+    //     if(game.load.progress === 100) {
+    //       clearInterval(progressInterval);
+    //     }
+    //   }, 50);
+    // });
 
     game.load.image("background", "/static/assets/background.png");
     game.load.image("usernameBanner", "/static/assets/username.png");
