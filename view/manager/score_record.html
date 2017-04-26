@@ -145,16 +145,10 @@
                 <!--/.Row-->
                   <ul class="pagination">
                       <li><a href="#">&laquo;</a></li>
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#">6</a></li>
-                      <li><a href="#">7</a></li>
-                      <li><a href="#">8</a></li>
-                      <li><a href="#">9</a></li>
-                      <li><a href="#">10</a></li>
+                      <% for (var i = 1;i <= count;i++) { %>
+                        <% var html = "<li><a href=\"/manager/score/record?page=" + i + "\">" + i + "</a></li>" %>
+                        <%- html %>
+                      <% } %>
                       <li><a href="#">&raquo;</a></li>
                   </ul>
             </div>
@@ -457,13 +451,17 @@
                 }
               };
 
-              // 标记为当前页面
-              var currentPage = 1;
+              // 获取 url 中的参数
+              function getUrlParam(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                var r = window.location.search.substr(1).match(reg); //匹配目标参数
+                if (r != null) return unescape(r[2]); return null; //返回参数值
+              }
 
-              renderRecordTable();
+              renderRecordTable(getUrlParam("page") || 1);
 
               // 渲染记录表
-              function renderRecordTable() {
+              function renderRecordTable(page) {
                 // 清空记录表
                 $("#recordTable").empty();
 
@@ -495,8 +493,8 @@
                       "Authorization": Cookies.get("adminToken")
                     },
                     data: {
-                      start: (currentPage - 1) * 15,
-                      end: (currentPage - 1) + 14
+                      start: (page - 1) * 15,
+                      end: (page - 1) * 15 + 14
                     },
                     dataType: "json",
                     success: function(data) {

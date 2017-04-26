@@ -42,6 +42,27 @@ module.exports = {
       },
       /**
        * @public
+       * @param {Function} callback
+       * @desc
+       * count coin records
+      **/
+      countCoinRecords: function(callback) {
+        $orm2.query(function(models) {
+          var CoinRecord = models.CoinRecord;
+
+          // do count
+          CoinRecord.count(function(err, count) {
+            if(err) {
+              throw err;
+            }
+
+            // send info back
+            callback(count);
+          });
+        });
+      },
+      /**
+       * @public
        * @param {Object} option
        * @param {Function} callback
        * @desc

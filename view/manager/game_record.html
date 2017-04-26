@@ -141,18 +141,12 @@
               <div class="row"></div>
                 <!--/.Row-->
                   <ul class="pagination">
-                      <li><a href="#">&laquo;</a></li>
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#">6</a></li>
-                      <li><a href="#">7</a></li>
-                      <li><a href="#">8</a></li>
-                      <li><a href="#">9</a></li>
-                      <li><a href="#">10</a></li>
-                      <li><a href="#">&raquo;</a></li>
+                      <li><a id="btnPrevious" href="#">&laquo;</a></li>
+                      <% for (var i = 1; i <= count;i++) { %>
+                        <% var html = "<li><a href=\"/manager/history?page=" + i + "\">" + i + "</a></li>" %>
+                        <%- html %>
+                      <% } %>
+                      <li><a id="btnNext" href="#">&raquo;</a></li>
                   </ul>
             </div>
             <!-- /. PAGE INNER  -->
@@ -225,14 +219,18 @@
                   socket.emit("turnOnManualMode");
                 });
 
-                // 标记当前页面
-                var currentPage = 1;
+                // 获取 url 中的参数
+                function getUrlParam(name) {
+                  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                  var r = window.location.search.substr(1).match(reg); //匹配目标参数
+                  if (r != null) return unescape(r[2]); return null; //返回参数值
+                }
 
                 // 渲染列表
-                renderList();
+                renderList(getUrlParam("page") || 1);
 
                 // 渲染列表
-                function renderList() {
+                function renderList(page) {
                   // 请求数据
                   $.ajax(
                     "/game/history/list",
@@ -242,8 +240,8 @@
                         "Authorization": Cookies.get("adminToken")
                       },
                       data: {
-                        start: (currentPage - 1) * 5,
-                        end: (currentPage - 1) + 4
+                        start: (page - 1) * 5,
+                        end: (page - 1) + 4
                       },
                       dataType: "json",
                       success: function(data) {

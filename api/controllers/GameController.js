@@ -11,6 +11,26 @@ module.exports = {
   },
   /**
    * @public
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * count game records
+  **/
+  countGameRecords: function($gameService, req, res) {
+    req.doAuth("admin", function(username) {
+      $gameService.countGameRecords(function(count) {
+        res.sendAsJson(200, {
+          isError: false,
+          errorMessage: "",
+          result: {
+            count: count
+          }
+        });
+      });
+    });
+  },
+  /**
+   * @public
    * @param {$validator} $validator
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
@@ -23,8 +43,6 @@ module.exports = {
         start: Number.parseInt(req.queryParams.start),
         end: Number.parseInt(req.queryParams.end)
       };
-
-      console.log(data);
 
       // register validations
       $validator.required("start", "start不能为空");

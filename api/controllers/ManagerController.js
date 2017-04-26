@@ -31,13 +31,16 @@ module.exports = {
   },
   /**
    * @public
+   * @param {$gameService} $gameService
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
    * @desc
    * history page
   **/
-  history: function(req, res) {
-    res.render("manager/game_record.html", {});
+  history: function($gameService, req, res) {
+    $gameService.countGameRecords(function(count) {
+      res.render("manager/game_record.html", { count: Math.ceil(count / 5) });
+    });
   },
   /**
    * @public
@@ -71,42 +74,56 @@ module.exports = {
   },
   /**
    * @public
+   * @param {$coinService} $coinService
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
    * @desc
    * score record
   **/
-  scoreRecord: function(req, res) {
-    res.render("manager/score_record.html", {});
+  scoreRecord: function($coinService, req, res) {
+    $coinService.countCoinRecords(function(count) {
+      res.render("manager/score_record.html", { count: Math.ceil(count / 15) });
+    });
   },
   /**
    * @public
+   * @param {$userService} $userService
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
    * @desc
    * create user
   **/
-  createUser: function(req, res) {
-    res.render("manager/create_user.html", {});
+  createUser: function($userService, req, res) {
+    $userService.getUserCount(function(count) {
+      res.render("manager/create_user.html", { count : Math.ceil(count / 15) });
+    });
   },
   /**
    * @public
+   * @param {$userService} $userService
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
    * @desc
    * user list page
   **/
-  userList: function(req, res) {
-    res.render("manager/user.html", {});
+  userList: function($userService, req, res) {
+    $userService.getUserCount(function(count) {
+      res.render("manager/user.html", { count: Math.ceil(count / 15) });
+    });
   },
   /**
    * @public
+   * @param {$gameService} $gameService
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
    * @desc
    * user info
   **/
-  userInfo: function(req, res) {
-    res.render("manager/user_message.html");
+  userInfo: function($gameService, req, res) {
+    $gameService.countUserGameRecords({
+      username: req.queryParams.username
+    }, function(count) {
+      res.render("manager/user_message.html", { count: Math.ceil(count / 15) });
+    });
   }
 };

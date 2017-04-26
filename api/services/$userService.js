@@ -211,7 +211,7 @@ module.exports = {
         $orm2.query(function(models) {
           var User = models.User;
 
-          User.count(function(err, userCount) {
+          User.count({ state: "active" }, function(err, userCount) {
             if(err) {
               throw err;
             }
@@ -292,6 +292,42 @@ module.exports = {
        * @param {Object} option
        * @param {Function} callback
        * @desc
+       * list just usernames
+      **/
+      listUserSimple: function(option, callback) {
+        var start = option.start;
+        var end = option.end;
+
+        console.log(option);
+
+        $orm2.rawQuery(function(db) {
+          db.driver.execQuery(
+            "SELECT username FROM user " +
+            "WHERE state = ? " +
+            "ORDER BY id DESC LIMIT ? OFFSET ?",
+            [ "active", (end - start + 1), start ],
+            function(err, rows) {
+              if(err) {
+                throw err;
+              }
+
+              // 获取所有结果的用户名
+              var usernames = [];
+              rows.forEach(function(row) {
+                usernames.push(row.username);
+              });
+
+              // send info back
+              callback(usernames);
+            }
+          );
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
        * get user info
       **/
       getUserInfo: function(option, callback) {
@@ -318,7 +354,8 @@ module.exports = {
                 username: user.username,
                 date: user.date,
                 extra: user.extra,
-                coin: user.coin
+                coin: user.coin,
+                state: user.state
               });
             }
           });

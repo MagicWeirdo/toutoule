@@ -178,6 +178,48 @@ module.exports = {
   /**
    * @public
    * @param {$validator} $validator
+   * @param {$userService} $userService
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * list just usernames
+  **/
+  listUserSimple: function($validator, $userService, req, res) {
+    req.doAuth("admin", function(username) {
+      var data = {
+        start: Number.parseInt(req.queryParams.start),
+        end: Number.parseInt(req.queryParams.end)
+      };
+
+      // register validations
+      $validator.required("start", "start不能为空");
+      $validator.required("end", "end不能为空");
+
+      // do validation
+      $validator.validate(data, function(err) {
+        if(err) {
+          res.sendAsJson(400, {
+            isError: true,
+            errorMessage: err.msg,
+            result: ""
+          });
+        }else {
+          $userService.listUserSimple(data, function(users) {
+            res.sendAsJson(200, {
+              isError: false,
+              errorMessage: "",
+              result: {
+                list: users
+              }
+            });
+          });
+        }
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
    * get user

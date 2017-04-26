@@ -52,10 +52,10 @@
                         <a href="#"><i class="glyphicon glyphicon-cog "></i>系统控制<span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
                             <li>
-                                <a href="#"><i class="fa fa-toggle-on"></i>开启系统</a>
+                                <a id="turnOn" href="#"><i class="fa fa-toggle-on"></i>开启系统</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-toggle-off "></i>关闭系统</a>
+                                <a id="turnOff" href="#"><i class="fa fa-toggle-off "></i>关闭系统</a>
                             </li>
                         </ul>
                     </li>
@@ -63,10 +63,10 @@
                         <a href="#"><i class="glyphicon glyphicon-th-large "></i>模式设置 <span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-wrench"></i>自动模式</a>
+                                <a id="turnOnAutoMode" href="#"><i class="glyphicon glyphicon-wrench"></i>自动模式</a>
                             </li>
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-hand-right "></i>手动模式</a>
+                                <a id="turnOnManualMode" href="#"><i class="glyphicon glyphicon-hand-right "></i>手动模式</a>
                             </li>
                         </ul>
                     </li>
@@ -132,8 +132,8 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td>1704220001</td>
-                              <td>200</td>
+                              <td id="username">无</td>
+                              <td id="coin">0</td>
 
                             </tr>
 
@@ -158,131 +158,11 @@
                               <th>游戏结果</th>
                               <th>游戏胜负</th>
                               <th>获得积分</th>
-                              <th>剩余积分</th>
 
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>1704220001</td>
-                              <td>10</td>
-                              <td>单</td>
-                              <td>10</td>
-                              <td>双</td>
-                              <td>失败</td>
-                              <td>100</td>
-                              <td>200</td>
+                          <tbody id="userRecordTable">
 
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>1704220002</td>
-                              <td>8</td>
-                              <td>双</td>
-                              <td>40</td>
-                              <td>双</td>
-                              <td>胜利</td>
-                              <td>30</td>
-                              <td>200</td>
-
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>1704220003</td>
-                              <td>10</td>
-                              <td>单</td>
-                              <td>10</td>
-                              <td>双</td>
-                              <td>失败</td>
-                              <td>100</td>
-                              <td>200</td>
-
-                            </tr>
-                            <tr>
-                              <td>4</td>
-                              <td>1704220004</td>
-                              <td>8</td>
-                              <td>双</td>
-                              <td>40</td>
-                              <td>双</td>
-                              <td>胜利</td>
-                              <td>30</td>
-                              <td>200</td>
-
-                            </tr>
-                            <tr>
-                              <td>5</td>
-                              <td>1704220005</td>
-                              <td>10</td>
-                              <td>单</td>
-                              <td>10</td>
-                              <td>双</td>
-                              <td>失败</td>
-                              <td>100</td>
-                              <td>200</td>
-
-                            </tr>
-                            <tr>
-                              <td>6</td>
-                              <td>1704220006</td>
-                              <td>8</td>
-                              <td>双</td>
-                              <td>40</td>
-                              <td>双</td>
-                              <td>胜利</td>
-                              <td>30</td>
-                              <td>200</td>
-
-                            </tr>
-                            <tr>
-                              <td>7</td>
-                              <td>1704220007</td>
-                              <td>10</td>
-                              <td>单</td>
-                              <td>10</td>
-                              <td>双</td>
-                              <td>失败</td>
-                              <td>100</td>
-                              <td>200</td>
-
-                            </tr>
-                            <tr>
-                              <td>8</td>
-                              <td>1704220008</td>
-                              <td>8</td>
-                              <td>双</td>
-                              <td>40</td>
-                              <td>双</td>
-                              <td>胜利</td>
-                              <td>30</td>
-                              <td>200</td>
-
-                            </tr>
-                            <tr>
-                              <td>9</td>
-                              <td>1704220009</td>
-                              <td>10</td>
-                              <td>单</td>
-                              <td>10</td>
-                              <td>双</td>
-                              <td>失败</td>
-                              <td>100</td>
-                              <td>200</td>
-
-                            </tr>
-                            <tr>
-                              <td>10</td>
-                              <td>1704220010</td>
-                              <td>8</td>
-                              <td>双</td>
-                              <td>40</td>
-                              <td>双</td>
-                              <td>胜利</td>
-                              <td>30</td>
-                              <td>200</td>
-
-                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -302,16 +182,10 @@
                 <!--/.Row-->
                   <ul class="pagination">
                       <li><a href="#">&laquo;</a></li>
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#">6</a></li>
-                      <li><a href="#">7</a></li>
-                      <li><a href="#">8</a></li>
-                      <li><a href="#">9</a></li>
-                      <li><a href="#">10</a></li>
+                      <% for (var i = 1;i <= count;i++) { %>
+                        <% var html = "<li><a href=\"/manager/user/info?page=" + i + "\">" + i + "</a></li>" %>
+                        <%- html %>
+                      <% } %>
                       <li><a href="#">&raquo;</a></li>
                   </ul>
             </div>
@@ -335,7 +209,174 @@
        <!-- CUSTOM SCRIPTS -->
     <script src="/static/toutoule/assets/js/custom.js"></script>
 
+    <!-- Cookies -->
+    <script src="/static/bower_components/js-cookie/src/js.cookie.js"></script>
 
+    <!-- 加载 Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        // 若密匙存在，则验证
+        if(Cookies.get("adminToken")) {
+          $.post(
+            "/admin/verify",
+            JSON.stringify({
+              token: Cookies.get("adminToken")
+            }),
+            function(data) {
+              // 如果验证不通过，则跳转至登录界面
+              if(data.isError) {
+                window.location.replace("/manager/login");
+              }else {
+                // 建立 WebSocket 连接
+                var socket = io();
+
+                // 告知服务器管理员加入
+                socket.emit("newPlayer", {
+                  token: Cookies.get("adminToken"),
+                  type: "admin"
+                });
+
+                // 开启游戏
+                $("#turnOn").click(function() {
+                  socket.emit("turnOn");
+                });
+
+                // 关闭游戏
+                $("#turnOff").click(function() {
+                  socket.emit("turnOff");
+                });
+
+                // 开启自动模式按钮
+                $("#turnOnAutoMode").click(function() {
+                  socket.emit("turnOnAutoMode");
+                });
+
+                // 开启手动模式按钮
+                $("#turnOnManualMode").click(function() {
+                  socket.emit("turnOnManualMode");
+                });
+
+                // 获取 url 中的参数
+                function getUrlParam(name) {
+                  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                  var r = window.location.search.substr(1).match(reg); //匹配目标参数
+                  if (r != null) return unescape(r[2]); return null; //返回参数值
+                }
+
+                // 获取用户数据并渲染
+                $.ajax(
+                  "/user/info",
+                  {
+                    method: "GET",
+                    headers: {
+                      "Authorization": Cookies.get("adminToken")
+                    },
+                    data: {
+                      username: getUrlParam("username")
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                      if(data.isError === false) {
+                        $("#username").html(data.result.username);
+                        $("#coin").html(data.result.coin);
+                      }
+                    }
+                  }
+                );
+
+                renderUserRecordTable(getUrlParam("page") || 1);
+
+                // 渲染用户游戏记录表格
+                function renderUserRecordTable(page) {
+                  // 清空表格
+                  $("#userRecordTable").empty();
+
+                  // 获取数据
+                  $.ajax(
+                    "/game/history/user/list",
+                    {
+                      method: "GET",
+                      headers: {
+                        "Authorization": Cookies.get("adminToken")
+                      },
+                      data: {
+                        username: getUrlParam("username"),
+                        start: (page - 1) * 15,
+                        end: (page - 1) * 15 + 14
+                      },
+                      dataType: "json",
+                      success: function(data) {
+                        if(data.isError === false) {
+                          var i = 1;
+
+                          // 转换类型
+                          function transferType(type) {
+                            var text = "";
+
+                            switch(type) {
+                              case "d":
+                                text = "单";
+                                break;
+                              case "s":
+                                text = "双";
+                                break;
+                              case "b1":
+                                text = "豹子1";
+                                break;
+                              case "b2":
+                                text = "豹子2";
+                                break;
+                              case "b3":
+                                text = "豹子3";
+                                break;
+                              case "b4":
+                                text = "豹子4";
+                                break;
+                              case "b5":
+                                text = "豹子5";
+                                break;
+                              case "b6":
+                                text = "豹子6"
+                                break;
+                              default:
+                                text = "无";
+                            }
+
+                            return text;
+                          }
+
+                          // 遍历记录
+                          data.result.list.forEach(function(record) {
+                            $("#userRecordTable").append(
+                              "<tr>" +
+                              "<td>" + i + "</td>" +
+                              "<td>" + record.gameRoundCode + "</td>" +
+                              "<td>" + record.playerCount + "</td>" +
+                              "<td>" + transferType(record.stake) + "</td>" +
+                              "<td>" + record.coinStaked + "</td>" +
+                              "<td>" + transferType(record.result) + "</td>" +
+                              "<td>" + (record.won === true ? "胜利" : "失败") + "</td>" +
+                              "<td>" + record.reward + "</td>" +
+                              "</tr>"
+                            );
+
+                            i++;
+                          });
+                        }
+                      }
+                    }
+                  );
+                }
+              }
+            }
+          );
+        }else {
+          window.location.replace("/manager/login");
+        }
+      });
+    </script>
 
 </body>
 </html>

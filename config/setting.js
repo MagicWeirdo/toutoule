@@ -28,6 +28,7 @@ module.exports = {
     { method: "GET", url: "/user/generate", action: "UserController.generateUser" },
     { method: "GET", url: "/user/count", action: "UserController.getUserCount" },
     { method: "GET", url: "/user/list", action: "UserController.listUsers" },
+    { method: "GET", url: "/user/list/simple", action: "UserController.listUserSimple" },
     { method: "GET", url: "/user/info", action: "UserController.getUserInfo" },
     { method: "POST", url: "/user/extra", action: "UserController.saveUserExtra" },
     { method: "POST", url: "/user/coin/topup", action: "UserController.topUpCoin" },
@@ -36,6 +37,7 @@ module.exports = {
     { method: "POST", url: "/user/state/activate", action: "UserController.activateUser" },
     { method: "POST", url: "/user/state/deactivate", action: "UserController.deactivateUser" },
     { method: "GET", url: "/game/history/user/list", action: "GameController.listUserGameRecords" },
+    { method: "GET", url: "/game/history/list/count", action: "GameController.countGameRecords" },
     { method: "GET", url: "/game/history/list", action: "GameController.listGameRecords" },
     { method: "GET", url: "/coin/history/list", action: "GameController.listCoinRecords" },
 

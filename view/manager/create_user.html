@@ -135,111 +135,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="userTable">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>1704180001</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>1704180002</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>1704180003</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>1704180004</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>1704180005</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>1704180006</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>1704180007</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>1704180008</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>1704180009</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>17041800010</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>11</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>17041800011</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>12</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>17041800012</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>13</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>17041800013</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>14</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>17041800014</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>15</td>
-                                        <td>2017年4月17号</td>
-                                        <td>16:16:20</td>
-                                        <td>17041800015</td>
-                                        <td><button type="button" class="btn btn-xs btn-danger">注销</button></td>
-                                    </tr>
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -248,16 +144,10 @@
                 <!--/.Row--><!--/.ROW-->
                 <ul class="pagination">
                       <li><a href="#">&laquo;</a></li>
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#">6</a></li>
-                      <li><a href="#">7</a></li>
-                      <li><a href="#">8</a></li>
-                      <li><a href="#">9</a></li>
-                      <li><a href="#">10</a></li>
+                      <% for (var i = 1;i <= count;i++) { %>
+                        <% var html = "<li><a href=\"/manager/user/create?page=" + i + "\">" + i + "</a></li>" %>
+                        <%- html %>
+                      <% } %>
                       <li><a href="#">&raquo;</a></li>
                   </ul>
 
@@ -345,20 +235,25 @@
                         if(data.isError) {
                           alert(data.errorMessage);
                         }else {
-                          renderUserTable();
+                          // 重新加载页面
+                          window.location.reload();
                         }
                       }
                     }
                   );
                 });
 
-                // 标识用户页面
-                var currentPage = 1;
+                // 获取 url 中的参数
+                function getUrlParam(name) {
+                  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                  var r = window.location.search.substr(1).match(reg); //匹配目标参数
+                  if (r != null) return unescape(r[2]); return null; //返回参数值
+                }
 
-                renderUserTable();
+                renderUserTable(getUrlParam("page") || 1);
 
                 // 渲染用户列表
-                function renderUserTable() {
+                function renderUserTable(page) {
                   // 清空表格
                   $("#userTable").empty();
 
@@ -371,8 +266,8 @@
                         "Authorization": Cookies.get("adminToken")
                       },
                       data: {
-                        start: (currentPage - 1) * 15,
-                        end: (currentPage - 1) + 14
+                        start: (page - 1) * 15,
+                        end: (page - 1) * 15 + 14
                       },
                       dataType: "json",
                       success: function(data) {
@@ -415,8 +310,11 @@
                                     }else {
                                       // alert("注销用户成功");
 
-                                      // 重新渲染表格
-                                      renderUserTable();
+                                      // // 重新渲染表格
+                                      // renderUserTable();
+
+                                      // 重新加载页面
+                                      window.location.reload();
                                     }
                                   }
                                 }

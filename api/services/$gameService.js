@@ -153,6 +153,27 @@ module.exports = {
       },
       /**
        * @public
+       * @param {Function} callback
+       * @desc
+       * count game records
+      **/
+      countGameRecords: function(callback) {
+        $orm2.query(function(models) {
+          var GameRound = models.GameRound;
+
+          // do count
+          GameRound.count(function(err, recordCount) {
+            if(err) {
+              throw err;
+            }
+
+            // send info back
+            callback(recordCount);
+          });
+        });
+      },
+      /**
+       * @public
        * @param {Object} option
        * @param {Function} callback
        * @desc
@@ -277,6 +298,51 @@ module.exports = {
               });
             }
           );
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * count user game records
+      **/
+      countUserGameRecords: function(option, callback) {
+        var username = option.username;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // find the user
+          User.one({
+            username: username
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // check if the user exists
+            if(user === null) {
+              callback("用户不存在");
+            }else {
+              $orm2.rawQuery(function(db) {
+                db.driver.execQuery(
+                  "SELECT COUNT(*) AS count " +
+                  "FROM gameround AS gr, gamerecord AS gre, user AS u " +
+                  "WHERE gr.id = gre.gameround_id AND gre.user_id = u.id AND u.username = ?",
+                  [ username ],
+                  function(err, rows) {
+                    if(err) {
+                      throw err;
+                    }
+
+                    // send info back
+                    callback(rows[0].count);
+                  }
+                );
+              });
+            }
+          });
         });
       },
       /**
