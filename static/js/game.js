@@ -2,6 +2,12 @@ function startGame() {
   // open WebSocket
   var socket = io();
 
+  // 告知服务器新玩家加入
+  socket.emit("newPlayer", {
+    token: Cookies.get("token"),
+    type: "normal"
+  });
+
   var game = new Phaser.Game(
     window.innerWidth,
     window.innerHeight,
@@ -142,12 +148,6 @@ function startGame() {
     getUserInfo(function(data) {
       msUsernameText.text = data.username;
       msCoinText.text = data.coin;
-    });
-
-    // 告知服务器新玩家加入
-    socket.emit("newPlayer", {
-      token: Cookies.get("token"),
-      type: "normal"
     });
 
     // 接收游戏状态改变
