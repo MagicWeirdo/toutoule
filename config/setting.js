@@ -16,6 +16,9 @@ module.exports = {
     "$authMiddleware"
   ],
   actions: [
+    // test
+    { method: "GET", url: "/test", action: "TestController.test" },
+
     // game side
     { method: "GET", url: "/", action: "GameController.game" },
     { method: "GET", url: "/manager", action: "AdminController.getPage" },

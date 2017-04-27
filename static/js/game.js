@@ -34,7 +34,7 @@ function startGame() {
   var gsUsernameText;
   var gsCoinText;
   var gsStatusText;
-  var resultDanBanner
+  var resultDanBanner;
   var resultShuangBanner;
   var result1Banner;
   var result2Banner;
@@ -134,8 +134,6 @@ function startGame() {
   }
 
   function create() {
-
-
     // 初始化场景
     initMainScene();
     initGameScene();
@@ -838,7 +836,7 @@ function startGame() {
       random: function() {
         var arr = [];
         for(var i = 0;i < 6;i++) {
-          let num = Math.floor(Math.random() * (6 - 1)) + 1;
+          var num = Math.floor(Math.random() * (6 - 1)) + 1;
           arr.push(this.dices[num]);
         }
 
