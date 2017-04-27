@@ -21,7 +21,6 @@ module.exports = {
 
     // game side
     { method: "GET", url: "/", action: "GameController.game" },
-    { method: "GET", url: "/manager", action: "AdminController.getPage" },
     { method: "POST", url: "/admin/login", action: "AdminController.login" },
     { method: "POST", url: "/admin/verify", action: "AdminController.verify" },
     { method: "POST", url: "/admin/modifyPassword", action: "AdminController.modifyPassword" },
