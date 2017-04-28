@@ -165,7 +165,7 @@ function startGame() {
         case "online":
           msStatusText.text = "游戏系统开放中";
 
-          state = "online"
+          state = "online";
           break;
         case "preparingCountDown":
           // 判断场景
@@ -227,7 +227,7 @@ function startGame() {
             gsBannerText.text = "正在计算结果";
           }
 
-          state = "calculateResult"
+          state = "calculateResult";
           break;
         case "onResult":
           // 判断场景
@@ -586,6 +586,14 @@ function startGame() {
     bulletinBanner.width = displayWidth * 0.6;
     bulletinBanner.height = bulletinBanner.width / (525 / 750);
     bulletinGroup.add(bulletinBanner);
+
+    // // bulletin text
+    // var bulletinText = game.add.text(bulletinBanner.width / 2, bulletinBanner.height / 2, "暂无公告", {
+    //   fill: "#FFFFFF",
+    //   fontSize: "16px"
+    // });
+    // bulletinText.anchor.set(0.5);
+    // bulletinGroup.add(bulletinText);
 
     totalHeight += bulletinBanner.height + 12;
 
@@ -1446,5 +1454,5 @@ function startGame() {
         console.log("成功获取用户数据");
       }
     });
-  };
+  }
 }

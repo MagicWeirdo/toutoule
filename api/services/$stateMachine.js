@@ -5,9 +5,9 @@ module.exports = {
     return {
       io: null,
       state: "offline",
-      preparingPeriod: 10, // 游戏准备倒计时
-      gamePeriod: 20, // 游戏掷骰子倒计时
-      mode: "manual",
+      preparingPeriod: 20, // 游戏准备倒计时
+      gamePeriod: 60, // 游戏掷骰子倒计时
+      mode: "auto",
       /**
        * @public
        * @param {io} io
@@ -392,7 +392,7 @@ module.exports = {
           socket.emit("kick");
 
           // 向大厅玩家广播当前游戏状态
-          self.io.to("hall").emit("updateStatus", { state: self.getState() })
+          self.io.to("hall").emit("updateStatus", { state: self.getState() });
 
           $logger.log("玩家退出游戏");
         });
@@ -437,44 +437,36 @@ module.exports = {
         // 向管理员广播游戏上线
         self.io.to("admin").emit("updateStatus", { state: "online" });
 
-        // 如果是自动模式
-        if(self.getMode() === "auto") {
-          var waitInterval = setInterval(function() {
-            // 如果管理员强制下线
-            if(self.getState() === "offline") {
-              clearInterval(waitInterval);
+        // 开始游戏倒计时
+        var waitInterval = setInterval(function() {
+          // 如果管理员强制下线
+          if(self.getState() === "offline") {
+            clearInterval(waitInterval);
 
-              // 将等待室中的玩家踢出，并加入大厅
-              var sockets = self.findSocketsByRoom("wait");
-              sockets.forEach(function(socket) {
-                socket.leave("wait");
-                socket.join("hall");
-              });
+            // 将等待室的玩家踢出，并加入大厅
+            var sockets = self.findSocketsByRoom("wait");
+            sockets.forEach(function(socket) {
+              socket.leave("wait");
+              socket.join("hall");
+            });
 
-              // 向大厅的玩家广播游戏状态
-              self.io.to("hall").emit("updateStatus", { state: "offline" });
+            // 向大厅中的玩家广播状态
+            self.io.to("hall").emit("updateStatus", { state: "offline" });
 
-              // 向管理员广播游戏状态
-              self.io.to("hall").emit("updateStatus", { state: "offline" });
+            // 向管理员广播游戏状态
+            self.io.to("admin").emit("updateStatus", { state: "offline" });
 
-              return;
-            }
+            return;
+          }
 
-            // 如果游戏模式被更改为 manual
-            if(self.getMode() === "manual") {
-              clearInterval(waitInterval);
-              return;
-            }
+          // 如果玩家人数大于零，且游戏模式为 online
+          if(self.countReadiedPlayers() > 0 && self.getState() === "online") {
+            clearInterval(waitInterval);
 
-            // 玩家人数大于零，且游戏状态为 online
-            if(self.countReadiedPlayers() > 0 && self.getState() === "online") {
-              clearInterval(waitInterval);
-
-              // begin preparing count down
-              self.beginPreparingCountdown();
-            }
-          }, 1000);
-        }
+            // begin preparing count down
+            self.beginPreparingCountdown();
+          }
+        });
       },
       /**
        * @public

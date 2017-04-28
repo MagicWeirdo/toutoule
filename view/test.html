@@ -3,8 +3,145 @@
 <head>
   <meta charset="utf-8">
   <title>兼容性测试</title>
+  <!-- <script src="/static/js/phaser.min.js"></script>
+  <script>
+    var game = new Phaser.Game(
+      window.innerWidth,
+      window.innerHeight,
+      Phaser.CANVAS,
+      "canvas",
+      {
+        preload: preload,
+        create: create,
+        update: update,
+        render: render
+      }
+    );
+
+    // List View
+    function ListView(game, x, y, parent) {
+      this.game = game;
+      this.x = x;
+      this.y = y;
+      this.parent = parent || null;
+      this.width = window.innerWidth;
+      this.height = window.innerHeight;
+    }
+
+    ListView.prototype.setWidth = function(width) {
+      this.group.width = width;
+    };
+
+    ListView.prototype.setHeight = function(height) {
+      this.group.height = height;
+    };
+
+    ListView.prototype.setAdapter = function(adapter) {
+      this.adapter = adapter;
+
+      // 绘制列表
+      this.onDraw();
+    };
+
+    ListView.prototype.onDraw = function() {
+      // 判断 parent 是否存在 & 创建容器
+      if(this.parent === null) {
+        this.group = this.game.add.group();
+      }else {
+        this.parent = this.game.add.group(this.parent);
+      }
+
+      // 设置位置
+      this.group.x = this.x;
+      this.group.y = this.y;
+
+      // 设置高宽
+      this.group.width = this.width;
+      this.group.height = this.height;
+
+      // 最大高宽
+      var maximumWidth = this.width;
+      var maximumHeight = this.height;
+
+      // 获取 item 数量
+      var count = this.adapter.getCount();
+
+      var positionX = 0;
+      var positionY = 0;
+
+      // 可见子 View 容器
+      this.visibleItems = [];
+
+      for(var i = 0;i < count;i++) {
+        // 创建子 View 容器
+        var container = this.game.group(this.group);
+        container.x = positionX;
+        container.y = positionY;
+        container.width = maximumWidth;
+
+        // 绘制
+        var itemView = this.adapter.getView(i, container);
+
+        positionY += itemView.height;
+
+        this.visibleItems.push(itemView);
+
+        if(positionY >= maximumWidth) {
+          break;
+        }
+      }
+
+
+    };
+
+    // 适配器
+    function Adapter(game, list) {
+      this.game = game;
+      this.list = list;
+    }
+
+    Adapter.prototype.getCount = function() {
+      return this.list.length;
+    };
+
+    Adapter.prototype.getItem = function(position) {
+      return this.list[position];
+    };
+
+    Adapter.prototype.getItemId = function(position) {
+      return position;
+    };
+
+    Adapter.prototype.getView = function(position, group) {
+      var text = this.game.add.text(group.width / 2, group.height / 2, this.getItem(position), {
+        fill: "#FFFFFF",
+        fontSize: "16px"
+      });
+      text.anchor.set(0.5);
+      group.add(text);
+
+      return group;
+    };
+
+    function preload() {
+
+    }
+
+    function create() {
+
+    }
+
+    function update() {
+
+    }
+
+    function render() {
+
+    }
+  </script> -->
 </head>
 <body>
+  <!-- <div id="canvas"></div> -->
   <h1>兼容性测试<h1>
   <canvas>您的手机不支持canvas</canvas>
 </body>
