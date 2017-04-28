@@ -534,7 +534,8 @@ function startGame() {
     // username text
     msUsernameText = game.add.text(usernameBanner.width * 0.35, usernameBanner.height * 0.3, "无", {
       fill: "#FFFFFF",
-      fontSize: usernameBanner.height * 0.4 + "px"
+      fontSize: usernameBanner.height * 0.4 + "px",
+      fontWeight: "bold"
     });
     usernameGroup.add(msUsernameText);
 
@@ -553,7 +554,8 @@ function startGame() {
     // coin text
     msCoinText = game.add.text(coinBanner.width * 0.35, coinBanner.height * 0.3, "0", {
       fill: "#FFFFFF",
-      fontSize: coinBanner.height * 0.4 + "px"
+      fontSize: coinBanner.height * 0.4 + "px",
+      fontWeight: "bold"
     });
     coinGroup.add(msCoinText);
 
@@ -700,7 +702,8 @@ function startGame() {
     // username text
     gsUsernameText = game.add.text(usernameBanner.width * 0.35, usernameBanner.height * 0.3, "无", {
       fill: "#FFFFFF",
-      fontSize: usernameBanner.height * 0.4 + "px"
+      fontSize: usernameBanner.height * 0.4 + "px",
+      fontWeight: "bold"
     });
     usernameGroup.add(gsUsernameText);
 
@@ -719,7 +722,8 @@ function startGame() {
     // coin text
     gsCoinText = game.add.text(coinBanner.width * 0.35, coinBanner.height * 0.3, "0", {
       fill: "#FFFFFF",
-      fontSize: coinBanner.height * 0.4 + "px"
+      fontSize: coinBanner.height * 0.4 + "px",
+      fontWeight: "bold"
     });
     coinGroup.add(gsCoinText);
 
@@ -818,7 +822,8 @@ function startGame() {
     // banner text
     gsBannerText = game.add.text(playArea.width / 2, playArea.height / 2, "等待", {
       fill: "#FFFFFF",
-      fontSize: playArea.height * 0.1 + "px"
+      fontSize: playArea.height * 0.1 + "px",
+      fontWeight: "bold"
     });
     gsBannerText.anchor.set(0.5);
     playGroup.add(gsBannerText);
