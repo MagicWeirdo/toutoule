@@ -333,7 +333,11 @@ module.exports = {
               result: ""
             });
           }else {
-            $userService.topUpCoin(data, function(err) {
+            $userService.topUpCoin({
+              username: data.username,
+              amount: data.amount,
+              shouldRecord: true
+            }, function(err) {
               if(err) {
                 res.sendAsJson(200, {
                   isError: true,
@@ -381,7 +385,11 @@ module.exports = {
               result: ""
             });
           }else {
-            $userService.bottomDownCoin(data, function(err) {
+            $userService.bottomDownCoin({
+              username: data.username,
+              amount: data.amount,
+              shouldRecord: true
+            }, function(err) {
               if(err) {
                 res.sendAsJson(200, {
                   isError: true,

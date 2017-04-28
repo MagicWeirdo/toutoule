@@ -41,34 +41,18 @@ module.exports = {
                 if(user === null) {
                   callback("密码错误");
                 }else {
-                  // create a new token
-                  $authService.createToken({
-                    username: username,
-                    type: "normal"
-                  }, function(token) {
-                    callback(null, token);
-                  });
-
-                  // // check user state
-                  // if(user.isOnline === true) {
-                  //   callback("用户已经在线");
-                  // }else {
-                  //   // change state to online
-                  //   user.isOnline = true;
-                  //   user.save(function(err) {
-                  //     if(err) {
-                  //       throw err;
-                  //     }
-                  //
-                  //     // create a new token
-                  //     $authService.createToken({
-                  //       username: username,
-                  //       type: "normal"
-                  //     }, function(token) {
-                  //       callback(null, token);
-                  //     });
-                  //   });
-                  // }
+                  // 查询用户是否被注销
+                  if(user.state === "inactive") {
+                    callback("用户已被注销");
+                  }else {
+                    // create a new token
+                    $authService.createToken({
+                      username: username,
+                      type: "normal"
+                    }, function(token) {
+                      callback(null, token);
+                    });
+                  }
                 }
               });
             }
@@ -409,6 +393,7 @@ module.exports = {
       topUpCoin: function(option, callback) {
         var username = option.username;
         var amount = Number.parseInt(option.amount);
+        var shouldRecord = option.shouldRecord;
 
         $orm2.query(function(models) {
           var User = models.User;
@@ -438,15 +423,20 @@ module.exports = {
                     throw err;
                   }
 
-                  // 保存积分设置记录
-                  $coinService.saveCoinRecord({
-                    username: username,
-                    coin: amount,
-                    remainCoin: remainCoin
-                  }, function(coinRecord) {
-                    // 回调
+                  // 检查是否记录
+                  if(shouldRecord) {
+                    // 保存积分设置记录
+                    $coinService.saveCoinRecord({
+                      username: username,
+                      coin: amount,
+                      remainCoin: remainCoin
+                    }, function(coinRecord) {
+                      // 回调
+                      callback();
+                    });
+                  }else {
                     callback();
-                  });
+                  }
                 });
               }
             }
@@ -463,6 +453,7 @@ module.exports = {
       bottomDownCoin: function(option, callback) {
         var username = option.username;
         var amount = Number.parseInt(option.amount);
+        var shouldRecord = option.shouldRecord;
 
         $orm2.query(function(models) {
           var User = models.User;
@@ -492,15 +483,20 @@ module.exports = {
                     throw err;
                   }
 
-                  // 保存积分设置记录
-                  $coinService.saveCoinRecord({
-                    username: username,
-                    coin: amount,
-                    remainCoin: remainCoin
-                  }, function(coinRecord) {
-                    // 回调
+                  // 检查是否记录
+                  if(shouldRecord) {
+                    // 保存积分设置记录
+                    $coinService.saveCoinRecord({
+                      username: username,
+                      coin: amount,
+                      remainCoin: remainCoin
+                    }, function(coinRecord) {
+                      // 回调
+                      callback();
+                    });
+                  }else {
                     callback();
-                  });
+                  }
                 });
               }
             }

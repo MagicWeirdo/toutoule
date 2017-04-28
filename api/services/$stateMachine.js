@@ -7,8 +7,8 @@ module.exports = {
     return {
       io: null,
       state: "offline",
-      preparingPeriod: 20, // 游戏准备倒计时
-      gamePeriod: 60, // 游戏掷骰子倒计时
+      preparingPeriod: 10, // 游戏准备倒计时
+      gamePeriod: 20, // 游戏掷骰子倒计时
       mode: "auto",
       /**
        * @public
@@ -121,7 +121,7 @@ module.exports = {
         // 管理员开启自动模式
         socket.on("turnOnAutoMode", function() {
           // 只有当游戏状态为上线且游戏模式为手动时才能切换模式
-          if(self.getState() === "online" && self.getMode() === "manual") {
+          if((self.getState() === "online" || self.getState() === "preparingCountDown") && self.getMode() === "manual") {
             $logger.log("切换为自动模式");
 
             self.setMode("auto");
@@ -525,6 +525,9 @@ module.exports = {
             sockets.forEach(function(socket) {
               socket.leave("wait");
               socket.join("hall");
+
+              // 告知玩家被踢出
+              socket.emit("kick");
             });
 
             // 向大厅中的玩家广播游戏状态
@@ -535,16 +538,6 @@ module.exports = {
 
             return;
           }
-
-          // // 如果游戏模式被更改为手动
-          // if(self.getMode() === "manual") {
-          //   clearInterval(preparingInterval);
-          //
-          //   // go to online
-          //   self.turnOn();
-          //
-          //   return;
-          // }
 
           // 如果准备玩家人数为0，则停止计时
           if(self.countReadiedPlayers() === 0) {
@@ -793,7 +786,8 @@ module.exports = {
                 // 奖励 1:1
                 $userService.topUpCoin({
                   username: socket.player.username,
-                  amount: stake.coin
+                  amount: stake.coin,
+                  shouldRecord: false
                 }, function() {
                   // 保存游戏记录
                   $gameService.saveGameRecord({
@@ -813,7 +807,8 @@ module.exports = {
                 // 奖励 1:0.95
                 $userService.topUpCoin({
                   username: socket.player.username,
-                  amount: stake.coin * 0.95
+                  amount: stake.coin * 0.95,
+                  shouldRecord: false
                 }, function() {
                   // 保存游戏记录
                   $gameService.saveGameRecord({
@@ -833,7 +828,8 @@ module.exports = {
                 // 奖励 1:50
                 $userService.topUpCoin({
                   username: socket.player.username,
-                  amount: stake.coin * 50
+                  amount: stake.coin * 50,
+                  shouldRecord: false
                 }, function() {
                   // 保存游戏记录
                   $gameService.saveGameRecord({
@@ -852,7 +848,8 @@ module.exports = {
 
                 $userService.bottomDownCoin({
                   username: socket.player.username,
-                  amount: stake.coin
+                  amount: stake.coin,
+                  shouldRecord: false
                 }, function() {
                   // 保存游戏记录
                   $gameService.saveGameRecord({

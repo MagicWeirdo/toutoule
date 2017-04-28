@@ -49,8 +49,23 @@ function startGame() {
   var gsDice1;
   var gsDice2;
   var gsDice3;
+  var baoziButton;
+  var dice1;
+  var ya1;
+  var dice2;
+  var ya2;
+  var dice3;
+  var ya3;
+  var dice4;
+  var ya4;
+  var dice5;
+  var ya5;
+  var dice6;
+  var ya6;
   var danButton;
   var yiyadanButton;
+  var shuangButton;
+  var yiyashuangButton;
   var gsInputText;
   var gsYesButton;
   var gsStakedButton;
@@ -131,6 +146,12 @@ function startGame() {
     game.load.image("result4", "/static/assets/result4.png");
     game.load.image("result5", "/static/assets/result5.png");
     game.load.image("result6", "/static/assets/result6.png");
+    game.load.image("baozi1", "/static/assets/baozi/1.png");
+    game.load.image("baozi2", "/static/assets/baozi/2.png");
+    game.load.image("baozi3", "/static/assets/baozi/3.png");
+    game.load.image("baozi4", "/static/assets/baozi/4.png");
+    game.load.image("baozi5", "/static/assets/baozi/5.png");
+    game.load.image("baozi6", "/static/assets/baozi/6.png");
 
     console.log("游戏资源加载");
   }
@@ -207,7 +228,7 @@ function startGame() {
             }
           }else {
             // 显示秒数
-            gsBannerText.text = data.tick;
+            gsBannerText.text = "距离押注时间结束还有" + data.tick + "秒";
           }
 
           state = "gamingCountDown";
@@ -236,6 +257,9 @@ function startGame() {
           if(scene === "mainScene") {
             msStatusText.text = "等待中";
           }else {
+            // 隐藏状态文字
+            gsBannerText.visible = false;
+
             // 显示骰子
             gsDice1.visible = true;
             gsDice2.visible = true;
@@ -271,6 +295,9 @@ function startGame() {
       // 隐藏状态栏
       gsStatusText.visible = false;
 
+      // 显示等待栏
+      gsBannerText.visible = true;
+
       // 重置结果栏
       resultDanBanner.visible = false;
       resultShuangBanner.visible = false;
@@ -299,9 +326,28 @@ function startGame() {
       gsDice2.visible = false;
       gsDice3.visible = false;
 
-      // 重置danButton
+      // 重置 baoziButton
+      baoziButton.visible = true;
+      dice1.visible = false;
+      dice2.visible = false;
+      dice3.visible = false;
+      dice4.visible = false;
+      dice5.visible = false;
+      dice6.visible = false;
+      ya1.visible = false;
+      ya2.visible = false;
+      ya3.visible = false;
+      ya4.visible = false;
+      ya5.visible = false;
+      ya6.visible = false;
+
+      // 重置 danButton
       danButton.visible = true;
       yiyadanButton.visible = false;
+
+      // 重置 shuangButton
+      shuangButton.visible = true;
+      yiyashuangButton.visible = false;
 
       gsInputText.text = "0";
 
@@ -344,6 +390,8 @@ function startGame() {
 
     // 服务器通知被踢出
     socket.on("kick", function() {
+      console.log("被踢");
+
       // 隐藏和重置游戏界面
       gameScene.visible = false;
       gsUsernameText.text = "无";
@@ -564,20 +612,22 @@ function startGame() {
 
     // status group
     var statusGroup = game.add.group(mainScene);
-    statusGroup.x = (displayWidth * 0.5) / 2;
-    statusGroup.y = totalHeight + displayHeight * 0.1;
+    statusGroup.x = displayWidth * 0.22;
+    statusGroup.y = totalHeight + displayHeight * 0.075;
     statusGroup.z = 0;
 
     // status banner
     var statusBanner = game.add.image(0, 0, "statusBanner");
-    statusBanner.width = displayWidth * 0.5;
+    statusBanner.width = displayWidth * 0.56;
     statusBanner.height = statusBanner.width / (455 / 113);
     statusGroup.add(statusBanner);
 
     // status text
     msStatusText = game.add.text(statusBanner.width / 2, statusBanner.height / 2, "游戏系统关闭中", {
-      fill: "#FCFCFC",
-      fontSize: statusBanner.height * 0.3 + "px"
+      fill: "#9D662C",
+      fontSize: statusBanner.height * 0.28 + "px",
+      stroke: "#FFFFFF",
+      strokeThickness: 5
     });
     msStatusText.anchor.set(0.5);
     statusGroup.add(msStatusText);
@@ -732,9 +782,11 @@ function startGame() {
 
     // status text
     gsStatusText = game.add.text(displayWidth / 2, totalHeight + displayHeight * 0.05, "", {
-      fill: "#FFFFFF",
-      fontSize: gsCoinText.height * 1.0 + "px",
-      fontWeight: "bold"
+      fill: "#9D662C",
+      fontSize: gsCoinText.height * 0.8 + "px",
+      fontWeight: "bold",
+      stroke: "#FFFFFF",
+      strokeThickness: 5
     });
     gsStatusText.anchor.set(0.5, 0.0);
     gameScene.add(gsStatusText);
@@ -745,13 +797,13 @@ function startGame() {
 
     // play group
     var playGroup = game.add.group(gameScene);
-    playGroup.x = (displayWidth * 0.4) / 2;
+    playGroup.x = displayWidth * 0.125;
     playGroup.y = totalHeight + displayHeight * 0.1;
     playGroup.z = 0;
 
     // play area
     var playArea = game.add.image(0, 0, "playArea");
-    playArea.width = displayWidth * 0.6;
+    playArea.width = displayWidth * 0.75;
     playArea.height = playArea.width / (583 / 410);
     playGroup.add(playArea);
 
@@ -821,9 +873,11 @@ function startGame() {
 
     // banner text
     gsBannerText = game.add.text(playArea.width / 2, playArea.height / 2, "等待", {
-      fill: "#FFFFFF",
-      fontSize: playArea.height * 0.1 + "px",
-      fontWeight: "bold"
+      fill: "#9D662C",
+      fontSize: playArea.height * 0.08 + "px",
+      fontWeight: "bold",
+      stroke: "#FFFFFF",
+      strokeThickness: 5
     });
     gsBannerText.anchor.set(0.5);
     playGroup.add(gsBannerText);
@@ -975,7 +1029,7 @@ function startGame() {
     choiceGroup.z = 0;
 
     // baozi button
-    var baoziButton = game.add.button(displayWidth * 0.05, 0, "baozi", function() {
+    baoziButton = game.add.button(displayWidth * 0.05, 0, "baozi", function() {
       // 若允许押注
       if(allowStake) {
         // 检查豹子按钮的状态
@@ -1023,7 +1077,7 @@ function startGame() {
     var totalWidth = baoziButton.width;
 
     // dice1
-    var dice1 = game.add.button(totalWidth + displayWidth * 0.075, 0, "dice1", function() {
+    dice1 = game.add.button(totalWidth + displayWidth * 0.075, 0, "baozi1", function() {
       // 若允许押注
       if(allowStake) {
         stake.type = "b1";
@@ -1053,7 +1107,7 @@ function startGame() {
     dice1.visible = false;
 
     // ya1
-    var ya1 = game.add.button(totalWidth + displayWidth * 0.075, 0, "ya1");
+    ya1 = game.add.button(totalWidth + displayWidth * 0.075, 0, "ya1");
     ya1.width = baoziButton.height * 0.8;
     ya1.height = ya1.width / (57 / 64);
     choiceGroup.add(ya1);
@@ -1062,7 +1116,7 @@ function startGame() {
     totalWidth += displayWidth * 0.075 + dice1.width;
 
     // dice2
-    var dice2 = game.add.button(totalWidth + displayWidth * 0.01, 0, "dice2", function() {
+    dice2 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi2", function() {
       // 若允许押注
       if(allowStake) {
         stake.type = "b2";
@@ -1092,7 +1146,7 @@ function startGame() {
     dice2.visible = false;
 
     // ya2
-    var ya2 = game.add.button(totalWidth + displayWidth * 0.01, 0, "ya2");
+    ya2 = game.add.button(totalWidth + displayWidth * 0.01, 0, "ya2");
     ya2.width = baoziButton.height * 0.8;
     ya2.height = ya2.width / (57 / 68);
     choiceGroup.add(ya2);
@@ -1101,7 +1155,7 @@ function startGame() {
     totalWidth += dice2.width + displayWidth * 0.01;
 
     // dice3
-    var dice3 = game.add.button(totalWidth + displayWidth * 0.01, 0, "dice3", function() {
+    dice3 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi3", function() {
       // 若允许押注
       if(allowStake) {
         stake.type = "b3";
@@ -1131,7 +1185,7 @@ function startGame() {
     dice3.visible = false;
 
     // ya3
-    var ya3 = game.add.button(totalWidth + displayWidth * 0.01, 0, "ya3");
+    ya3 = game.add.button(totalWidth + displayWidth * 0.01, 0, "ya3");
     ya3.width = baoziButton.height * 0.8;
     ya3.height = ya3.width / (57 / 64);
     choiceGroup.add(ya3);
@@ -1140,7 +1194,7 @@ function startGame() {
     totalWidth += dice3.width + displayWidth * 0.01;
 
     // dice4
-    var dice4 = game.add.button(totalWidth + displayWidth * 0.01, 0, "dice4", function() {
+    dice4 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi4", function() {
       // 若允许押注
       if(allowStake) {
         stake.type = "b4";
@@ -1170,7 +1224,7 @@ function startGame() {
     dice4.visible = false;
 
     // ya4
-    var ya4 = game.add.button(totalWidth + displayWidth * 0.01, 0, "ya4");
+    ya4 = game.add.button(totalWidth + displayWidth * 0.01, 0, "ya4");
     ya4.width = baoziButton.height * 0.8;
     ya4.height = ya4.width / (57 / 64);
     choiceGroup.add(ya4);
@@ -1179,7 +1233,7 @@ function startGame() {
     totalWidth += dice4.width + displayWidth * 0.01;
 
     // dice 5
-    var dice5 = game.add.button(totalWidth + displayWidth * 0.01, 0, "dice5", function() {
+    dice5 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi5", function() {
       // 若允许押注
       if(allowStake) {
         stake.type = "b5";
@@ -1209,7 +1263,7 @@ function startGame() {
     dice5.visible = false;
 
     // ya5
-    var ya5 = game.add.button(totalWidth + displayWidth * 0.01, 0, "ya5");
+    ya5 = game.add.button(totalWidth + displayWidth * 0.01, 0, "ya5");
     ya5.width = baoziButton.height * 0.8;
     ya5.height = ya5.width / (57 / 64);
     choiceGroup.add(ya5);
@@ -1218,7 +1272,7 @@ function startGame() {
     totalWidth += dice5.width + displayWidth * 0.01;
 
     // dice 6
-    var dice6 = game.add.button(totalWidth + displayWidth * 0.01, 0, "dice6", function() {
+    dice6 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi6", function() {
       // 若允许押注
       if(allowStake) {
         stake.type = "b6";
@@ -1248,7 +1302,7 @@ function startGame() {
     dice6.visible = false;
 
     // ya6
-    var ya6 = game.add.button(totalWidth + displayWidth * 0.01, 0, "ya6");
+    ya6 = game.add.button(totalWidth + displayWidth * 0.01, 0, "ya6");
     ya6.width = baoziButton.height * 0.8;
     ya6.height = ya6.width / (57 / 64);
     choiceGroup.add(ya6);
@@ -1283,7 +1337,7 @@ function startGame() {
     yiyadanButton.visible = false;
 
     // shuang button
-    var shuangButton = game.add.button(baoziButton.width + danButton.width + displayWidth * 0.1, 0, "shuang", function() {
+    shuangButton = game.add.button(baoziButton.width + danButton.width + displayWidth * 0.1, 0, "shuang", function() {
       // 若允许押注
       if(allowStake) {
         stake.type = "s";
@@ -1302,7 +1356,7 @@ function startGame() {
     choiceGroup.add(shuangButton);
 
     // yiyashuang button
-    var yiyashuangButton = game.add.button(baoziButton.width + danButton.width + displayWidth * 0.1, 0, "yiyashuang");
+    yiyashuangButton = game.add.button(baoziButton.width + danButton.width + displayWidth * 0.1, 0, "yiyashuang");
     yiyashuangButton.width = displayWidth * 0.25;
     yiyashuangButton.height = yiyashuangButton.width / (188 / 70);
     choiceGroup.add(yiyashuangButton);
