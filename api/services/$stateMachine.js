@@ -3,7 +3,7 @@
 module.exports = {
   scope: "singleton",
   name: "$stateMachine",
-  factory: function($validator, $authService, $gameService, $userService, $logger) {
+  factory: function($validator, $authService, $gameService, $userService, $adminService, $logger) {
     return {
       io: null,
       state: "offline",
@@ -64,7 +64,17 @@ module.exports = {
                 }else {
                   // 判断用户类型
                   if(data.type === "admin") {
-                    self._handleAdminRegistry(socket);
+                    // 绑定管理员信息
+                    socket.admin = {
+                      username: username
+                    };
+
+                    // 修改管理员状态为已登录
+                    $adminService.markAsLoggedIn({
+                      username: username
+                    }, function() {
+                      self._handleAdminRegistry(socket);
+                    });
                   }else if(data.type === "normal") {
                     // 绑定玩家信息
                     socket.player = {
@@ -227,6 +237,15 @@ module.exports = {
             // 开始计算结果
             self.calculateResult(result);
           }
+        });
+
+        // 处理管理员掉线问题
+        socket.on("disconnect", function() {
+          $adminService.logout({
+            username: socket.admin.username
+          }, function() {
+            $logger.log("管理员掉线");
+          });
         });
       },
       /**
@@ -435,7 +454,7 @@ module.exports = {
           $logger.log("玩家结束");
         });
 
-        // TODO: 编写玩家断线的逻辑
+        // 处理玩家掉线问题
         socket.on("disconnect", function() {
           $userService.logout({
             username: socket.player.username

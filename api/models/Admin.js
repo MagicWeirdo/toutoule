@@ -9,7 +9,8 @@ module.exports = {
       username: { type: "text", size: 12, required: true, unique: true },
       password: { type: "text", size: 16, required: true },
       date: { type: "integer", size: 8, required: true },
-      token: { type: "text", size: 64, unique: true }
+      token: { type: "text", size: 64, unique: true },
+      isOnline: { type: "boolean", defaultValue: false }
     }, {
       validations: {
         username: orm.enforce.required("用户名不能为空"),
