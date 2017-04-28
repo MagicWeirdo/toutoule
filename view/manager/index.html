@@ -122,7 +122,7 @@
 
                 <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div id="statusText" class="panel-heading">当前系统状态：系统下线中，当前为自动模式</div></div>
+                    <div id="statusText" class="panel-heading">当前系统状态：无</div></div>
                   <!--   Kitchen Sink -->
                   <div class="panel panel-default">
                     <div class="panel-heading">当前游戏押注结果</div>
@@ -314,6 +314,9 @@
                   console.log("接收到请求");
                 });
 
+                // 告诉服务器页面加载完成
+                socket.emit("fullyLoaded");
+
                 // 监听状态改变
                 socket.on("updateStatus", function(data) {
                   switch (data.state) {
@@ -322,7 +325,7 @@
                       state = "offline";
 
                       // 更新状态栏
-                      $("#statusText").html("当前游戏状态：系统下线中，当前为" + (mode === "manual" ? "手动模式" : "自动模式"));
+                      $("#statusText").html("当前游戏状态：系统下线中");
 
                       // 更新状态吧
                       $("#statusBanner").html("当前游戏状态：游戏未上线");

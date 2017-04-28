@@ -106,13 +106,21 @@ module.exports = {
         // 加入管理员频道
         socket.join("admin");
 
-        // 初次进入向玩家广播人数
-        socket.emit("updateOnlinePlayers", { number: self.numOfOnlinePlayers });
+        // 监听管理员是否加载完成
+        socket.on("fullyLoaded", function() {
+          // 向管理员广播玩家人数
+          socket.emit("updateOnlinePlayers", { number: self.numOfOnlinePlayers });
 
-        // 第一次连接，且状态为 online，或状态为 onWait 且模式为 manual，则广播状态
-        if(self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
-          socket.emit("updateStatus", { state: self.getState() });
-        }
+          // 向管理员广播当前游戏状态
+          if(self.getState() === "offline" || self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
+            socket.emit("updateStatus", { state: self.getState() });
+          }
+        });
+
+        // // 第一次连接，且状态为 online，或状态为 onWait 且模式为 manual，则广播状态
+        // if(self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
+        //   socket.emit("updateStatus", { state: self.getState() });
+        // }
 
         // 管理员上线游戏
         socket.on("turnOn", function() {
