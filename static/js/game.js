@@ -255,7 +255,7 @@ function startGame() {
         case "onResult":
           // 判断场景
           if(scene === "mainScene") {
-            msStatusText.text = "等待中";
+            msStatusText.text = "等待结果中";
           }else {
             // 隐藏状态文字
             gsBannerText.visible = false;
@@ -274,7 +274,7 @@ function startGame() {
           state = "onResult";
           break;
         case "waitting":
-          msStatusText.text = "等待中";
+          msStatusText.text = "等待结束中";
           state = "waitting";
 
           break;

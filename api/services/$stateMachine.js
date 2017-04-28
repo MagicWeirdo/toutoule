@@ -7,8 +7,8 @@ module.exports = {
     return {
       io: null,
       state: "offline",
-      preparingPeriod: 10, // 游戏准备倒计时
-      gamePeriod: 20, // 游戏掷骰子倒计时
+      preparingPeriod: 20, // 游戏准备倒计时
+      gamePeriod: 40, // 游戏掷骰子倒计时
       mode: "auto",
       /**
        * @public
