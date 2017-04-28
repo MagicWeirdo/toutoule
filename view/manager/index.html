@@ -110,6 +110,7 @@
                         <h1 class="page-head-fonts">设置游戏结果</h1>
                   </div>
                   <div class="col-md-2">
+                      <div id="numOfOnlinePlayers">当前玩家在线人数：0</div>
                         <!-- <button id="btnStartGame" type="button" class="btn-create btn-lg btn-primary">开始游戏</button> -->
                     </div>
                     <div class="col-md-12">
@@ -304,6 +305,13 @@
                 // 点击可开始游戏
                 $("#btnStartGame").click(function() {
                   socket.emit("startGame");
+                });
+
+                // 更新在线玩家人数
+                socket.on("updateOnlinePlayers", function(data) {
+                  $("#numOfOnlinePlayers").html("当前玩家在线人数：" + data.number);
+
+                  console.log("接收到请求");
                 });
 
                 // 监听状态改变

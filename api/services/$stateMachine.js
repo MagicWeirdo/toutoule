@@ -10,6 +10,7 @@ module.exports = {
       preparingPeriod: 20, // 游戏准备倒计时
       gamePeriod: 40, // 游戏掷骰子倒计时
       mode: "auto",
+      numOfOnlinePlayers: 0,
       /**
        * @public
        * @param {io} io
@@ -75,6 +76,12 @@ module.exports = {
                     $userService.markAsLoggedIn({
                       username: username
                     }, function() {
+                      // 在线玩家人数 +1
+                      self.numOfOnlinePlayers++;
+
+                      // 向管理员广播玩家人数
+                      self.io.to("admin").emit("updateOnlinePlayers", { number: self.numOfOnlinePlayers });
+
                       self._handlePlayerRegistry(socket);
                     });
                   }
@@ -98,6 +105,9 @@ module.exports = {
 
         // 加入管理员频道
         socket.join("admin");
+
+        // 初次进入向玩家广播人数
+        socket.emit("updateOnlinePlayers", { number: self.numOfOnlinePlayers });
 
         // 第一次连接，且状态为 online，或状态为 onWait 且模式为 manual，则广播状态
         if(self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
@@ -423,6 +433,12 @@ module.exports = {
             username: socket.player.username
           }, function() {
             $logger.log("用户掉线");
+
+            // 在线人数 -1
+            self.numOfOnlinePlayers--;
+
+            // 向管理员广播玩家人数
+            self.io.to("admin").emit("updateOnlinePlayers", { number: self.numOfOnlinePlayers });
           });
         });
       },
