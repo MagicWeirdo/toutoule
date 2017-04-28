@@ -11,8 +11,8 @@ function startGame() {
   });
 
   var game = new Phaser.Game(
-    $("#body").outerWidth(),
-    $("#body").outerHeight(),
+    $(window).width() > $("body").outerWidth() ? $(window).width() : $("body").outerWidth(),
+    $(window).height() > $("body").outerHeight() ? $(window).height() : $("body").outerHeight(),
     Phaser.CANVAS,
     "canvas",
     {
@@ -577,7 +577,7 @@ function startGame() {
     // status text
     msStatusText = game.add.text(statusBanner.width / 2, statusBanner.height / 2, "游戏系统关闭中", {
       fill: "#FCFCFC",
-      fontSize: statusBanner.height * 0.25 + "px"
+      fontSize: statusBanner.height * 0.3 + "px"
     });
     msStatusText.anchor.set(0.5);
     statusGroup.add(msStatusText);
