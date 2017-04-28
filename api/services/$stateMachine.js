@@ -434,6 +434,9 @@ module.exports = {
         // 向在大厅的玩家广播游戏上线
         self.io.to("hall").emit("updateStatus", { state: "online" });
 
+        // 向等待室的玩家广播游戏上线
+        self.io.to("wait").emit("updateStatus", { state: "online" });
+
         // 向管理员广播游戏上线
         self.io.to("admin").emit("updateStatus", { state: "online" });
 
