@@ -71,7 +71,12 @@ module.exports = {
                       isStaked: false // 标记是否已押注
                     };
 
-                    self._handlePlayerRegistry(socket);
+                    // 修改玩家状态为已登录
+                    $userService.markAsLoggedIn({
+                      username: username
+                    }, function() {
+                      self._handlePlayerRegistry(socket);
+                    });
                   }
                 }
               });

@@ -45,17 +45,55 @@ module.exports = {
                   if(user.state === "inactive") {
                     callback("用户已被注销");
                   }else {
-                    // create a new token
-                    $authService.createToken({
-                      username: username,
-                      type: "normal"
-                    }, function(token) {
-                      callback(null, token);
-                    });
+                    // 检查用户是否已登录
+                    if(user.isOnline) {
+                      callback("用户已登录");
+                    }else {
+                      // create a new token
+                      $authService.createToken({
+                        username: username,
+                        type: "normal"
+                      }, function(token) {
+                        callback(null, token);
+                      });
+                    }
                   }
                 }
               });
             }
+          });
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * mark the user as logged in
+      **/
+      markAsLoggedIn: function(option, callback) {
+        var username = option.username;
+
+        $orm2.query(function(models) {
+          var User = models.User;
+
+          // 查找用户
+          User.one({
+            username: username
+          }, function(err, user) {
+            if(err) {
+              throw err;
+            }
+
+            // 将状态改为已登录
+            user.isOnline = true;
+            user.save(function(err) {
+              if(err) {
+                throw err;
+              }
+
+              callback();
+            });
           });
         });
       },
