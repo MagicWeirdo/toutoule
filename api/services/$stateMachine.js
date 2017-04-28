@@ -469,7 +469,7 @@ module.exports = {
             // begin preparing count down
             self.beginPreparingCountdown();
           }
-        });
+        }, 1000);
       },
       /**
        * @public

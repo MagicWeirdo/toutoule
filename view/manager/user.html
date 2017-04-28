@@ -216,21 +216,33 @@
                 // 开启游戏
                 $("#turnOn").click(function() {
                   socket.emit("turnOn");
+
+                  // 跳转页面至控制界面
+                  window.location.replace("/manager/main");
                 });
 
                 // 关闭游戏
                 $("#turnOff").click(function() {
                   socket.emit("turnOff");
+
+                  // 跳转页面至控制界面
+                  window.location.replace("/manager/main");
                 });
 
                 // 开启自动模式按钮
                 $("#turnOnAutoMode").click(function() {
                   socket.emit("turnOnAutoMode");
+
+                  // 跳转页面至控制界面
+                  window.location.replace("/manager/main");
                 });
 
                 // 开启手动模式按钮
                 $("#turnOnManualMode").click(function() {
                   socket.emit("turnOnManualMode");
+
+                  // 跳转页面至控制界面
+                  window.location.replace("/manager/main");
                 });
 
                 // 获取 url 中的参数
