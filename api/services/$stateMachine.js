@@ -73,6 +73,9 @@ module.exports = {
                     $adminService.markAsLoggedIn({
                       username: username
                     }, function() {
+                      // 发送验证通过
+                      socket.emit("verified");
+
                       self._handleAdminRegistry(socket);
                     });
                   }else if(data.type === "normal") {
@@ -125,6 +128,9 @@ module.exports = {
           if(self.getState() === "offline" || self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
             socket.emit("updateStatus", { state: self.getState() });
           }
+
+          // 向管理员广播游戏模式
+          self.io.to("admin").emit("updateMode", { mode: self.getMode() });
         });
 
         // // 第一次连接，且状态为 online，或状态为 onWait 且模式为 manual，则广播状态
@@ -162,8 +168,8 @@ module.exports = {
             // 向管理员广播游戏模式的改变
             self.io.to("admin").emit("updateMode", { mode: "auto" });
 
-            // 再次开启
-            self.turnOn();
+            // // 再次开启
+            // self.turnOn();
           }
         });
 
@@ -173,10 +179,10 @@ module.exports = {
           if((self.getState() === "online" || self.getState() === "preparingCountDown") && self.getMode() === "auto") {
             $logger.log("切换为手动模式");
 
+            self.setMode("manual");
+
             // 向管理员广播游戏模式的改变
             self.io.to("admin").emit("updateMode", { mode: "manual" });
-
-            self.setMode("manual");
           }
         });
 
@@ -534,21 +540,21 @@ module.exports = {
         // 修改状态
         self.setState("offline");
 
-        // 若模式为手动模式
-        if(self.getMode() === "manual") {
-          // 将等待室的玩家踢出，加入大厅
-          var sockets = self.findSocketsByRoom("wait");
-          sockets.forEach(function(socket) {
-            socket.leave("wait");
-            socket.join("hall");
-          });
-
-          // 向大厅的玩家广播游戏下线
-          self.io.to("hall").emit("updateStatus", { state: "offline" });
-
-          // 向管理员广播游戏下线
-          self.io.to("admin").emit("updateStatus", { state: "offline" });
-        }
+        // // 若模式为手动模式
+        // if(self.getMode() === "manual") {
+        //   // 将等待室的玩家踢出，加入大厅
+        //   var sockets = self.findSocketsByRoom("wait");
+        //   sockets.forEach(function(socket) {
+        //     socket.leave("wait");
+        //     socket.join("hall");
+        //   });
+        //
+        //   // 向大厅的玩家广播游戏下线
+        //   self.io.to("hall").emit("updateStatus", { state: "offline" });
+        //
+        //   // 向管理员广播游戏下线
+        //   self.io.to("admin").emit("updateStatus", { state: "offline" });
+        // }
       },
       /**
        * @public
@@ -855,13 +861,13 @@ module.exports = {
                 // 奖励 1:0.95
                 $userService.topUpCoin({
                   username: socket.player.username,
-                  amount: stake.coin * 0.95,
+                  amount: stake.coin,
                   shouldRecord: false
                 }, function() {
                   // 保存游戏记录
                   $gameService.saveGameRecord({
                     stake: "s",
-                    reward: stake.coin * 0.95,
+                    reward: stake.coin,
                     gameRoundId: gameRound.id,
                     username: socket.player.username
                   }, function() {

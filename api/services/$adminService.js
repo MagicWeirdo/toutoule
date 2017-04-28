@@ -132,8 +132,8 @@ module.exports = {
             }
 
             // 修改管理员状态
-            user.isOnline = false;
-            user.save(function(err) {
+            admin.isOnline = false;
+            admin.save(function(err) {
               if(err) {
                 throw err;
               }

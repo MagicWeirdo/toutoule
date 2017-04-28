@@ -314,8 +314,11 @@
                   console.log("接收到请求");
                 });
 
-                // 告诉服务器页面加载完成
-                socket.emit("fullyLoaded");
+                // 服务器告知验证通过
+                socket.on("verified", function() {
+                  // 告诉服务器页面加载完成
+                  socket.emit("fullyLoaded");
+                });
 
                 // 监听状态改变
                 socket.on("updateStatus", function(data) {
