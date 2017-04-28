@@ -3,9 +3,7 @@ module.exports = function($userService, $adminService, $stateMachine, io) {
   $userService.resetAllUsersState(function() {
     // initialize game service
     // 重置管理员状态
-    $adminService.logout({
-      username: "admin"
-    }, function() {
+    $adminService.resetAdmin(function() {
       $stateMachine.init(io);
     });
   });

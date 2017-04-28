@@ -182,6 +182,38 @@ module.exports = {
             }
           });
         });
+      },
+      /**
+       * @public
+       * @param {Function} callback
+       * @desc
+       * reset admin state
+      **/
+      resetAdmin: function(callback) {
+        $orm2.query(function(models) {
+          var Admin = models.Admin;
+
+          // 查找管理员
+          Admin.one({
+            username: "admin"
+          }, function(err, admin) {
+            if(err) {
+              throw err;
+            }
+
+            // 如果管理员存在
+            if(admin !== null) {
+              admin.isOnline = false;
+              admin.save(function(err) {
+                if(err) {
+                  throw err;
+                }
+
+                callback();
+              });
+            }
+          });
+        });
       }
     };
   }
