@@ -247,16 +247,7 @@ function startGame() {
           if(scene === "mainScene") {
             msStatusText.text = "正在计算结果";
           }else {
-            gsBannerText.text = "正在计算结果";
-          }
-
-          state = "calculateResult";
-          break;
-        case "onResult":
-          // 判断场景
-          if(scene === "mainScene") {
-            msStatusText.text = "等待结果中";
-          }else {
+            // gsBannerText.text = "正在计算结果";
             // 隐藏状态文字
             gsBannerText.visible = false;
 
@@ -269,6 +260,17 @@ function startGame() {
             gsDice1.play("rotate");
             gsDice2.play("rotate");
             gsDice3.play("rotate");
+          }
+
+          state = "calculateResult";
+          break;
+        case "onResult":
+          // 判断场景
+          if(scene === "mainScene") {
+            msStatusText.text = "等待结果中";
+          }else {
+            // // 隐藏状态文字
+            // gsBannerText.visible = false;
           }
 
           state = "onResult";
