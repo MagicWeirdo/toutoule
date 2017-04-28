@@ -791,7 +791,55 @@ module.exports = {
 
         if(result === null) {
           // 生成结果
-          result = $gameService.random();
+          // result = $gameService.random();
+
+          // 统计数据
+          let statics = {
+            danCoin: 0,
+            shuangCoin: 0
+          };
+
+          // 遍历游戏室所有玩家
+          let sockets = self.findSocketsByRoom("game");
+          sockets.forEach(function(socket) {
+            let stake = socket.player.stake;
+
+            switch(stake.type) {
+              case "d":
+                statics.danCoin += stake.coin;
+                break;
+              case "s":
+                statics.shuangCoin += stake.coin;
+                break;
+            }
+          });
+
+          // 判断大小
+          if(statics.danCoin > statics.shuangCoin) {
+            while(true) {
+              result = $gameService.random();
+
+              if(result.type === "s") {
+                break;
+              }
+            }
+          }else if(statics.danCoin < statics.shuangCoin) {
+            while (true) {
+              result = $gameService.random();
+
+              if(result.type === "d") {
+                break;
+              }
+            }
+          }else {
+            while(true) {
+              result = $gameService.random();
+
+              if(result.type === "d" || result.type === "s") {
+                break;
+              }
+            }
+          }
         }
 
         // 保存游戏回合
