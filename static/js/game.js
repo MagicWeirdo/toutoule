@@ -1,3 +1,5 @@
+/* jshint esversion: 3 */
+
 function startGame() {
   // open WebSocket
   var socket = io();
