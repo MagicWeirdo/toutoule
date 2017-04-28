@@ -480,8 +480,13 @@ function startGame() {
     });
   }
 
-  function update() {
+  var isServerNotified = false;
 
+  function update() {
+    if(isServerNotified === false) {
+      socket.emit("fullyLoaded");
+      isServerNotified = true;
+    }
   }
 
   function render() {

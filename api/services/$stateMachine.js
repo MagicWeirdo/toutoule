@@ -223,13 +223,13 @@ module.exports = {
         // 玩家加入大厅
         socket.join("hall");
 
-        // 只有当状态为 online/gamingCountDown 且 mode 为 manual 的情况下才有必要推送
-        if(self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
-          // 因为 bug 所以得延迟发送
-          setTimeout(function() {
+        // 监听用户游戏加载完成
+        socket.on("fullyLoaded", function() {
+          // 只有当状态为 online/gamingCountDown 且 mode 为 manual 的情况下才有必要推送
+          if(self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
             socket.emit("updateStatus", { state: self.getState() });
-          }, 1000);
-        }
+          }
+        });
 
         // 玩家准备游戏
         socket.on("ready", function() {
