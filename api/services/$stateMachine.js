@@ -8,7 +8,7 @@ module.exports = {
       io: null,
       state: "offline",
       preparingPeriod: 20, // 游戏准备倒计时
-      gamePeriod: 40, // 游戏掷骰子倒计时
+      gamePeriod: 25, // 游戏掷骰子倒计时
       mode: "auto",
       numOfOnlinePlayers: 0,
       /**
@@ -256,6 +256,84 @@ module.exports = {
           // 保存公告
           $bulletinService.saveBulletin(data, function(bulletin) {
             self.io.to("hall").emit("updateBulletin", bulletin);
+          });
+        });
+
+        // 管理员给玩家添加积分
+        socket.on("topUpCoin", function(data) {
+          // 获取充值数据
+          var username = data.username;
+          var amount = data.amount;
+
+          $userService.topUpCoin({
+            username: username,
+            amount: amount,
+            shouldRecord: true
+          }, function(err) {
+            if(err) {
+              // 告诉管理员有错误
+              socket.emit("coinSetupError", { errorMessage: err });
+            }else {
+              // 告诉管理员成功
+              socket.emit("coinSetupSuccess");
+
+              // 获取玩家对应 Socket
+              var playerSocket = self.findSocketByUsername(username);
+
+              // 如果玩家上线
+              if(playerSocket !== null) {
+                // 获取玩家积分数量
+                $userService.getUserCoinAmount({
+                  username: username
+                }, function(err, coin) {
+                  if(err) {
+                    throw err;
+                  }
+
+                  // 通知对应玩家积分金额改变
+                  playerSocket.emit("updateCoin", { coin: coin });
+                });
+              }
+            }
+          });
+        });
+
+        // 管理员给玩家减少积分
+        socket.on("bottomDownCoin", function(data) {
+          // 获取充值数据
+          var username = data.username;
+          var amount = data.amount;
+
+          $userService.bottomDownCoin({
+            username: username,
+            amount: amount,
+            shouldRecord: true
+          }, function(err) {
+            if(err) {
+              // 告诉管理员有错误
+              socket.emit("coinSetupError", { errorMessage: err });
+            }else {
+              // 告诉管理员成功
+              socket.emit("coinSetupSuccess");
+
+              // 获取玩家对应 Socket
+              var playerSocket = self.findSocketByUsername(username);
+
+              // 如果玩家上线
+              if(playerSocket !== null) {
+                // 获取玩家积分数量
+                $userService.getUserCoinAmount({
+                  username: username
+                }, function(err, coin) {
+                  if(err) {
+                    throw err;
+                  }
+
+                  // 通知对应玩家积分金额改变
+                  playerSocket.emit("updateCoin", { coin: coin });
+                });
+              }
+            }
           });
         });
 
@@ -1231,6 +1309,43 @@ module.exports = {
 
         // 将玩家列表广播至管理员
         self.io.to("admin").emit("playerList", playerList);
+      },
+      /**
+       * @public
+       * @param {String} username
+       * @return {Socket}
+       * @desc
+       * find sockt by username
+      **/
+      findSocketByUsername: function(username) {
+        var self = this;
+
+        // 在大厅中查找
+        var hallSockets = self.findSocketsByRoom("hall");
+        for(let i = 0;i < hallSockets.length;i++) {
+          if(hallSockets[i].player.username === username) {
+            return hallSockets[i];
+          }
+        }
+
+        // 如果没有找到则在等待室中查找
+        var waitSockets = self.findSocketsByRoom("wait");
+        for(let j = 0;j < waitSockets.length;j++) {
+          if(waitSockets[j].player.username === username) {
+            return waitSockets[j];
+          }
+        }
+
+        // 如果没有找到则在游戏室中查找
+        var gameSockets = self.findSocketsByRoom("game");
+        for(let k = 0;k < gameSockets.length;k++) {
+          if(gameSockets[k].player.username === username) {
+            return gameSockets[k];
+          }
+        }
+
+        // 如果都没找到则返回 null
+        return null;
       }
     };
   }

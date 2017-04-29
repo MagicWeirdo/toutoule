@@ -205,7 +205,7 @@ module.exports = {
                   username: year + "" + month + "" + day + "" + rows[0].count,
                   password: "123456789",
                   date: $date.now().getAsMilliseconds(),
-                  coin: 100
+                  coin: 0
                 }, function(err, user) {
                   if(err) {
                     throw err;

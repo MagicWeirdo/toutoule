@@ -251,58 +251,32 @@
                   console.log(type);
                 });
 
+                // 监听充值失败
+                socket.on("coinSetupError", function(data) {
+                  alert(data.errorMessage);
+                });
+
+                // 监听充值成功
+                socket.on("coinSetupSuccess", function() {
+                  // 清空值
+                  $("#username").val("");
+                  $("#coin").val("");
+                });
+
                 // 监听确定按钮点击
                 $("#yesButton").click(function() {
                   if(type === "topUp") {
                     // 增加
-                    $.ajax(
-                      "/user/coin/topup",
-                      {
-                        method: "POST",
-                        headers: {
-                          "Authorization": Cookies.get("adminToken")
-                        },
-                        data: JSON.stringify({
-                          username: $("#username").val(),
-                          amount: $("#coin").val()
-                        }),
-                        dataType: "json",
-                        success: function(data) {
-                          if(data.isError) {
-                            alert(data.errorMessage);
-                          }else {
-                            // 清空值
-                            $("#username").val("");
-                            $("#coin").val("");
-                          }
-                        }
-                      }
-                    );
+                    socket.emit("topUpCoin", {
+                      username: $("#username").val(),
+                      amount: $("#coin").val()
+                    });
                   }else {
                     // 减少
-                    $.ajax(
-                      "/user/coin/bottomdown",
-                      {
-                        method: "POST",
-                        headers: {
-                          "Authorization": Cookies.get("adminToken")
-                        },
-                        data: JSON.stringify({
-                          username: $("#username").val(),
-                          amount: $("#coin").val()
-                        }),
-                        dataType: "json",
-                        success: function(data) {
-                          if(data.isError) {
-                            alert(data.errorMessage);
-                          }else {
-                            // 清空值
-                            $("#username").val("");
-                            $("#coin").val("");
-                          }
-                        }
-                      }
-                    );
+                    socket.emit("bottomDownCoin", {
+                      username: $("#username").val(),
+                      amount: $("#coin").val()
+                    });
                   }
                 });
               }

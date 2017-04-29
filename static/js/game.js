@@ -172,6 +172,16 @@ function startGame() {
       msCoinText.text = data.coin;
     });
 
+    // 监听服务发送过来的积分改变
+    socket.on("updateCoin", function(data) {
+      // 判断场景
+      if(scene === "mainScene") {
+        msCoinText.text = data.coin;
+      }else {
+        gsCoinText.text = data.coin;
+      }
+    });
+
     // 接收游戏状态改变
     socket.on("updateStatus", function(data) {
 
