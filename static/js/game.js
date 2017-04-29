@@ -138,7 +138,7 @@ function startGame() {
     game.load.image("ya5", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/ya5.png");
     game.load.image("dice6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/dice_6.png");
     game.load.image("ya6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/ya6.png");
-    game.load.atlasJSONHash("dice", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/dice.png", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/dice.json");
+    game.load.atlasJSONHash("dice", "/static/assets/dice.png", "/static/assets/dice.json");
     game.load.image("resultDan", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/result_dan.png");
     game.load.image("resultShuang", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/result_shuang.png");
     game.load.image("result1", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/result1.png");
