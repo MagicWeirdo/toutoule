@@ -7,7 +7,7 @@ module.exports = {
     return {
       io: null,
       state: "offline",
-      preparingPeriod: 20, // 游戏准备倒计时
+      preparingPeriod: 10, // 游戏准备倒计时
       gamePeriod: 25, // 游戏掷骰子倒计时
       mode: "auto",
       numOfOnlinePlayers: 0,

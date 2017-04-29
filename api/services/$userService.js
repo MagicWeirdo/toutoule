@@ -291,23 +291,6 @@ module.exports = {
             }
           );
         });
-
-        // $orm2.rawQuery(function(db) {
-        //   db.driver.execQuery(
-        //     "SELECT id, username, date, extra " +
-        //     "FROM user " +
-        //     "ORDER BY id DESC LIMIT ? OFFSET ?",
-        //     [ (end - start + 1), start ],
-        //     function(err, users) {
-        //       if(err) {
-        //         throw err;
-        //       }
-        //
-        //       // send info back
-        //       callback(users);
-        //     }
-        //   );
-        // });
       },
       /**
        * @public
@@ -319,8 +302,6 @@ module.exports = {
       listUserSimple: function(option, callback) {
         var start = option.start;
         var end = option.end;
-
-        console.log(option);
 
         $orm2.rawQuery(function(db) {
           db.driver.execQuery(
