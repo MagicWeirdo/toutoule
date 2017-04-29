@@ -25,6 +25,7 @@ module.exports = {
     { method: "POST", url: "/admin/verify", action: "AdminController.verify" },
     { method: "POST", url: "/admin/modifyPassword", action: "AdminController.modifyPassword" },
     { method: "GET", url: "/admin/bulletin/list", action: "AdminController.listBulletins" },
+    { method: "POST", url: "/admin/bulletin/remove", action: "AdminController.removeBulletin" },
     { method: "POST", url: "/user/login", action: "UserController.login" },
     { method: "POST", url: "/user/modifyPassword", action: "UserController.modifyPassword" },
     { method: "GET", url: "/user/generate", action: "UserController.generateUser" },

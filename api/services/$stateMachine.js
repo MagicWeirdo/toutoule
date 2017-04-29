@@ -3,7 +3,7 @@
 module.exports = {
   scope: "singleton",
   name: "$stateMachine",
-  factory: function($validator, $authService, $gameService, $userService, $adminService, $logger) {
+  factory: function($validator, $authService, $gameService, $userService, $adminService, $bulletinService, $logger) {
     return {
       io: null,
       state: "offline",
@@ -249,6 +249,16 @@ module.exports = {
           }
         });
 
+        // 管理员发布新公告
+        socket.on("newBulletin", function(data) {
+          $logger.log("新公告");
+
+          // 保存公告
+          $bulletinService.saveBulletin(data, function(bulletin) {
+            self.io.to("hall").emit("updateBulletin", bulletin);
+          });
+        });
+
         // 处理管理员掉线问题
         socket.on("disconnect", function() {
           $adminService.logout({
@@ -281,6 +291,20 @@ module.exports = {
           if(self.getState() === "online" || (self.getState() === "onWait" && self.getMode() === "manual")) {
             socket.emit("updateStatus", { state: self.getState() });
           }
+
+          // 查询公告数量
+          $bulletinService.countBulletins(function(count) {
+            if(count > 0) {
+              // 向用户发送最新公告
+              $bulletinService.listBulletins({
+                start: 0,
+                end: 0
+              }, function(bulletins) {
+                // 非空处理
+                socket.emit("updateBulletin", bulletins[0]);
+              });
+            }
+          });
         });
 
         // 玩家准备游戏
@@ -350,6 +374,20 @@ module.exports = {
           // 向大厅玩家广播当前游戏状态
           self.io.to("hall").emit("updateStatus", { state: self.getState() });
 
+          // 查询公告数量
+          $bulletinService.countBulletins(function(count) {
+            if(count > 0) {
+              // 向用户发送最新公告
+              $bulletinService.listBulletins({
+                start: 0,
+                end: 0
+              }, function(bulletins) {
+                // 非空处理
+                socket.emit("updateBulletin", bulletins[0]);
+              });
+            }
+          });
+
           $logger.log("玩家退出游戏");
         });
 
@@ -364,6 +402,23 @@ module.exports = {
           // socket.emit("kick");
 
           $logger.log("玩家结束");
+        });
+
+        // 监听玩家请求获取公告
+        socket.on("getBulletin", function() {
+          // 查询公告数量
+          $bulletinService.countBulletins(function(count) {
+            if(count > 0) {
+              // 向用户发送最新公告
+              $bulletinService.listBulletins({
+                start: 0,
+                end: 0
+              }, function(bulletins) {
+                // 非空处理
+                socket.emit("updateBulletin", bulletins[0]);
+              });
+            }
+          });
         });
 
         // 处理玩家掉线问题

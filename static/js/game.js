@@ -30,6 +30,7 @@ function startGame() {
   var msStatusText;
   var msReadyButton;
   var msAlreadyButton;
+  var bulletinText;
 
   // 游戏场景
   var gameScene;
@@ -282,6 +283,26 @@ function startGame() {
       }
     });
 
+    // 监听公告更新
+    socket.on("updateBulletin", function(data) {
+      console.log("接收到公告");
+
+      // 获取值 & 分空格
+      var content = data.content;
+      var text = "";
+
+      for(var i = 0;i < content.length;i++) {
+        if(i === 0) {
+          text += content.charAt(i);
+        }else {
+          text += " " + content.charAt(i);
+        }
+      }
+
+      // 更新公告栏
+      bulletinText.text = text;
+    });
+
     // 重置游戏界面
     function resetGameScene() {
       // 隐藏和重置游戏界面
@@ -457,6 +478,9 @@ function startGame() {
         msUsernameText.text = data.username;
         msCoinText.text = data.coin;
       });
+
+      // 向服务器请求获取公告
+      socket.emit("getBulletin");
     });
 
     // 服务器告知结果
@@ -646,13 +670,21 @@ function startGame() {
     bulletinBanner.height = bulletinBanner.width / (525 / 750);
     bulletinGroup.add(bulletinBanner);
 
-    // // bulletin text
-    // var bulletinText = game.add.text(bulletinBanner.width / 2, bulletinBanner.height / 2, "暂无公告", {
-    //   fill: "#FFFFFF",
-    //   fontSize: "16px"
-    // });
-    // bulletinText.anchor.set(0.5);
-    // bulletinGroup.add(bulletinText);
+    // bulletin text
+    bulletinText = game.add.text(bulletinBanner.width / 2, bulletinBanner.height / 2, "暂 无 公 告", {
+      fill: "#9D662C",
+      fontSize: "16px",
+      stroke: "#FFFFFF",
+      strokeThickness: 5,
+      align: "left",
+      boundsAlignH: "left",
+      boundsAlignV: "top",
+      wordWrap: true,
+      wordWrapWidth: bulletinBanner.width * 0.8
+    });
+    bulletinText.anchor.set(0.5);
+    bulletinText.setTextBounds(0, 0, bulletinBanner.width * 0.8, bulletinBanner.height * 0.8);
+    bulletinGroup.add(bulletinText);
 
     totalHeight += bulletinBanner.height + 12;
 

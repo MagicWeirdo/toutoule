@@ -59,8 +59,10 @@ module.exports = {
    * @desc
    * bulletin record page
   **/
-  bulletinRecord: function(req, res) {
-    res.render("manager/bulletin_record.html", {});
+  bulletinRecord: function($bulletinService, req, res) {
+    $bulletinService.countBulletins(function(count) {
+      res.render("manager/bulletin_record.html", { count : Math.ceil(count / 15) });
+    });
   },
   /**
    * @public

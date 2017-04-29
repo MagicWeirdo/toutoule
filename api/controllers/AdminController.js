@@ -172,7 +172,7 @@ module.exports = {
             result: ""
           });
         }else {
-          $bulletinService.listBulletins(data, function(bulletins) {
+          $bulletinService.listBulletinsFormated(data, function(bulletins) {
             res.sendAsJson(200, {
               isError: false,
               errorMessage: "",
@@ -182,6 +182,49 @@ module.exports = {
             });
           });
         }
+      });
+    });
+  },
+  /**
+   * @public
+   * @param {$validator} $validator
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
+   * remove a bulletin
+  **/
+  removeBulletin: function($validator, $bulletinService, req, res) {
+    req.doAuth("admin", function(username) {
+      req.readAsJson(function(data) {
+        // register validations
+        $validator.required("bulletinId", "bulletinId不能为空");
+
+        // do validation
+        $validator.validate(data, function(err) {
+          if(err) {
+            res.sendAsJson(400, {
+              isError: true,
+              errorMessage: err.msg,
+              result: ""
+            });
+          }else {
+            $bulletinService.removeBulletin(data, function(err) {
+              if(err) {
+                res.sendAsJson(200, {
+                  isError: true,
+                  errorMessage: err,
+                  result: ""
+                });
+              }else {
+                res.sendAsJson(200, {
+                  isError: false,
+                  errorMessage: "",
+                  result: ""
+                });
+              }
+            });
+          }
+        });
       });
     });
   }
