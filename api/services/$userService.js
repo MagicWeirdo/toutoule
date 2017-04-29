@@ -526,7 +526,7 @@ module.exports = {
                     // 保存积分设置记录
                     $coinService.saveCoinRecord({
                       username: username,
-                      coin: amount,
+                      coin: 0 - amount,
                       remainCoin: remainCoin
                     }, function(coinRecord) {
                       // 回调

@@ -111,9 +111,9 @@
                   </div>
                   <div class="col-md-4">
                     <div class="input-group">
-                      <input type="text" class="form-control" />
+                      <input id="keyword" type="text" class="form-control" />
                         <span class="form-group input-group-btn">
-                          <button class="btn btn-default" type="button">搜索</button>
+                          <button id="btnSearch" class="btn btn-default" type="button">搜索</button>
                         </span>
                     </div>
                   </div>
@@ -244,6 +244,18 @@
                   // 跳转页面至控制界面
                   window.location.replace("/manager/main");
                 });
+
+                // // 监听搜索事件
+                // $("#btnSearch").click(function() {
+                //   var keyword = $("#keyword").val();
+                //
+                //   // 如果长度为 0，则跳转至第 1 页
+                //   if(keyword.length === 0) {
+                //     window.location.replace("/manager/user/list?page=1");
+                //   }else {
+                //
+                //   }
+                // });
 
                 // 前一页
                 $("#btnPrevious").click(function() {
