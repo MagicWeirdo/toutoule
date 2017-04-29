@@ -143,12 +143,12 @@
                 </div>
                 <!--/.Row--><!--/.ROW-->
                 <ul class="pagination">
-                      <li><a href="#">&laquo;</a></li>
+                      <li><a id="btnPrevious" href="#">&laquo;</a></li>
                       <% for (var i = 1;i <= count;i++) { %>
                         <% var html = "<li><a href=\"/manager/user/create?page=" + i + "\">" + i + "</a></li>" %>
                         <%- html %>
                       <% } %>
-                      <li><a href="#">&raquo;</a></li>
+                      <li><a id="btnNext" href="#">&raquo;</a></li>
                   </ul>
 
             </div>
@@ -253,6 +253,20 @@
                       }
                     }
                   );
+                });
+
+                // 前一页
+                $("#btnPrevious").click(function() {
+                  if(getUrlParam("page") > 1) {
+                    window.location.replace("/manager/user/create?page=" + (getUrlParam("page") - 1));
+                  }
+                });
+
+                // 后一页
+                $("#btnNext").click(function() {
+                  if(getUrlParam("page") < $(".pagination li").size() - 2) {
+                    window.location.replace("/manager/user/create?page=" + (getUrlParam("page") + 1));
+                  }
                 });
 
                 // 获取 url 中的参数

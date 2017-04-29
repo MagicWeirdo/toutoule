@@ -144,12 +144,12 @@
               </div>
                 <!--/.Row-->
                   <ul class="pagination">
-                      <li><a href="#">&laquo;</a></li>
+                      <li><a id="btnPrevious" href="#">&laquo;</a></li>
                       <% for (var i = 1;i <= count;i++) { %>
                         <% var html = "<li><a href=\"/manager/score/record?page=" + i + "\">" + i + "</a></li>" %>
                         <%- html %>
                       <% } %>
-                      <li><a href="#">&raquo;</a></li>
+                      <li><a id="btnNext" href="#">&raquo;</a></li>
                   </ul>
             </div>
             <!-- /. PAGE INNER  -->
@@ -462,6 +462,20 @@
                   }
                 }
               };
+
+              // 前一页按钮
+              $("#btnPrevious").click(function() {
+                if(getUrlParam("page") > 1) {
+                  window.location.replace("/manager/score/record?page=" + (getUrlParam("page") - 1));
+                }
+              });
+
+              // 后一页按钮
+              $("#btnNext").click(function() {
+                if(getUrlParam("page") < $(".pagination li").size() - 2) {
+                  window.location.replace("/manager/score/record?page=" + (getUrlParam("page") + 1));
+                }
+              });
 
               // 获取 url 中的参数
               function getUrlParam(name) {

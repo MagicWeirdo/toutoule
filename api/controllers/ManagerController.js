@@ -38,7 +38,7 @@ module.exports = {
    * history page
   **/
   history: function($gameService, req, res) {
-    $gameService.countGameRecords(function(count) {
+    $gameService.countGameRounds(function(count) {
       res.render("manager/game_record.html", { count: Math.ceil(count / 5) });
     });
   },

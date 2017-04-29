@@ -45,7 +45,7 @@ function startGame() {
   var result5Banner;
   var result6Banner;
   var gsBannerText;
-  // var gsResultText;
+  var gsResultText;
   var gsDice1;
   var gsDice2;
   var gsDice3;
@@ -290,8 +290,8 @@ function startGame() {
       gsCoinText.text = "0";
       gsStatusText.text = "";
       gsBannerText.text = "等待";
-      // gsResultText.text = "未知";
-      // gsResultText.visible = false;
+      gsResultText.text = "";
+      gsResultText.visible = false;
 
       // 隐藏状态栏
       gsStatusText.visible = false;
@@ -399,8 +399,8 @@ function startGame() {
       gsCoinText.text = "0";
       gsStatusText.text = "";
       gsBannerText.text = "等待";
-      // gsResultText.text = "未知";
-      // gsResultText.visible = false;
+      gsResultText.text = "";
+      gsResultText.visible = false;
 
       // 隐藏状态栏
       gsStatusText.visible = false;
@@ -490,15 +490,14 @@ function startGame() {
         if(numOffinished === 3) {
           clearInterval(waitInterval);
 
-          // // 显示结果文字
-          // gsResultText.visible = true;
+          // 显示结果文字
+          gsResultText.visible = true;
+          gsResultText.text = data.dice1 + data.dice2 + data.dice3;
 
           if(data.type === "d") {
             resultDanBanner.visible = true;
-            // gsResultText.text = "单";
           }else if(data.type === "s") {
             resultShuangBanner.visible = true;
-            // gsResultText.text = "双";
           }else if(data.type === "b1") {
             result1Banner.visible = true;
           }else if(data.type === "b2") {
@@ -883,14 +882,17 @@ function startGame() {
     gsBannerText.anchor.set(0.5);
     playGroup.add(gsBannerText);
 
-    // // result text
-    // gsResultText = game.add.text(playArea.width / 2, playArea.height / 2 - (playArea.height * 0.2) / (57 / 64), "未知", {
-    //   fill: "#FFFFFF",
-    //   fontSize: playArea.height * 0.1 + "px"
-    // });
-    // gsResultText.anchor.set(0.5);
-    // gsResultText.visible = false;
-    // playGroup.add(gsResultText);
+    // result text
+    gsResultText = game.add.text(playArea.width / 2, playArea.height / 2 - (playArea.height * 0.2) / (57 / 64), "", {
+      fill: "#9D662C",
+      fontSize: playArea.height * 0.1 + "px",
+      fontWeight: "bold",
+      stroke: "#FFFFFF",
+      strokeThickness: 5
+    });
+    gsResultText.anchor.set(0.5);
+    gsResultText.visible = false;
+    playGroup.add(gsResultText);
 
     // dice group
     var diceGroup = game.add.group(playGroup);

@@ -149,13 +149,24 @@ module.exports = {
           });
         });
       },
+      // /**
+      //  * @public
+      //  * @param {Function} callback
+      //  * @desc
+      //  * count game rounds
+      // **/
+      // countGameRounds: function(callback) {
+      //   $orm2.query(function(models) {
+      //     var GameRound
+      //   });
+      // },
       /**
        * @public
        * @param {Function} callback
        * @desc
        * count game records
       **/
-      countGameRecords: function(callback) {
+      countGameRounds: function(callback) {
         $orm2.query(function(models) {
           var GameRound = models.GameRound;
 
@@ -187,8 +198,8 @@ module.exports = {
             "SELECT gr.id AS gameRoundId, gr.code AS gameRoundCode, gr.result, gre.stake, gre.reward, u.username " +
             "FROM gameround AS gr, gamerecord AS gre, user AS u " +
             "WHERE gr.id = gre.gameround_id AND gre.user_id = u.id " +
-            "ORDER BY gameRoundCode DESC LIMIT ? OFFSET ?",
-            [ (end - start + 1), start ],
+            "ORDER BY gameRoundCode DESC",
+            // [ (end - start + 1), start ],
             function(err, rows) {
               if(err) {
                 throw err;
@@ -211,8 +222,6 @@ module.exports = {
 
                 // 标记是否已插入
                 var isInserted = false;
-
-
 
                 // 查询容器中是否有对应的游戏回合
                 records.forEach(function(record) {
@@ -268,7 +277,7 @@ module.exports = {
                     if(stake === "d") {
                       coinStaked = reward;
                     }else if(stake === "s") {
-                      coinStaked = reward / 0.95;
+                      coinStaked = reward;
                     }else {
                       coinStaked = reward / 50;
                     }
@@ -291,6 +300,9 @@ module.exports = {
 
                 // 检查是否查询完成
                 if(totalNum === currentNum) {
+                  // 分页操作
+                  records = records.slice(start, end + 1);
+
                   callback(records);
                 }
               });
@@ -418,7 +430,7 @@ module.exports = {
                           if(stake === "d") {
                             coinStaked = reward;
                           }else if(stake === "s") {
-                            coinStaked = reward / 0.95;
+                            coinStaked = reward;
                           }else {
                             coinStaked = reward / 50;
                           }

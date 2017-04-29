@@ -131,6 +131,10 @@ module.exports = {
 
           // 向管理员广播游戏模式
           self.io.to("admin").emit("updateMode", { mode: self.getMode() });
+
+          // 向管理员广播押注情况 & 玩家列表
+          self.broadcastStakeStaticsToAdmin();
+          self.broadcastPlayerListToAdmin();
         });
 
         // // 第一次连接，且状态为 online，或状态为 onWait 且模式为 manual，则广播状态
@@ -320,106 +324,8 @@ module.exports = {
           // 保存押注数据
           socket.player.stake = data;
 
-          // 初始化数据
-          var stakeStatics = {
-            // 玩家数量
-            playerNum: {
-              danPlayerNum: 0,
-              shuangPlayerNum: 0,
-              baozi1PlayerNum: 0,
-              baozi2PlayerNum: 0,
-              baozi3PlayerNum: 0,
-              baozi4PlayerNum: 0,
-              baozi5PlayerNum: 0,
-              baozi6PlayerNum: 0,
-              totalPlayerNum: 0
-            },
-            // 积分数量
-            coinNum: {
-              danCoin: 0,
-              shuangCoin: 0,
-              baozi1Coin: 0,
-              baozi2Coin: 0,
-              baozi3Coin: 0,
-              baozi4Coin: 0,
-              baozi5Coin: 0,
-              baozi6Coin: 0,
-              totalCoin: 0
-            }
-          };
-
-          // 获取游戏室的所有玩家
-          var sockets = self.findSocketsByRoom("game");
-          sockets.forEach(function(socket) {
-            // 判断玩家是否已押注
-            if(socket.player.isStaked) {
-              // 获取押注数据
-              var stake = socket.player.stake;
-
-              // 判断押注类型
-              switch(stake.type) {
-                case "d":
-                  stakeStatics.playerNum.danPlayerNum++;
-                  stakeStatics.coinNum.danCoin += stake.coin;
-
-                  stakeStatics.playerNum.totalPlayerNum++;
-                  stakeStatics.coinNum.totalCoin += stake.coin;
-                  break;
-                case "s":
-                  stakeStatics.playerNum.shuangPlayerNum++;
-                  stakeStatics.coinNum.shuangCoin += stake.coin;
-
-                  stakeStatics.playerNum.totalPlayerNum++;
-                  stakeStatics.coinNum.totalCoin += stake.coin;
-                  break;
-                case "b1":
-                  stakeStatics.playerNum.baozi1PlayerNum++;
-                  stakeStatics.coinNum.baozi1Coin += stake.coin;
-
-                  stakeStatics.playerNum.totalPlayerNum++;
-                  stakeStatics.coinNum.totalCoin += stake.coin;
-                  break;
-                case "b2":
-                  stakeStatics.playerNum.baozi2PlayerNum++;
-                  stakeStatics.coinNum.baozi2Coin += stake.coin;
-
-                  stakeStatics.playerNum.totalPlayerNum++;
-                  stakeStatics.coinNum.totalCoin += stake.coin;
-                  break;
-                case "b3":
-                  stakeStatics.playerNum.baozi3PlayerNum++;
-                  stakeStatics.coinNum.baozi3Coin += stake.coin;
-
-                  stakeStatics.playerNum.totalPlayerNum++;
-                  stakeStatics.coinNum.totalCoin += stake.coin;
-                  break;
-                case "b4":
-                  stakeStatics.playerNum.baozi4PlayerNum++;
-                  stakeStatics.coinNum.baozi4Coin += stake.coin;
-
-                  stakeStatics.playerNum.totalPlayerNum++;
-                  stakeStatics.coinNum.totalCoin += stake.coin;
-                  break;
-                case "b5":
-                  stakeStatics.playerNum.baozi5PlayerNum++;
-                  stakeStatics.coinNum.baozi5Coin += stake.coin;
-
-                  stakeStatics.playerNum.totalPlayerNum++;
-                  stakeStatics.coinNum.totalCoin += stake.coin;
-                  break;
-                case "b6":
-                  stakeStatics.playerNum.baozi6PlayerNum++;
-                  stakeStatics.coinNum.baozi6Coin += stake.coin;
-
-                  stakeStatics.playerNum.totalPlayerNum++;
-                  stakeStatics.coinNum.totalCoin += stake.coin;
-                  break;
-              }
-            }
-          });
-
-          // 向管理员广播统计数据
-          self.io.to("admin").emit("stakeStatics", stakeStatics);
+          // 向管理员广播押注情况
+          self.broadcastStakeStaticsToAdmin();
 
           // 向管理员广播玩家列表
           self.broadcastPlayerListToAdmin();
@@ -804,13 +710,15 @@ module.exports = {
           sockets.forEach(function(socket) {
             let stake = socket.player.stake;
 
-            switch(stake.type) {
-              case "d":
-                statics.danCoin += stake.coin;
-                break;
-              case "s":
-                statics.shuangCoin += stake.coin;
-                break;
+            if(stake) {
+              switch(stake.type) {
+                case "d":
+                  statics.danCoin += stake.coin;
+                  break;
+                case "s":
+                  statics.shuangCoin += stake.coin;
+                  break;
+              }
             }
           });
 
@@ -1132,6 +1040,115 @@ module.exports = {
       **/
       countInGamePlayers: function() {
         return this.findSocketsByRoom("game").length;
+      },
+      /**
+       * @public
+       * @desc
+       * 向管理员广播押注情况
+      **/
+      broadcastStakeStaticsToAdmin: function() {
+        var self = this;
+
+        // 初始化数据
+        var stakeStatics = {
+          // 玩家数量
+          playerNum: {
+            danPlayerNum: 0,
+            shuangPlayerNum: 0,
+            baozi1PlayerNum: 0,
+            baozi2PlayerNum: 0,
+            baozi3PlayerNum: 0,
+            baozi4PlayerNum: 0,
+            baozi5PlayerNum: 0,
+            baozi6PlayerNum: 0,
+            totalPlayerNum: 0
+          },
+          // 积分数量
+          coinNum: {
+            danCoin: 0,
+            shuangCoin: 0,
+            baozi1Coin: 0,
+            baozi2Coin: 0,
+            baozi3Coin: 0,
+            baozi4Coin: 0,
+            baozi5Coin: 0,
+            baozi6Coin: 0,
+            totalCoin: 0
+          }
+        };
+
+        // 获取游戏室的所有玩家
+        var sockets = self.findSocketsByRoom("game");
+        sockets.forEach(function(socket) {
+          // 判断玩家是否已押注
+          if(socket.player.isStaked) {
+            // 获取押注数据
+            var stake = socket.player.stake;
+
+            // 判断押注类型
+            switch(stake.type) {
+              case "d":
+                stakeStatics.playerNum.danPlayerNum++;
+                stakeStatics.coinNum.danCoin += stake.coin;
+
+                stakeStatics.playerNum.totalPlayerNum++;
+                stakeStatics.coinNum.totalCoin += stake.coin;
+                break;
+              case "s":
+                stakeStatics.playerNum.shuangPlayerNum++;
+                stakeStatics.coinNum.shuangCoin += stake.coin;
+
+                stakeStatics.playerNum.totalPlayerNum++;
+                stakeStatics.coinNum.totalCoin += stake.coin;
+                break;
+              case "b1":
+                stakeStatics.playerNum.baozi1PlayerNum++;
+                stakeStatics.coinNum.baozi1Coin += stake.coin;
+
+                stakeStatics.playerNum.totalPlayerNum++;
+                stakeStatics.coinNum.totalCoin += stake.coin;
+                break;
+              case "b2":
+                stakeStatics.playerNum.baozi2PlayerNum++;
+                stakeStatics.coinNum.baozi2Coin += stake.coin;
+
+                stakeStatics.playerNum.totalPlayerNum++;
+                stakeStatics.coinNum.totalCoin += stake.coin;
+                break;
+              case "b3":
+                stakeStatics.playerNum.baozi3PlayerNum++;
+                stakeStatics.coinNum.baozi3Coin += stake.coin;
+
+                stakeStatics.playerNum.totalPlayerNum++;
+                stakeStatics.coinNum.totalCoin += stake.coin;
+                break;
+              case "b4":
+                stakeStatics.playerNum.baozi4PlayerNum++;
+                stakeStatics.coinNum.baozi4Coin += stake.coin;
+
+                stakeStatics.playerNum.totalPlayerNum++;
+                stakeStatics.coinNum.totalCoin += stake.coin;
+                break;
+              case "b5":
+                stakeStatics.playerNum.baozi5PlayerNum++;
+                stakeStatics.coinNum.baozi5Coin += stake.coin;
+
+                stakeStatics.playerNum.totalPlayerNum++;
+                stakeStatics.coinNum.totalCoin += stake.coin;
+                break;
+              case "b6":
+                stakeStatics.playerNum.baozi6PlayerNum++;
+                stakeStatics.coinNum.baozi6Coin += stake.coin;
+
+                stakeStatics.playerNum.totalPlayerNum++;
+                stakeStatics.coinNum.totalCoin += stake.coin;
+                break;
+            }
+          }
+        });
+
+        // 向管理员广播统计数据
+        self.io.to("admin").emit("stakeStatics", stakeStatics);
       },
       /**
        * @public
