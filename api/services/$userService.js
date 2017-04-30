@@ -671,6 +671,38 @@ module.exports = {
             }
           });
         });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Function} callback
+       * @desc
+       * search user
+      **/
+      searchUser: function(option, callback) {
+        var keyword = option.keyword;
+
+        $orm2.rawQuery(function(db) {
+          db.driver.execQuery(
+            "SELECT username FROM user " +
+            "WHERE username LIKE ? " +
+            "ORDER BY id DESC",
+            [ keyword + "%" ],
+            function(err, rows) {
+              if(err) {
+                throw err;
+              }
+
+              var usernames = [];
+              rows.forEach(function(row) {
+                usernames.push(row.username);
+              });
+
+              // send info back
+              callback(usernames);
+            }
+          );
+        });
       }
     };
   }

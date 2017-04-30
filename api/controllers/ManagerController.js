@@ -4,6 +4,21 @@ module.exports = {
    * @param {http.IncomingMessage} req
    * @param {http.ServerResponse} res
    * @desc
+   * manager page
+  **/
+  manager: function(req, res) {
+    // 重定向
+    res.writeHead(302, {
+      "Location": "/manager/login"
+    });
+
+    res.end();
+  },
+  /**
+   * @public
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   * @desc
    * login page
   **/
   login: function(req, res) {

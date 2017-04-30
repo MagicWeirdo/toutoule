@@ -243,17 +243,50 @@
                   window.location.replace("/manager/main");
                 });
 
-                // // 监听搜索事件
-                // $("#btnSearch").click(function() {
-                //   var keyword = $("#keyword").val();
-                //
-                //   // 如果长度为 0，则跳转至第 1 页
-                //   if(keyword.length === 0) {
-                //     window.location.replace("/manager/user/list?page=1");
-                //   }else {
-                //
-                //   }
-                // });
+                // 监听搜索事件
+                $("#btnSearch").click(function() {
+                  var keyword = $("#keyword").val();
+
+                  // 如果长度为 0，则跳转至第 1 页
+                  if(keyword.length === 0) {
+                    window.location.replace("/manager/user/list?page=1");
+                  }else {
+                    // 获取数据
+                    $.ajax(
+                      "/user/search",
+                      {
+                        method: "POST",
+                        headers: {
+                          "Authorization": Cookies.get("adminToken")
+                        },
+                        data: JSON.stringify({
+                          keyword: $("#keyword").val()
+                        }),
+                        dataType: "json",
+                        success: function(data) {
+                          // 清空用户表格
+                          $("#userTable").empty();
+
+                          // 删除分页按钮
+                          $(".pagination").empty();
+
+                          // 渲染
+                          var i = 1;
+                          data.result.list.forEach(function(username) {
+                            $("#userTable").append(
+                              "<tr>" +
+                              "<td>" + i + "</td>" +
+                              "<td>" + "<a href=\"/manager/user/info?username=" + username + "\">" + username + "</a>" + "</td>" +
+                              "</tr>"
+                            );
+
+                            i++;
+                          });
+                        }
+                      }
+                    );
+                  }
+                });
 
                 // 前一页
                 $("#btnPrevious").click(function() {

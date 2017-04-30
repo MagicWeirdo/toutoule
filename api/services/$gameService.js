@@ -149,17 +149,6 @@ module.exports = {
           });
         });
       },
-      // /**
-      //  * @public
-      //  * @param {Function} callback
-      //  * @desc
-      //  * count game rounds
-      // **/
-      // countGameRounds: function(callback) {
-      //   $orm2.query(function(models) {
-      //     var GameRound
-      //   });
-      // },
       /**
        * @public
        * @param {Function} callback
@@ -238,7 +227,7 @@ module.exports = {
                       if(stake === "d") {
                         coinStaked = reward;
                       }else if(stake === "s") {
-                        coinStaked = reward / 0.95;
+                        coinStaked = reward;
                       }else {
                         coinStaked = reward / 50;
                       }
@@ -460,6 +449,125 @@ module.exports = {
               });
             }
           });
+        });
+      },
+      /**
+       * @public
+       * @param {Object} option
+       * @param {Functiom} callback
+       * @desc
+       * search game records
+      **/
+      searchGameRecords: function(option, callback) {
+        var keyword = option.keyword;
+
+        console.log(keyword);
+
+        $orm2.rawQuery(function(db) {
+          // 获取原生数据
+          db.driver.execQuery(
+            "SELECT gr.id AS gameRoundId, gr.code AS gameRoundCode, gr.result, gre.stake, gre.reward, u.username " +
+            "FROM gameround AS gr, gamerecord AS gre, user AS u " +
+            "WHERE gr.id = gre.gameround_id AND gre.user_id = u.id AND gr.code LIKE ? " +
+            "ORDER BY gameRoundCode DESC",
+            [ keyword + "%" ],
+            function(err, rows) {
+              if(err) {
+                throw err;
+              }
+
+              // 存储转换结果
+              var records = [];
+              rows.forEach(function(row) {
+                // 获取原生数据
+                var gameRoundId = row.gameRoundId;
+                var gameRoundCode = row.gameRoundCode;
+                var result = row.result;
+                var stake = row.stake;
+                var reward = row.reward;
+                var username = row.username;
+
+                // 标记是否已插入
+                var isInserted = false;
+
+                // 查询容器中是否有对应的游戏回合
+                records.forEach(function(record) {
+                  // 查询是否对应
+                  if(record.gameRoundCode === gameRoundCode) {
+                    // 计算所押积分
+                    var coinStaked = 0;
+
+                    // 判断输赢
+                    if(reward < 0) {
+                      coinStaked = Math.abs(reward);
+                    }else {
+                      // 判断押注类型
+                      if(stake === "d") {
+                        coinStaked = reward;
+                      }else if(stake === "s") {
+                        coinStaked = reward;
+                      }else {
+                        coinStaked = reward / 50;
+                      }
+                    }
+
+                    record.list.push({
+                      username: username,
+                      stake: stake,
+                      coinStaked: coinStaked,
+                      won: reward > 0 ? true : false,
+                      reward: reward,
+                      result: result
+                    });
+
+                    // 标记为已插入
+                    isInserted = true;
+                  }
+                });
+
+                // 判断是否已插入
+                if(isInserted === false) {
+                  // 创建一个新的游戏回合
+                  var record = {
+                    gameRoundCode: gameRoundCode,
+                    list: []
+                  };
+
+                  // 计算所押积分
+                  var coinStaked = 0;
+
+                  // 判断输赢
+                  if(reward < 0) {
+                    coinStaked = Math.abs(reward);
+                  }else {
+                    // 判断押注类型
+                    if(stake === "d") {
+                      coinStaked = reward;
+                    }else if(stake === "s") {
+                      coinStaked = reward;
+                    }else {
+                      coinStaked = reward / 50;
+                    }
+                  }
+
+                  record.list.push({
+                    username: username,
+                    stake: stake,
+                    coinStaked: coinStaked,
+                    won: reward > 0 ? true : false,
+                    reward: reward,
+                    result: result
+                  });
+
+                  // 插入结果
+                  records.push(record);
+                }
+              });
+
+              // send info back
+              callback(records);
+            }
+          );
         });
       }
     };

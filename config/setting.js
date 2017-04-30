@@ -39,12 +39,15 @@ module.exports = {
     { method: "GET", url: "/user/coin/amount", action: "UserController.getUserCoinAmount" },
     { method: "POST", url: "/user/state/activate", action: "UserController.activateUser" },
     { method: "POST", url: "/user/state/deactivate", action: "UserController.deactivateUser" },
+    { method: "POST", url: "/user/search", action: "SearchController.searchUser" },
     { method: "GET", url: "/game/history/user/list", action: "GameController.listUserGameRecords" },
     { method: "GET", url: "/game/history/list/count", action: "GameController.countGameRecords" },
     { method: "GET", url: "/game/history/list", action: "GameController.listGameRecords" },
+    { method: "POST", url: "/game/history/search", action: "SearchController.searchGameRecords" },
     { method: "GET", url: "/coin/history/list", action: "GameController.listCoinRecords" },
 
     // management
+    { method: "GET", url: "/manager", action: "ManagerController.manager" },
     { method: "GET", url: "/manager/login", action: "ManagerController.login" },
     { method: "GET", url: "/manager/modifyPassword", action: "ManagerController.modifyPassword" },
     { method: "GET", url: "/manager/main", action: "ManagerController.index" },
