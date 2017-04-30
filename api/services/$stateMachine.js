@@ -751,7 +751,7 @@ module.exports = {
           tick--;
 
           $logger.log("距离押注时间结束还有" + tick + "秒");
-
+          
           // 向大厅和游戏中的玩家广播游戏倒计时
           self.io.to("hall").emit("updateStatus", { state: "gamingCountDown", tick: tick });
           self.io.to("game").emit("updateStatus", { state: "gamingCountDown", tick: tick });

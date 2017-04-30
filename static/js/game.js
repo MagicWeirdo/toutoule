@@ -178,8 +178,8 @@ function startGame() {
     touchScene.visible = true;
     scene = "touchScene";
 
-    // 注册点击事件
-    game.input.onTap.add(function() {
+    // Tap & 播放音乐 & 切换场景
+    function tapToPlayMusic() {
       // 隐藏触碰界面
       touchScene.visible = false;
 
@@ -190,21 +190,37 @@ function startGame() {
       // 告知服务器加载完成
       socket.emit("fullyLoaded");
       isServerNotified = true;
-    });
+
+      // 移除监听器
+      game.input.onTap.remove(tapToPlayMusic);
+
+      console.log("监听器被删除");
+    }
+
+    // 注册点击事件
+    game.input.onTap.add(tapToPlayMusic);
+
+    // Touch lock & 播放音乐 & 切换场景
+    function touchLockPlayMusic() {
+      // 隐藏触碰界面
+      touchScene.visible = false;
+
+      // 显示主界面
+      mainScene.visible = true;
+      scene = "mainScene";
+
+      // 告知服务器加载完成
+      socket.emit("fullyLoaded");
+      isServerNotified = true;
+
+      // 移除监听器
+      game.input.touch.removeTouchLockCallback(touchLockPlayMusic);
+
+      console.log("监听器被删除");
+    }
 
     // 注册触碰事件
-    game.input.touch.addTouchLockCallback(function() {
-      // 隐藏触碰界面
-      touchScene.visible = false;
-
-      // 显示主界面
-      mainScene.visible = true;
-      scene = "mainScene";
-
-      // 告知服务器加载完成
-      socket.emit("fullyLoaded");
-      isServerNotified = true;
-    }, this);
+    game.input.touch.addTouchLockCallback(touchLockPlayMusic);
 
     // 获取和更新用户信息
     getUserInfo(function(data) {
@@ -224,7 +240,6 @@ function startGame() {
 
     // 接收游戏状态改变
     socket.on("updateStatus", function(data) {
-
       switch (data.state) {
         case "offline":
           // 修改状态
@@ -245,23 +260,20 @@ function startGame() {
           // 判断场景
           if(scene === "mainScene") {
             msStatusText.text = "距离游戏开始还有" + data.tick + "秒";
-          }else if (scene === "gameScene") {
+          }else {
             gsStatusText.visible = true;
             gsStatusText.text = "距离游戏开始还有" + data.tick + "秒";
           }
 
           state = "preparingCountDown";
-
           break;
         case "loading":
           msStatusText.text = "游戏加载中";
           state = "loading";
-
           break;
         case "gaming":
           msStatusText.text = "游戏正在进行中";
           state = "gaming";
-
           break;
         case "gamingCountDown":
           // 判断场景
@@ -323,7 +335,6 @@ function startGame() {
         case "waitting":
           msStatusText.text = "等待结束中";
           state = "waitting";
-
           break;
       }
     });
@@ -1579,6 +1590,10 @@ function startGame() {
         // 隐藏与显示
         gsYesButton.visible = false;
         gsStakedButton.visible = true;
+
+        // 重置 stake
+        stake.type = "";
+        stake.coin = 0;
       }
     });
     gsYesButton.width = displayWidth * 0.3;
