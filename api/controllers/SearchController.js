@@ -7,6 +7,6 @@ module.exports = {
    * search user
   **/
   searchUser: function(req, res) {
-    
+    // TODO: finish this functionality
   }
 };

@@ -23,6 +23,9 @@ function startGame() {
     }
   );
 
+  // 背景音乐
+  var song;
+
   // 主场景
   var mainScene;
   var msUsernameText;
@@ -153,11 +156,18 @@ function startGame() {
     game.load.image("baozi4", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/4.png");
     game.load.image("baozi5", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
     game.load.image("baozi6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
+    game.load.audio("song", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/music.mp3");
 
     console.log("游戏资源加载");
   }
 
   function create() {
+    // 播放背景音乐
+    song = game.add.audio("song");
+    game.sound.setDecodedCallback([song], function() {
+      song.loopFull(0.5);
+    }, this);
+
     // 初始化场景
     initMainScene();
     initGameScene();
@@ -563,6 +573,7 @@ function startGame() {
   }
 
   var isServerNotified = false;
+  var isSongPlayed = false;
 
   function update() {
     if(isServerNotified === false) {
