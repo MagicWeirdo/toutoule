@@ -277,7 +277,7 @@ function startGame() {
                 allowStake = false;
               }
             }
-          }else if(scene === "gameScene") {
+          }else {
             // 显示秒数
             gsBannerText.text = "距离押注时间结束还有" + data.tick + "秒";
           }
@@ -288,7 +288,7 @@ function startGame() {
           // 判断场景
           if(scene === "mainScene") {
             msStatusText.text = "等待结果";
-          }else if(scene === "gameScene") {
+          }else {
             // 隐藏状态文字
             gsBannerText.visible = false;
 
