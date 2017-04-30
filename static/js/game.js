@@ -178,10 +178,6 @@ function startGame() {
     touchScene.visible = true;
     scene = "touchScene";
 
-    function playMusic() {
-
-    }
-
     // 注册点击事件
     game.input.onTap.add(function() {
       // 隐藏触碰界面
