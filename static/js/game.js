@@ -23,7 +23,8 @@ function startGame() {
     }
   );
 
-  // 背景音乐
+  // 触碰场景
+  var touchScene;
   var song;
 
   // 主场景
@@ -169,12 +170,27 @@ function startGame() {
     }, this);
 
     // 初始化场景
+    initTouchScene();
     initMainScene();
     initGameScene();
 
     // 显示主场景
-    mainScene.visible = true;
-    scene = "mainScene";
+    touchScene.visible = true;
+    scene = "touchScene";
+
+    // 注册触碰事件
+    game.input.touch.addTouchLockCallback(function() {
+      // 隐藏触碰界面
+      touchScene.visible = false;
+
+      // 显示主界面
+      mainScene.visible = true;
+      scene = "mainScene";
+
+      // 告知服务器加载完成
+      socket.emit("fullyLoaded");
+      isServerNotified = true;
+    }, this);
 
     // 获取和更新用户信息
     getUserInfo(function(data) {
@@ -187,7 +203,7 @@ function startGame() {
       // 判断场景
       if(scene === "mainScene") {
         msCoinText.text = data.coin;
-      }else {
+      }else if(scene === "gameScene") {
         gsCoinText.text = data.coin;
       }
     });
@@ -215,7 +231,7 @@ function startGame() {
           // 判断场景
           if(scene === "mainScene") {
             msStatusText.text = "距离游戏开始还有" + data.tick + "秒";
-          }else {
+          }else if (scene === "gameScene") {
             gsStatusText.visible = true;
             gsStatusText.text = "距离游戏开始还有" + data.tick + "秒";
           }
@@ -247,7 +263,7 @@ function startGame() {
                 allowStake = false;
               }
             }
-          }else {
+          }else if(scene === "gameScene") {
             // 显示秒数
             gsBannerText.text = "距离押注时间结束还有" + data.tick + "秒";
           }
@@ -258,7 +274,7 @@ function startGame() {
           // 判断场景
           if(scene === "mainScene") {
             msStatusText.text = "等待结果";
-          }else {
+          }else if(scene === "gameScene") {
             // 隐藏状态文字
             gsBannerText.visible = false;
 
@@ -278,8 +294,6 @@ function startGame() {
           // 判断场景
           if(scene === "mainScene") {
             msStatusText.text = "正在计算结果";
-          }else {
-            // gsBannerText.text = "正在计算结果";
           }
 
           state = "calculateResult";
@@ -288,9 +302,6 @@ function startGame() {
           // 判断场景
           if(scene === "mainScene") {
             msStatusText.text = "等待结果中";
-          }else {
-            // // 隐藏状态文字
-            // gsBannerText.visible = false;
           }
 
           state = "onResult";
@@ -572,18 +583,40 @@ function startGame() {
     });
   }
 
-  var isServerNotified = false;
-  var isSongPlayed = false;
-
   function update() {
-    if(isServerNotified === false) {
-      socket.emit("fullyLoaded");
-      isServerNotified = true;
-    }
+
   }
 
   function render() {
 
+  }
+
+  function initTouchScene() {
+    var displayWidth = window.innerWidth;
+    var displayHeight = window.innerHeight;
+
+    // touchScene scene
+    touchScene = game.add.group();
+    touchScene.x = 0;
+    touchScene.y = 0;
+    touchScene.z = 0;
+    touchScene.visible = false;
+
+    // background
+    var background = game.add.image(0, 0, "background");
+    background.width = displayWidth;
+    background.height = displayHeight;
+    touchScene.add(background);
+
+    // hint text
+    var hintText = game.add.text(displayWidth / 2, displayHeight / 2, "请触触碰屏幕的任意地方", {
+      fill: "#9D662C",
+      fontSize: "24px",
+      stroke: "#FFFFFF",
+      strokeThickness: 5
+    });
+    hintText.anchor.set(0.5);
+    touchScene.add(hintText);
   }
 
   // 初始化主场景
