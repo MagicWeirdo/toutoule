@@ -178,6 +178,24 @@ function startGame() {
     touchScene.visible = true;
     scene = "touchScene";
 
+    function playMusic() {
+
+    }
+
+    // 注册点击事件
+    game.input.onTap.add(function() {
+      // 隐藏触碰界面
+      touchScene.visible = false;
+
+      // 显示主界面
+      mainScene.visible = true;
+      scene = "mainScene";
+
+      // 告知服务器加载完成
+      socket.emit("fullyLoaded");
+      isServerNotified = true;
+    });
+
     // 注册触碰事件
     game.input.touch.addTouchLockCallback(function() {
       // 隐藏触碰界面
