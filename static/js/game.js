@@ -1,5 +1,24 @@
 /* jshint esversion: 3 */
 
+// 生成对话框
+function makeDialog(msg) {
+  $("body").append(
+    "<div class=\"dialog\">" +
+    "<div class=\"dialog\-header\">" +
+    "<div class=\"close\-button\"></div>" +
+    "</div>" +
+    "<div class=\"dialog\-body\">" +
+    "<p>" + msg + "</p>" +
+    "</div>"
+  );
+
+  $(".dialog").css("margin-top", 0 - $(".dialog").outerHeight() / 2);
+  $(".dialog").css("margin-left", 0 - $(".dialog").outerWidth() / 2);
+  $(".close-button").click(function() {
+    $(".dialog").detach();
+  });
+}
+
 function startGame() {
   // open WebSocket
   var socket = io();
@@ -1643,6 +1662,12 @@ function startGame() {
     gsYesButton = game.add.button(displayWidth * 0.35, totalHeight - displayWidth * 0.05, "yes", function() {
       // 若允许押注
       if(allowStake && stake.type !== "" && stake.coin > 0) {
+        makeDialog(
+          "stake-type: " + stake.type + "\r\n" +
+          "stake-coin: " + stake.type + "\r\n" +
+          "allowStake: " + allowStake
+        );
+
         // 告知服务器已押注
         socket.emit("stake", stake);
 
