@@ -427,6 +427,10 @@ function startGame() {
       gsYesButton.visible = true;
       gsStakedButton.visible = false;
 
+      // 重置 stake
+      stake.type = "";
+      stake.coin = 0;
+
       // 允许押注
       allowStake = true;
     }
@@ -519,6 +523,10 @@ function startGame() {
 
       // 切换场景
       scene = "mainScene";
+
+      // 重置 stake
+      stake.type = "";
+      stake.coin = 0;
 
       // 允许押注
       allowStake = true;
@@ -1233,6 +1241,9 @@ function startGame() {
           danButton.visible = true;
           shuangButton.visible = true;
         }
+
+        // 押注类型设置为空
+        stake.type = "";
       }
     });
     baoziButton.width = displayWidth * 0.25;

@@ -190,17 +190,6 @@ module.exports = {
           }
         });
 
-        // // 管理员手动开启游戏
-        // socket.on("startGame", function() {
-        //   // 只有当游戏为 online 状态且游戏模式为 manual 且准备人数大于 0 时才能开启游戏
-        //   if(self.getState() === "online" && self.getMode() === "manual" && self.countReadiedPlayers() > 0) {
-        //     $logger.log("手动开启游戏");
-        //
-        //     // 开始加载游戏
-        //     self.startLoading();
-        //   }
-        // });
-
         // 管理员给定结果
         socket.on("giveResult", function(data) {
           $logger.log("管理员给定结果");
@@ -751,7 +740,7 @@ module.exports = {
           tick--;
 
           $logger.log("距离押注时间结束还有" + tick + "秒");
-          
+
           // 向大厅和游戏中的玩家广播游戏倒计时
           self.io.to("hall").emit("updateStatus", { state: "gamingCountDown", tick: tick });
           self.io.to("game").emit("updateStatus", { state: "gamingCountDown", tick: tick });
