@@ -164,7 +164,7 @@
     <!-- BOOTSTRAP SCRIPTS -->
     <script src="http://toutoule.oss-cn-shenzhen.aliyuncs.com/manager/js/bootstrap.js"></script>
     <!-- METISMENU SCRIPTS -->
-    <script src="http://toutoule.oss-cn-shenzhen.aliyuncs.com/manager/js/jquery.metisMenu.jsss"></script>
+    <script src="http://toutoule.oss-cn-shenzhen.aliyuncs.com/manager/js/jquery.metisMenu.js"></script>
        <!-- CUSTOM SCRIPTS -->
     <script src="http://toutoule.oss-cn-shenzhen.aliyuncs.com/manager/js/custom.js"></script>
 
@@ -274,6 +274,8 @@
                         // 检查正误
                         if(data.isError === false) {
                           var bulletins = data.result.list;
+
+                          console.log(bulletins);
 
                           var i = 1;
 
