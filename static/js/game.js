@@ -130,17 +130,11 @@ function startGame() {
     game.load.image("back", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/back.png");
     game.load.image("message", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/message.png");
     game.load.image("transparent", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/transparent.png");
-    game.load.image("dice1", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/dice_1.png");
     game.load.image("ya1", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/ya1.png");
-    game.load.image("dice2", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/dice_2.png");
     game.load.image("ya2", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/ya2.png");
-    game.load.image("dice3", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/dice_3.png");
     game.load.image("ya3", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/ya3.png");
-    game.load.image("dice4", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/dice_4.png");
     game.load.image("ya4", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/ya4.png");
-    game.load.image("dice5", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/dice_5.png");
     game.load.image("ya5", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/ya5.png");
-    game.load.image("dice6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/dice_6.png");
     game.load.image("ya6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/ya6.png");
     game.load.atlasJSONHash("dice", "/static/assets/dice.png", "/static/assets/dice.json");
     game.load.image("resultDan", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/result_dan.png");
@@ -1026,6 +1020,9 @@ function startGame() {
         for(var i = 0;i < 6;i++) {
           var num = Math.floor(Math.random() * (6 - 1)) + 1;
           arr.push(this.dices[num]);
+          arr.push(this.dices[num]);
+          arr.push(this.dices[num]);
+          arr.push(this.dices[num]);
         }
 
         return arr;
@@ -1041,24 +1038,42 @@ function startGame() {
     // 生成随机组合
     var rotateTo1Dice1Group = diceGroupGenerator.random();
     rotateTo1Dice1Group.push("dice_1");
+    rotateTo1Dice1Group.push("dice_1");
+    rotateTo1Dice1Group.push("dice_1");
+    rotateTo1Dice1Group.push("dice_1");
     var rotateTo2Dice1Group = diceGroupGenerator.random();
+    rotateTo2Dice1Group.push("dice_2");
+    rotateTo2Dice1Group.push("dice_2");
+    rotateTo2Dice1Group.push("dice_2");
     rotateTo2Dice1Group.push("dice_2");
     var rotateTo3Dice1Group = diceGroupGenerator.random();
     rotateTo3Dice1Group.push("dice_3");
+    rotateTo3Dice1Group.push("dice_3");
+    rotateTo3Dice1Group.push("dice_3");
+    rotateTo3Dice1Group.push("dice_3");
     var rotateTo4Dice1Group = diceGroupGenerator.random();
+    rotateTo4Dice1Group.push("dice_4");
+    rotateTo4Dice1Group.push("dice_4");
+    rotateTo4Dice1Group.push("dice_4");
     rotateTo4Dice1Group.push("dice_4");
     var rotateTo5Dice1Group = diceGroupGenerator.random();
     rotateTo5Dice1Group.push("dice_5");
+    rotateTo5Dice1Group.push("dice_5");
+    rotateTo5Dice1Group.push("dice_5");
+    rotateTo5Dice1Group.push("dice_5");
     var rotateTo6Dice1Group = diceGroupGenerator.random();
     rotateTo6Dice1Group.push("dice_6");
+    rotateTo6Dice1Group.push("dice_6");
+    rotateTo6Dice1Group.push("dice_6");
+    rotateTo6Dice1Group.push("dice_6");
 
-    gsDice1.animations.add("rotate", diceGroupGenerator.random(), 6, true);
-    gsDice1.animations.add("rotateTo1", rotateTo1Dice1Group, 7, false);
-    gsDice1.animations.add("rotateTo2", rotateTo2Dice1Group, 7, false);
-    gsDice1.animations.add("rotateTo3", rotateTo3Dice1Group, 7, false);
-    gsDice1.animations.add("rotateTo4", rotateTo4Dice1Group, 7, false);
-    gsDice1.animations.add("rotateTo5", rotateTo5Dice1Group, 7, false);
-    gsDice1.animations.add("rotateTo6", rotateTo6Dice1Group, 7, false);
+    gsDice1.animations.add("rotate", diceGroupGenerator.random(), 24, true);
+    gsDice1.animations.add("rotateTo1", rotateTo1Dice1Group, 30, false);
+    gsDice1.animations.add("rotateTo2", rotateTo2Dice1Group, 30, false);
+    gsDice1.animations.add("rotateTo3", rotateTo3Dice1Group, 30, false);
+    gsDice1.animations.add("rotateTo4", rotateTo4Dice1Group, 30, false);
+    gsDice1.animations.add("rotateTo5", rotateTo5Dice1Group, 30, false);
+    gsDice1.animations.add("rotateTo6", rotateTo6Dice1Group, 30, false);
     gsDice1.visible = false;
     diceGroup.add(gsDice1);
 
@@ -1071,24 +1086,42 @@ function startGame() {
     // 生成随机组合
     var rotateTo1Dice2Group = diceGroupGenerator.random();
     rotateTo1Dice2Group.push("dice_1");
+    rotateTo1Dice2Group.push("dice_1");
+    rotateTo1Dice2Group.push("dice_1");
+    rotateTo1Dice2Group.push("dice_1");
     var rotateTo2Dice2Group = diceGroupGenerator.random();
+    rotateTo2Dice2Group.push("dice_2");
+    rotateTo2Dice2Group.push("dice_2");
+    rotateTo2Dice2Group.push("dice_2");
     rotateTo2Dice2Group.push("dice_2");
     var rotateTo3Dice2Group = diceGroupGenerator.random();
     rotateTo3Dice2Group.push("dice_3");
+    rotateTo3Dice2Group.push("dice_3");
+    rotateTo3Dice2Group.push("dice_3");
+    rotateTo3Dice2Group.push("dice_3");
     var rotateTo4Dice2Group = diceGroupGenerator.random();
+    rotateTo4Dice2Group.push("dice_4");
+    rotateTo4Dice2Group.push("dice_4");
+    rotateTo4Dice2Group.push("dice_4");
     rotateTo4Dice2Group.push("dice_4");
     var rotateTo5Dice2Group = diceGroupGenerator.random();
     rotateTo5Dice2Group.push("dice_5");
+    rotateTo5Dice2Group.push("dice_5");
+    rotateTo5Dice2Group.push("dice_5");
+    rotateTo5Dice2Group.push("dice_5");
     var rotateTo6Dice2Group = diceGroupGenerator.random();
     rotateTo6Dice2Group.push("dice_6");
+    rotateTo6Dice2Group.push("dice_6");
+    rotateTo6Dice2Group.push("dice_6");
+    rotateTo6Dice2Group.push("dice_6");
 
-    gsDice2.animations.add("rotate", diceGroupGenerator.random(), 6, true);
-    gsDice2.animations.add("rotateTo1", rotateTo1Dice2Group, 7, false);
-    gsDice2.animations.add("rotateTo2", rotateTo2Dice2Group, 7, false);
-    gsDice2.animations.add("rotateTo3", rotateTo3Dice2Group, 7, false);
-    gsDice2.animations.add("rotateTo4", rotateTo4Dice2Group, 7, false);
-    gsDice2.animations.add("rotateTo5", rotateTo5Dice2Group, 7, false);
-    gsDice2.animations.add("rotateTo6", rotateTo6Dice2Group, 7, false);
+    gsDice2.animations.add("rotate", diceGroupGenerator.random(), 24, true);
+    gsDice2.animations.add("rotateTo1", rotateTo1Dice2Group, 30, false);
+    gsDice2.animations.add("rotateTo2", rotateTo2Dice2Group, 30, false);
+    gsDice2.animations.add("rotateTo3", rotateTo3Dice2Group, 30, false);
+    gsDice2.animations.add("rotateTo4", rotateTo4Dice2Group, 30, false);
+    gsDice2.animations.add("rotateTo5", rotateTo5Dice2Group, 30, false);
+    gsDice2.animations.add("rotateTo6", rotateTo6Dice2Group, 30, false);
     gsDice2.visible = false;
     diceGroup.add(gsDice2);
 
@@ -1101,24 +1134,42 @@ function startGame() {
     // 生成随机组合
     var rotateTo1Dice3Group = diceGroupGenerator.random();
     rotateTo1Dice3Group.push("dice_1");
+    rotateTo1Dice3Group.push("dice_1");
+    rotateTo1Dice3Group.push("dice_1");
+    rotateTo1Dice3Group.push("dice_1");
     var rotateTo2Dice3Group = diceGroupGenerator.random();
+    rotateTo2Dice3Group.push("dice_2");
+    rotateTo2Dice3Group.push("dice_2");
+    rotateTo2Dice3Group.push("dice_2");
     rotateTo2Dice3Group.push("dice_2");
     var rotateTo3Dice3Group = diceGroupGenerator.random();
     rotateTo3Dice3Group.push("dice_3");
+    rotateTo3Dice3Group.push("dice_3");
+    rotateTo3Dice3Group.push("dice_3");
+    rotateTo3Dice3Group.push("dice_3");
     var rotateTo4Dice3Group = diceGroupGenerator.random();
+    rotateTo4Dice3Group.push("dice_4");
+    rotateTo4Dice3Group.push("dice_4");
+    rotateTo4Dice3Group.push("dice_4");
     rotateTo4Dice3Group.push("dice_4");
     var rotateTo5Dice3Group = diceGroupGenerator.random();
     rotateTo5Dice3Group.push("dice_5");
+    rotateTo5Dice3Group.push("dice_5");
+    rotateTo5Dice3Group.push("dice_5");
+    rotateTo5Dice3Group.push("dice_5");
     var rotateTo6Dice3Group = diceGroupGenerator.random();
     rotateTo6Dice3Group.push("dice_6");
+    rotateTo6Dice3Group.push("dice_6");
+    rotateTo6Dice3Group.push("dice_6");
+    rotateTo6Dice3Group.push("dice_6");
 
-    gsDice3.animations.add("rotate", diceGroupGenerator.random(), 6, true);
-    gsDice3.animations.add("rotateTo1", rotateTo1Dice3Group, 7, false);
-    gsDice3.animations.add("rotateTo2", rotateTo2Dice3Group, 7, false);
-    gsDice3.animations.add("rotateTo3", rotateTo3Dice3Group, 7, false);
-    gsDice3.animations.add("rotateTo4", rotateTo4Dice3Group, 7, false);
-    gsDice3.animations.add("rotateTo5", rotateTo5Dice3Group, 7, false);
-    gsDice3.animations.add("rotateTo6", rotateTo6Dice3Group, 7, false);
+    gsDice3.animations.add("rotate", diceGroupGenerator.random(), 24, true);
+    gsDice3.animations.add("rotateTo1", rotateTo1Dice3Group, 30, false);
+    gsDice3.animations.add("rotateTo2", rotateTo2Dice3Group, 30, false);
+    gsDice3.animations.add("rotateTo3", rotateTo3Dice3Group, 30, false);
+    gsDice3.animations.add("rotateTo4", rotateTo4Dice3Group, 30, false);
+    gsDice3.animations.add("rotateTo5", rotateTo5Dice3Group, 30, false);
+    gsDice3.animations.add("rotateTo6", rotateTo6Dice3Group, 30, false);
     gsDice3.visible = false;
     diceGroup.add(gsDice3);
 
