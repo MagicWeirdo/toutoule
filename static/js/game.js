@@ -277,15 +277,15 @@ function startGame() {
               msStatusText.text = "距离下轮游戏开始还有0秒";
             }else {
               msStatusText.text = "距离下轮游戏开始还有" + data.tick + "秒";
-
-              // 如果计时为 0，则不准押注
-              if(data.tick === 0) {
-                allowStake = false;
-              }
             }
           }else {
             // 显示秒数
             gsBannerText.text = "距离押注时间结束还有" + data.tick + "秒";
+
+            // 如果计时为 0，则不准押注
+            if(data.tick === 0) {
+              allowStake = false;
+            }
           }
 
           state = "gamingCountDown";
@@ -1631,7 +1631,7 @@ function startGame() {
     // yes button
     gsYesButton = game.add.button(displayWidth * 0.35, totalHeight - displayWidth * 0.05, "yes", function() {
       // 若允许押注
-      if(allowStake) {
+      if(allowStake && stake.type !== "" && stake.coin > 0) {
         // 告知服务器已押注
         socket.emit("stake", stake);
 
