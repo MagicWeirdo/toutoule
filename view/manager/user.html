@@ -290,15 +290,15 @@
 
                 // 前一页
                 $("#btnPrevious").click(function() {
-                  if(getUrlParam("page") > 1) {
-                    window.location.replace("/manager/user/list?page=" + (getUrlParam("page") - 1));
+                  if(Number.pasrInt(getUrlParam("page")) > 1) {
+                    window.location.replace("/manager/user/list?page=" + (Number.parseInt(getUrlParam("page")) - 1));
                   }
                 });
 
                 // 后一页
                 $("#btnNext").click(function() {
-                  if(getUrlParam("page") < ($(".pagination li").size() - 2)) {
-                    window.location.replace("/manager/user/list?page=" + (getUrlParam("page") + 1));
+                  if(Number.parseInt(getUrlParam("page")) < ($(".pagination li").size() - 2)) {
+                    window.location.replace("/manager/user/list?page=" + (Number.parseInt(getUrlParam("page")) + 1));
                   }
                 });
 

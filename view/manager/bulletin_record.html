@@ -230,14 +230,14 @@
                 // 前一页
                 $("#btnPrevious").click(function() {
                   if(getUrlParam("page") > 1) {
-                    window.location.replace("/manager/bulletin/record?page=" + (getUrlParam("page") - 1));
+                    window.location.replace("/manager/bulletin/record?page=" + (Number.parseInt(getUrlParam("page")) - 1));
                   }
                 });
 
                 // 后一页
                 $("#btnNext").click(function() {
                   if(getUrlParam("page") < $(".pagination li").size() - 2) {
-                    window.location.replace("/manager/bulletin/record?page=" + (getUrlParam("page") + 1));
+                    window.location.replace("/manager/bulletin/record?page=" + (Number.parseInt(getUrlParam("page")) + 1));
                   }
                 });
 
