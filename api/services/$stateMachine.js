@@ -997,6 +997,20 @@ module.exports = {
                       $logger.log("押注失败");
                     });
                   });
+                }else {
+                  // 踢出游戏室
+                  socket.leave("game");
+                  socket.join("hall");
+
+                  // 重置玩家状态
+                  socket.player.isStaked = false;
+
+                  calculatedNum++;
+
+                  // 通知玩家已被踢出
+                  socket.emit("kick");
+
+                  $logger.log("浏览器不兼容，被踢出");
                 }
               }
             }
