@@ -370,6 +370,9 @@ function startGame() {
 
     // 重置游戏界面
     function resetGameScene() {
+      // 停止播放骰子已
+      rotateSound.stop();
+
       // 隐藏和重置游戏界面
       gameScene.visible = false;
       gsUsernameText.text = "无";
@@ -482,6 +485,9 @@ function startGame() {
     // 服务器通知被踢出
     socket.on("kick", function() {
       console.log("被踢");
+
+      // 停止播放骰子已
+      rotateSound.stop();
 
       // 隐藏和重置游戏界面
       gameScene.visible = false;
