@@ -27,6 +27,7 @@ function startGame() {
   var touchScene;
   var song;
   var buttonSound;
+  var moneyButtonSound;
   var rotateSound;
 
   // 主场景
@@ -153,8 +154,9 @@ function startGame() {
     game.load.image("baozi4", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/4.png");
     game.load.image("baozi5", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
     game.load.image("baozi6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
-    game.load.audio("song", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/music.mp3");
-    game.load.audio("buttonSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/button.wav");
+    game.load.audio("song", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/background.mp3");
+    game.load.audio("buttonSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/tick.wav");
+    game.load.audio("moneyButtonSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/button.wav");
     game.load.audio("rotateSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/rotate.mp3");
 
     console.log("游戏资源加载");
@@ -164,8 +166,9 @@ function startGame() {
     // 初始化 & 播放背景音乐
     song = game.add.audio("song");
     buttonSound = game.add.audio("buttonSound");
+    moneyButtonSound = game.add.audio("moneyButtonSound");
     rotateSound = game.add.audio("rotateSound");
-    game.sound.setDecodedCallback([song, buttonSound], function() {
+    game.sound.setDecodedCallback([song, buttonSound, moneyButtonSound], function() {
       song.loopFull(0.5);
     }, this);
 
@@ -1233,7 +1236,7 @@ function startGame() {
     baoziButton = game.add.button(displayWidth * 0.05, 0, "baozi", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         // 检查豹子按钮的状态
         if(dice1.visible === false) {
@@ -1286,7 +1289,7 @@ function startGame() {
     dice1 = game.add.button(totalWidth + displayWidth * 0.075, 0, "baozi1", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.type = "b1";
 
@@ -1327,7 +1330,7 @@ function startGame() {
     dice2 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi2", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.type = "b2";
 
@@ -1368,7 +1371,7 @@ function startGame() {
     dice3 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi3", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.type = "b3";
 
@@ -1409,7 +1412,7 @@ function startGame() {
     dice4 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi4", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.type = "b4";
 
@@ -1450,7 +1453,7 @@ function startGame() {
     dice5 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi5", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.type = "b5";
 
@@ -1491,7 +1494,7 @@ function startGame() {
     dice6 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi6", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.type = "b6";
 
@@ -1532,7 +1535,7 @@ function startGame() {
     danButton = game.add.button(baoziButton.width + displayWidth * 0.075, 0, "dan", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.type = "d";
 
@@ -1560,7 +1563,7 @@ function startGame() {
     shuangButton = game.add.button(baoziButton.width + danButton.width + displayWidth * 0.1, 0, "shuang", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.type = "s";
 
@@ -1594,7 +1597,7 @@ function startGame() {
     var money5Button = game.add.button(displayWidth * 0.05, 0, "money5", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         // 修改押注金额
         stake.coin = 5 > ownedCoin ? ownedCoin : 5;
@@ -1611,7 +1614,7 @@ function startGame() {
     var money10Button = game.add.button(money5Button.width + displayWidth * 0.05, 0, "money10", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.coin = 10 > ownedCoin ? ownedCoin : 10;
 
@@ -1627,7 +1630,7 @@ function startGame() {
     var money20Button = game.add.button(money5Button.width + money10Button.width + displayWidth * 0.05, 0, "money20", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.coin = 20 > ownedCoin ? ownedCoin : 20;
 
@@ -1643,7 +1646,7 @@ function startGame() {
     var money50Button = game.add.button(money5Button.width + money10Button.width + money20Button.width + displayWidth * 0.05, 0, "money50", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.coin = 50 > ownedCoin ? ownedCoin : 50;
 
@@ -1680,7 +1683,7 @@ function startGame() {
     var addButton = game.add.button(inputBar.width * 0.8, 0, "transparent", function() {
       // 若允许押注
       if(allowStake) {
-        buttonSound.play();
+        moneyButtonSound.play();
 
         stake.coin = stake.coin + 10 > ownedCoin ? ownedCoin : stake.coin + 10;
 
