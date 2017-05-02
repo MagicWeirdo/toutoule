@@ -153,7 +153,7 @@ function startGame() {
     game.load.image("baozi3", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/3.png");
     game.load.image("baozi4", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/4.png");
     game.load.image("baozi5", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
-    game.load.image("baozi6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
+    game.load.image("baozi6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/6.png");
     game.load.audio("song", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/music.mp3");
     game.load.audio("buttonSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/tick.wav");
     game.load.audio("moneyButtonSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/button.wav");
