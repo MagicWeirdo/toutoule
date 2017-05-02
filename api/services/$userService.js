@@ -1,7 +1,7 @@
 module.exports = {
   scope: "singleton",
   name: "$userService",
-  factory: function($date, $orm2, $authService, $coinService) {
+  factory: function($date, $orm2, $authService, $coinService, $utils) {
     return {
       /**
        * @public
@@ -181,17 +181,11 @@ module.exports = {
        * generate a new user
       **/
       generateUser: function(callback) {
-        // get current date
-        var now = $date.now();
-        var year = now.getYear();
-        var month = now.getMonth();
-        var day = now.getDay();
-
         $orm2.rawQuery(function(db) {
           db.driver.execQuery(
             "SELECT COUNT(*) AS count FROM user " +
             "WHERE username LIKE ?",
-            [ year + "" + month + "" + day + "%" ],
+            [ $utils.getTodayPrefix() + "%" ],
             function(err, rows) {
               if(err) {
                 throw err;
@@ -202,7 +196,7 @@ module.exports = {
 
                 // create a new user
                 User.create({
-                  username: year + "" + month + "" + day + "" + rows[0].count,
+                  username: $utils.getTodayPrefix() + rows[0].count,
                   password: "123456789",
                   date: $date.now().getAsMilliseconds(),
                   coin: 0
