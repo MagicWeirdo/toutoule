@@ -953,7 +953,7 @@ function startGame() {
 
     // result dan banner
     resultDanBanner = game.add.image(playArea.width / 2, 0, "resultDan");
-    resultDanBanner.width = playArea.width * 0.8;
+    resultDanBanner.width = playArea.width * 0.64;
     resultDanBanner.height = resultDanBanner.width / (400 / 150);
     resultDanBanner.anchor.set(0.5);
     playGroup.add(resultDanBanner);
@@ -961,7 +961,7 @@ function startGame() {
 
     // result shuang banner
     resultShuangBanner = game.add.image(playArea.width / 2, 0, "resultShuang");
-    resultShuangBanner.width = playArea.width * 0.8;
+    resultShuangBanner.width = playArea.width * 0.64;
     resultShuangBanner.height = resultShuangBanner.width / (400 / 150);
     resultShuangBanner.anchor.set(0.5);
     playGroup.add(resultShuangBanner);
@@ -969,7 +969,7 @@ function startGame() {
 
     // result 1 banner
     result1Banner = game.add.image(playArea.width / 2, 0, "result1");
-    result1Banner.width = playArea.width * 0.8;
+    result1Banner.width = playArea.width * 0.64;
     result1Banner.height = result1Banner.width / (400 / 150);
     result1Banner.anchor.set(0.5);
     playGroup.add(result1Banner);
@@ -977,7 +977,7 @@ function startGame() {
 
     // result 2 banner
     result2Banner = game.add.image(playArea.width / 2, 0, "result2");
-    result2Banner.width = playArea.width * 0.8;
+    result2Banner.width = playArea.width * 0.64;
     result2Banner.height = result2Banner.width / (400 / 150);
     result2Banner.anchor.set(0.5);
     playGroup.add(result2Banner);
@@ -985,7 +985,7 @@ function startGame() {
 
     // result 3 banner
     result3Banner = game.add.image(playArea.width / 2, 0, "result3");
-    result3Banner.width = playArea.width * 0.8;
+    result3Banner.width = playArea.width * 0.64;
     result3Banner.height = result3Banner.width / (400 / 150);
     result3Banner.anchor.set(0.5);
     playGroup.add(result1Banner);
@@ -993,7 +993,7 @@ function startGame() {
 
     // result 4 banner
     result4Banner = game.add.image(playArea.width / 2, 0, "result4");
-    result4Banner.width = playArea.width * 0.8;
+    result4Banner.width = playArea.width * 0.64;
     result4Banner.height = result4Banner.width / (400 / 150);
     result4Banner.anchor.set(0.5);
     playGroup.add(result4Banner);
@@ -1001,7 +1001,7 @@ function startGame() {
 
     // result 5 banner
     result5Banner = game.add.image(playArea.width / 2, 0, "result5");
-    result5Banner.width = playArea.width * 0.8;
+    result5Banner.width = playArea.width * 0.64;
     result5Banner.height = result5Banner.width / (400 / 150);
     result5Banner.anchor.set(0.5);
     playGroup.add(result5Banner);
@@ -1009,7 +1009,7 @@ function startGame() {
 
     // result 6 banner
     result6Banner = game.add.image(playArea.width / 2, 0, "result6");
-    result6Banner.width = playArea.width * 0.8;
+    result6Banner.width = playArea.width * 0.64;
     result6Banner.height = result6Banner.width / (400 / 150);
     result6Banner.anchor.set(0.5);
     playGroup.add(result6Banner);
@@ -1018,7 +1018,7 @@ function startGame() {
     // banner text
     gsBannerText = game.add.text(playArea.width / 2, playArea.height / 2, "等待", {
       fill: "#9D662C",
-      fontSize: playArea.height * 0.08 + "px",
+      fontSize: playArea.height * 0.12 + "px",
       fontWeight: "bold",
       stroke: "#FFFFFF",
       strokeThickness: 5
@@ -1027,9 +1027,9 @@ function startGame() {
     playGroup.add(gsBannerText);
 
     // result text
-    gsResultText = game.add.text(playArea.width / 2, playArea.height / 2 - (playArea.height * 0.2) / (57 / 64), "", {
+    gsResultText = game.add.text(playArea.width / 2, playArea.height / 2 - (playArea.height * 0.22) / (57 / 64), "", {
       fill: "#9D662C",
-      fontSize: playArea.height * 0.1 + "px",
+      fontSize: playArea.height * 0.105 + "px",
       fontWeight: "bold",
       stroke: "#FFFFFF",
       strokeThickness: 5
@@ -1069,9 +1069,9 @@ function startGame() {
     };
 
     // dice1
-    gsDice1 = game.add.sprite(playArea.width / 2 - playArea.height * 0.25, playArea.height / 2, "dice");
-    gsDice1.width = playArea.height * 0.2;
-    gsDice1.height = (playArea.height * 0.2) / (57 / 64);
+    gsDice1 = game.add.sprite(playArea.width / 2 - playArea.height * 0.4, playArea.height / 2, "dice");
+    gsDice1.width = playArea.height * 0.3;
+    gsDice1.height = (playArea.height * 0.3) / (57 / 64);
     gsDice1.anchor.set(0.5);
 
     // 生成随机组合
@@ -1118,8 +1118,8 @@ function startGame() {
 
     // dice2
     gsDice2 = game.add.sprite(playArea.width / 2, playArea.height / 2, "dice");
-    gsDice2.width = playArea.height * 0.2;
-    gsDice2.height = (playArea.height * 0.2) / (57 / 64);
+    gsDice2.width = playArea.height * 0.3;
+    gsDice2.height = (playArea.height * 0.3) / (57 / 64);
     gsDice2.anchor.set(0.5);
 
     // 生成随机组合
@@ -1165,9 +1165,9 @@ function startGame() {
     diceGroup.add(gsDice2);
 
     // dice3
-    gsDice3 = game.add.sprite(playArea.width / 2 + playArea.height * 0.25, playArea.height / 2, "dice");
-    gsDice3.width = playArea.height * 0.2;
-    gsDice3.height = (playArea.height * 0.2) / (57 / 64);
+    gsDice3 = game.add.sprite(playArea.width / 2 + playArea.height * 0.4, playArea.height / 2, "dice");
+    gsDice3.width = playArea.height * 0.3;
+    gsDice3.height = (playArea.height * 0.3) / (57 / 64);
     gsDice3.anchor.set(0.5);
 
     // 生成随机组合
