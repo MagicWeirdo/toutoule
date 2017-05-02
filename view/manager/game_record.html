@@ -379,14 +379,14 @@
 
                 // 前一页
                 $("#btnPrevious").click(function() {
-                  if(Number.parseInt(getUrlParam("page")) > 1) {
+                  if(Number.parseInt(getUrlParam("page") || '1') > 1) {
                     window.location.replace("/manager/history?page=" + (Number.parseInt(getUrlParam("page") || 1) - 1));
                   }
                 });
 
                 // 后一页
                 $("#btnNext").click(function() {
-                  if(Number.parseInt(getUrlParam("page")) < ($(".pagination li").size() - 2)) {
+                  if(Number.parseInt(getUrlParam("page") || '1') < ($(".pagination li").size() - 2)) {
                     window.location.replace("/manager/history?page=" + (Number.parseInt(getUrlParam("page") || 1) + 1));
                   }
                 });
