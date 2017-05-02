@@ -500,6 +500,12 @@ module.exports = {
 
             // 向管理员广播玩家人数
             self.io.to("admin").emit("updateOnlinePlayers", { number: self.numOfOnlinePlayers });
+
+            // 更新玩家押注情况
+            self.broadcastStakeStaticsToAdmin();
+
+            // 更新玩家列表
+            self.broadcastPlayerListToAdmin();
           });
         });
       },
