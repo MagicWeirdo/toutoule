@@ -1069,7 +1069,7 @@ function startGame() {
     };
 
     // dice1
-    gsDice1 = game.add.sprite(playArea.width / 2 - playArea.height * 0.2, playArea.height / 2, "dice");
+    gsDice1 = game.add.sprite(playArea.width / 2 - playArea.height * 0.25, playArea.height / 2, "dice");
     gsDice1.width = playArea.height * 0.2;
     gsDice1.height = (playArea.height * 0.2) / (57 / 64);
     gsDice1.anchor.set(0.5);
@@ -1165,7 +1165,7 @@ function startGame() {
     diceGroup.add(gsDice2);
 
     // dice3
-    gsDice3 = game.add.sprite(playArea.width / 2 + playArea.height * 0.2, playArea.height / 2, "dice");
+    gsDice3 = game.add.sprite(playArea.width / 2 + playArea.height * 0.25, playArea.height / 2, "dice");
     gsDice3.width = playArea.height * 0.2;
     gsDice3.height = (playArea.height * 0.2) / (57 / 64);
     gsDice3.anchor.set(0.5);
