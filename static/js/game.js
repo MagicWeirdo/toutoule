@@ -27,6 +27,7 @@ function startGame() {
   var touchScene;
   var song;
   var buttonSound;
+  var rotateSound;
 
   // 主场景
   var mainScene;
@@ -154,6 +155,7 @@ function startGame() {
     game.load.image("baozi6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
     game.load.audio("song", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/music.mp3");
     game.load.audio("buttonSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/button.wav");
+    game.load.audio("rotateSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/rotate.mp3");
 
     console.log("游戏资源加载");
   }
@@ -162,6 +164,7 @@ function startGame() {
     // 初始化 & 播放背景音乐
     song = game.add.audio("song");
     buttonSound = game.add.audio("buttonSound");
+    rotateSound = game.add.audio("rotateSound");
     game.sound.setDecodedCallback([song, buttonSound], function() {
       song.loopFull(0.5);
     }, this);
@@ -311,6 +314,9 @@ function startGame() {
             gsDice1.visible = true;
             gsDice2.visible = true;
             gsDice3.visible = true;
+
+            // 播放骰子转动音乐
+            rotateSound.loopFull();
 
             // 转动骰子
             gsDice1.play("rotate");
@@ -580,6 +586,9 @@ function startGame() {
       var waitInterval = setInterval(function() {
         if(numOffinished === 3) {
           clearInterval(waitInterval);
+
+          // 停止播放骰子转动音乐
+          rotateSound.stop();
 
           // 显示结果文字
           gsResultText.visible = true;
