@@ -712,7 +712,7 @@ function startGame() {
     usernameGroup.add(usernameBanner);
 
     // username text
-    msUsernameText = game.add.text(usernameBanner.width * 0.35, usernameBanner.height * 0.3, "无", {
+    msUsernameText = game.add.text(usernameBanner.width * 0.30, usernameBanner.height * 0.3, "无", {
       fill: "#FFFFFF",
       fontSize: usernameBanner.height * 0.4 + "px",
       fontWeight: "bold"
@@ -894,7 +894,7 @@ function startGame() {
     usernameGroup.add(usernameBanner);
 
     // username text
-    gsUsernameText = game.add.text(usernameBanner.width * 0.35, usernameBanner.height * 0.3, "无", {
+    gsUsernameText = game.add.text(usernameBanner.width * 0.30, usernameBanner.height * 0.3, "无", {
       fill: "#FFFFFF",
       fontSize: usernameBanner.height * 0.4 + "px",
       fontWeight: "bold"

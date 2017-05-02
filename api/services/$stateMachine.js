@@ -455,6 +455,12 @@ module.exports = {
             }
           });
 
+          // 更新玩家押注情况
+          self.broadcastStakeStaticsToAdmin();
+
+          // 更新玩家列表
+          self.broadcastPlayerListToAdmin();
+
           $logger.log("玩家退出游戏");
         });
 
