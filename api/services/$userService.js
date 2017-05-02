@@ -196,7 +196,7 @@ module.exports = {
 
                 // create a new user
                 User.create({
-                  username: $utils.getTodayPrefix() + rows[0].count,
+                  username: $utils.getTodayPrefix() + $utils.toSuffix(rows[0].count),
                   password: "123456789",
                   date: $date.now().getAsMilliseconds(),
                   coin: 0
