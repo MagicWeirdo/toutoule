@@ -154,7 +154,7 @@ function startGame() {
     game.load.image("baozi4", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/4.png");
     game.load.image("baozi5", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
     game.load.image("baozi6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
-    game.load.audio("song", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/background.mp3");
+    game.load.audio("song", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/music.mp3");
     game.load.audio("buttonSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/tick.wav");
     game.load.audio("moneyButtonSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/button.wav");
     game.load.audio("rotateSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/rotate.mp3");
@@ -169,7 +169,7 @@ function startGame() {
     moneyButtonSound = game.add.audio("moneyButtonSound");
     rotateSound = game.add.audio("rotateSound");
     game.sound.setDecodedCallback([song, buttonSound, moneyButtonSound], function() {
-      song.loopFull(0.5);
+      song.loopFull(0.25);
     }, this);
 
     // 初始化场景
@@ -942,7 +942,7 @@ function startGame() {
     // play group
     var playGroup = game.add.group(gameScene);
     playGroup.x = displayWidth * 0.125;
-    playGroup.y = totalHeight + displayHeight * 0.1;
+    playGroup.y = totalHeight + displayHeight * 0.05;
     playGroup.z = 0;
 
     // play area
@@ -1212,7 +1212,7 @@ function startGame() {
     gsDice3.visible = false;
     diceGroup.add(gsDice3);
 
-    totalHeight += playArea.height + displayHeight * 0.1;
+    totalHeight += playArea.height + displayHeight * 0.05;
 
     // stake group
     var stakeGroup = game.add.group(gameScene);
