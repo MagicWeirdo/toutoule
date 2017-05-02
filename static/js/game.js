@@ -26,6 +26,7 @@ function startGame() {
   // 触碰场景
   var touchScene;
   var song;
+  var buttonSound;
 
   // 主场景
   var mainScene;
@@ -152,14 +153,16 @@ function startGame() {
     game.load.image("baozi5", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
     game.load.image("baozi6", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/assets/baozi/5.png");
     game.load.audio("song", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/music.mp3");
+    game.load.audio("buttonSound", "http://toutoule.oss-cn-shenzhen.aliyuncs.com/game/song/button.wav");
 
     console.log("游戏资源加载");
   }
 
   function create() {
-    // 播放背景音乐
+    // 初始化 & 播放背景音乐
     song = game.add.audio("song");
-    game.sound.setDecodedCallback([song], function() {
+    buttonSound = game.add.audio("buttonSound");
+    game.sound.setDecodedCallback([song, buttonSound], function() {
       song.loopFull(0.5);
     }, this);
 
@@ -174,6 +177,9 @@ function startGame() {
 
     // Tap & 播放音乐 & 切换场景
     function tapToPlayMusic() {
+      // 播放点击音乐
+      buttonSound.play();
+
       // 隐藏触碰界面
       touchScene.visible = false;
 
@@ -196,6 +202,9 @@ function startGame() {
 
     // Touch lock & 播放音乐 & 切换场景
     function touchLockPlayMusic() {
+      // 播放点击音乐
+      buttonSound.play();
+
       // 隐藏触碰界面
       touchScene.visible = false;
 
@@ -788,6 +797,8 @@ function startGame() {
 
       // 只有当 online 和 preparingCountDown 状态时才能准备
       if(state === "online" || state === "preparingCountDown") {
+        buttonSound.play();
+
         msReadyButton.visible = false;
         msAlreadyButton.visible = true;
 
@@ -812,6 +823,8 @@ function startGame() {
     var cancelButton = game.add.button((displayWidth * 0.6) / 2 + msReadyButton.width - 2, 0 - (((displayWidth * 0.2) / (207 / 100)) / 2), "cancelButton", function() {
       // 只有当 online 和 preparingCountDown 状态时才能取消准备
       if((state === "online" || state === "preparingCountDown") && msAlreadyButton.visible === true) {
+        buttonSound.play();
+
         msReadyButton.visible = true;
         msAlreadyButton.visible = false;
 
@@ -1205,6 +1218,8 @@ function startGame() {
     baoziButton = game.add.button(displayWidth * 0.05, 0, "baozi", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         // 检查豹子按钮的状态
         if(dice1.visible === false) {
           // 显示
@@ -1256,6 +1271,8 @@ function startGame() {
     dice1 = game.add.button(totalWidth + displayWidth * 0.075, 0, "baozi1", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.type = "b1";
 
         // 被点击显示 ya1，隐藏自身
@@ -1295,6 +1312,8 @@ function startGame() {
     dice2 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi2", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.type = "b2";
 
         // 被点击显示 ya2，隐藏自身
@@ -1334,6 +1353,8 @@ function startGame() {
     dice3 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi3", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.type = "b3";
 
         // 被点击显示 ya3，隐藏自身
@@ -1373,6 +1394,8 @@ function startGame() {
     dice4 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi4", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.type = "b4";
 
         // 被点击显示 ya4，隐藏自身
@@ -1412,6 +1435,8 @@ function startGame() {
     dice5 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi5", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.type = "b5";
 
         // 被点击时显示 ya5，隐藏自身
@@ -1451,6 +1476,8 @@ function startGame() {
     dice6 = game.add.button(totalWidth + displayWidth * 0.01, 0, "baozi6", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.type = "b6";
 
         // 当被点击显示 ya6，隐藏自身
@@ -1490,6 +1517,8 @@ function startGame() {
     danButton = game.add.button(baoziButton.width + displayWidth * 0.075, 0, "dan", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.type = "d";
 
         // 隐藏和显示
@@ -1516,6 +1545,8 @@ function startGame() {
     shuangButton = game.add.button(baoziButton.width + danButton.width + displayWidth * 0.1, 0, "shuang", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.type = "s";
 
         // 隐藏和显示
@@ -1548,6 +1579,8 @@ function startGame() {
     var money5Button = game.add.button(displayWidth * 0.05, 0, "money5", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         // 修改押注金额
         stake.coin = 5 > ownedCoin ? ownedCoin : 5;
 
@@ -1563,6 +1596,8 @@ function startGame() {
     var money10Button = game.add.button(money5Button.width + displayWidth * 0.05, 0, "money10", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.coin = 10 > ownedCoin ? ownedCoin : 10;
 
         // 显示金额
@@ -1577,6 +1612,8 @@ function startGame() {
     var money20Button = game.add.button(money5Button.width + money10Button.width + displayWidth * 0.05, 0, "money20", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.coin = 20 > ownedCoin ? ownedCoin : 20;
 
         // 显示金额
@@ -1591,6 +1628,8 @@ function startGame() {
     var money50Button = game.add.button(money5Button.width + money10Button.width + money20Button.width + displayWidth * 0.05, 0, "money50", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.coin = 50 > ownedCoin ? ownedCoin : 50;
 
         // 显示金额
@@ -1626,6 +1665,8 @@ function startGame() {
     var addButton = game.add.button(inputBar.width * 0.8, 0, "transparent", function() {
       // 若允许押注
       if(allowStake) {
+        buttonSound.play();
+
         stake.coin = stake.coin + 10 > ownedCoin ? ownedCoin : stake.coin + 10;
 
         // 检查是否押注金额超过500
@@ -1643,6 +1684,8 @@ function startGame() {
     gsYesButton = game.add.button(displayWidth * 0.35, totalHeight - displayWidth * 0.05, "yes", function() {
       // 若允许押注
       if(allowStake && stake.type !== "" && stake.coin > 0) {
+        buttonSound.play();
+
         // 告知服务器已押注
         socket.emit("stake", stake);
 
@@ -1671,6 +1714,8 @@ function startGame() {
 
     // back button
     var backButton = game.add.button(displayWidth * 0.1, displayHeight * 0.9, "back", function() {
+      buttonSound.play();
+
       // 告知服务器玩家退出
       socket.emit("quit");
     });
