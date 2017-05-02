@@ -948,7 +948,7 @@ function startGame() {
     // play area
     var playArea = game.add.image(0, 0, "playArea");
     playArea.width = displayWidth * 0.75;
-    playArea.height = playArea.width / (583 / 410);
+    playArea.height = (playArea.width / (583 / 410)) * 0.7;
     playGroup.add(playArea);
 
     // result dan banner
