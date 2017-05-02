@@ -299,14 +299,14 @@
                 // 前一页按钮
                 $("#btnPrevious").click(function() {
                   if(getUrlParam("page") > 1) {
-                    window.location.replace("/manager/user/info?username=" + getUrlParam("username") + "&page=" + (Number.parseInt(getUrlParam("page")) - 1));
+                    window.location.replace("/manager/user/info?username=" + getUrlParam("username") + "&page=" + (Number.parseInt(getUrlParam("page") || 1) - 1));
                   }
                 });
 
                 // 后一页按钮
                 $("#btnNext").click(function() {
                   if(getUrlParam("page") < $(".pagination li").size() - 2) {
-                    window.location.replace("/manager/user/info?username=" + getUrlParam("username") + "&page=" + (Number.parseInt(getUrlParam("page")) + 1));
+                    window.location.replace("/manager/user/info?username=" + getUrlParam("username") + "&page=" + (Number.parseInt(getUrlParam("page") || 1) + 1));
                   }
                 });
 
