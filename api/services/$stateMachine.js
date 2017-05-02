@@ -976,25 +976,28 @@ module.exports = {
                   });
                 });
               }else {
-                // 如果没有押中
+                // 防止不兼容
+                if(stake.type !== "") {
+                  // 如果没有押中
 
-                $userService.bottomDownCoin({
-                  username: socket.player.username,
-                  amount: stake.coin,
-                  shouldRecord: false
-                }, function() {
-                  // 保存游戏记录
-                  $gameService.saveGameRecord({
-                    stake: stake.type,
-                    reward: 0 - stake.coin,
-                    gameRoundId: gameRound.id,
-                    username: socket.player.username
+                  $userService.bottomDownCoin({
+                    username: socket.player.username,
+                    amount: stake.coin,
+                    shouldRecord: false
                   }, function() {
-                    calculatedNum++;
+                    // 保存游戏记录
+                    $gameService.saveGameRecord({
+                      stake: stake.type,
+                      reward: 0 - stake.coin,
+                      gameRoundId: gameRound.id,
+                      username: socket.player.username
+                    }, function() {
+                      calculatedNum++;
 
-                    $logger.log("押注失败");
+                      $logger.log("押注失败");
+                    });
                   });
-                });
+                }
               }
             }
           });
