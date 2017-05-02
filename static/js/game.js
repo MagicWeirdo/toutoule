@@ -942,7 +942,7 @@ function startGame() {
     // play group
     var playGroup = game.add.group(gameScene);
     playGroup.x = displayWidth * 0.125;
-    playGroup.y = totalHeight + displayHeight * 0.05;
+    playGroup.y = totalHeight + displayHeight * 0.1;
     playGroup.z = 0;
 
     // play area
@@ -1212,7 +1212,7 @@ function startGame() {
     gsDice3.visible = false;
     diceGroup.add(gsDice3);
 
-    totalHeight += playArea.height + displayHeight * 0.05;
+    totalHeight += playArea.height + displayHeight * 0.1;
 
     // stake group
     var stakeGroup = game.add.group(gameScene);
